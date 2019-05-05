@@ -10,7 +10,6 @@
                         <ul class="list-unstyled quick-links">
                             <li><router-link to="/"><i class="fa fa-angle-double-right"></i>Home</router-link></li>
                             <li><router-link to="/receiving"><i class="fa fa-angle-double-right"></i>Receiving</router-link></li>
-                            <li><router-link to="/location"><i class="fa fa-angle-double-right"></i>Locate Samples</router-link></li>
                             <li><router-link to="/testing"><i class="fa fa-angle-double-right"></i>Testing</router-link></li>
                             <li><router-link to="/report"><i class="fa fa-angle-double-right"></i>Reports</router-link></li>
                             <li><router-link to="/privacy"><i class="fa fa-angle-double-right"></i>Privacy Policy</router-link></li>

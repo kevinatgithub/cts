@@ -11,9 +11,9 @@ import Checklist from './components/Request/Checklist'
 import Receive from './components/Receive'
 import RegisterLoc from './components/Receive/RegisterLoc'
 
-import LocateSample from './components/LocateSample'
 import Testing from './components/Testing'
 import Report from './components/Report'
+import Stockyard from './components/Stockyard'
 import Privacy from './components/Privacy'
 
 Vue.use(VueRouter);
@@ -26,9 +26,9 @@ export default new VueRouter({
         { path: '/checklist', component: Checklist },
         { path: '/receiving', component: Receive },
         { path: '/registerloc', component: RegisterLoc },
-        { path: '/location', component: LocateSample },
         { path: '/testing', component: Testing },
         { path: '/report', component: Report },
+        { path: '/stockyard', component: Stockyard },
         { path: '/privacy', component: Privacy },
     ]
 })

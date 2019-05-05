@@ -3,7 +3,8 @@
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="inputGroupSelect01">
-                    <i class="fa fa-barcode"></i>&nbsp;
+                    <i class="fa fa-search"></i>&nbsp;
+                    Donation ID:
                 </label>
             </div>
             <input type="text" aria-label="REF-#" placeholder="Scan /Enter Donation ID" v-model="hasResult" class="form-control">

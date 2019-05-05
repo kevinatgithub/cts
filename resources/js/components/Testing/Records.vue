@@ -41,9 +41,9 @@ export default {
             btnTitle : 'Click to submit results',
 
             results:[
-                { row : 'TEST 1', icon : 'circle' },
-                { row : 'TEST 2', icon : 'circle' },
-                { row : 'TEST 3', icon : 'circle' },
+                { row : 'TEST 1', icon : 'tint' },
+                { row : 'TEST 2', icon : 'tint' },
+                { row : 'TEST 3', icon : 'tint' },
             ],
 
             tests: [

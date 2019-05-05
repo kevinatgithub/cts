@@ -10,8 +10,17 @@
 
         <div class="content mt-5">
             <div class="row">
-                <div class="col-12">
+                <div class="input-group mb-3 col-8">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">
+                            <i class="fa fa-search"></i>&nbsp;
+                            Donation ID:
+                        </label>
+                    </div>
+                    <input type="text" aria-label="REF-#" placeholder="Scan /Enter Donation ID" v-model="hasResult" class="form-control">
+                </div> <!-- end input-group -->
 
+                <div class="col-12">
                     <div class="form-group">
                         <div class="row" v-for="(result, i) in donationIDs" :key="i">
                             <div class="input-group mb-3 col-12">

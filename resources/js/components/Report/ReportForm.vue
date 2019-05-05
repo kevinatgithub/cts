@@ -4,7 +4,8 @@
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Confirmatory Request #:</strong>
+                        <i class="fa fa-search"></i>&nbsp;
+                        Confirmatory Request #:
                     </label>
                 </div>
                 <input type="text" aria-label="" placeholder="Scan /Enter Confirmatory Reference #" v-model="hasResult" class="form-control">      
@@ -61,7 +62,7 @@
         <div class="row mt-5">
             <div class="col-md-8">
                 <button type="button" class="btn btn-success btn-block" data-toggle="tooltip" 
-                data-placement="right" :title="btnTitle"><i class="fa fa-print"></i>&nbsp;SUBMIT REPORT TO BSF</button>  
+                data-placement="right" :title="btnTitle"><i class="fa fa-print"></i>&nbsp;SUBMIT RESULT TO BSF</button>  
             </div>
         </div>                
 

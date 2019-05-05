@@ -1,6 +1,13 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="fixed-top" style="background: #FFF; height: 140px;">
+            <div class="row-fluid">
+                <div class="text-center mt-3">
+                    <router-link to="/"><img src="img/RITMmasthead.gif" alt=""></router-link>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="margin-top:140px">
             <router-link class="navbar-brand" to="/">
                 <img src="img/favicon.png" alt="">
                 TTI - Confirmatory Testing
@@ -25,9 +32,6 @@
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/stockyard">Stock yard &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/location">Locate Samples &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
                     </li>
                 </ul>
 

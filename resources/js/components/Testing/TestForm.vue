@@ -4,6 +4,7 @@
             <div class="input-group-prepend">
                 <label class="input-group-text" for="inputGroupSelect01">
                     <i class="fa fa-search"></i>&nbsp;
+                    Confirmatory Request #:
                 </label>
             </div>
             <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="confirmatoryNum" class="form-control">
@@ -34,7 +35,7 @@ export default {
     components: {Records},
     data(){
         return{
-            //CTS#2019-000001
+            //CTS2019-000001
             confirmatoryNum : '', 
             hasResult: false,
 
