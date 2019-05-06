@@ -88,7 +88,7 @@
             </div> <!-- end input-group -->
 
             <button type="button" class="btn btn-success btn-block mt-5 col-8" data-toggle="tooltip" 
-            data-placement="left" title="Register Blood specimen location"><i class="fa fa-save"></i>&nbsp;REGISTER BLOOD SPECIMEN LOCATION</button>
+            data-placement="left" title="Register Blood specimen location"><i class="fa fa-save"></i>&nbsp;REGISTER SPECIMEN LOCATION</button>
 
         </div><!-- end form-group -->
     </div><!-- main div -->

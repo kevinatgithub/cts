@@ -24,68 +24,97 @@
 
         <!-- REQUEST DETAILS SECTION -->
         <h5 class="text-info">Request Details</h5>
-        <div class="form-group" v-if="hasResult">
+        <div class="form-group mt-3" v-if="hasResult">
 
-            <div class="row mt-3">
-                <label class="col-sm-4" for="inputDefault"><strong>Requesting Facility:</strong></label>
-                <label class="col-form-label col-sm-8" id="inputDefault">{{facility}}</label>
-            </div>
-
-            <div class="row mt-3">
-                <label class="col-sm-4" for="inputDefault"><strong>Requested By:</strong></label>
-                <label class="col-form-label col-sm-8" id="inputDefault">{{pointperson}}</label>
-            </div>
-
-            <div class="row mt-3">
-                <label class="col-sm-4" for="inputDefault"><strong>Position:</strong></label>
-                <label class="col-form-label col-sm-8" id="inputDefault">{{position}}</label>
-            </div>
-
-            <div class="row mt-3">
-                <label class="col-sm-4" for="inputDefault"><strong>Date of Request:</strong></label>
-                <label class="col-form-label col-sm-8" id="inputDefault">{{requestDate}}</label>
-            </div>
-
-            <h5 class="text-info mt-4">Blood Sample Details</h5>
-
-
-            <!-- BLOOD SAMPLE DETAILS -->
              <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-building"></i>&nbsp;
+                        Requesting Facility:
+                    </label>
+                </div>
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="facility" class="form-control" disabled>        
+            </div> <!-- end input-group -->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-user"></i>&nbsp;
+                        Requested By:
+                    </label>
+                </div>
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="pointperson" class="form-control" disabled>        
+            </div> <!-- end input-group -->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-user"></i>&nbsp;
+                        Position:
+                    </label>
+                </div>
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="position" class="form-control" disabled>        
+            </div> <!-- end input-group -->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        Date of Request:
+                    </label>
+                </div>
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="requestDate" class="form-control" disabled>        
+            </div> <!-- end input-group -->
+
+            <!-- BLOOD SAMPLE DETAILS -->
+            <h5 class="text-info mt-4">Blood Sample Details</h5>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-tint"></i>&nbsp;
                         Specimen #:
                     </label>
                 </div>
-                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="specimen" class="form-control">          
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="specimen" class="form-control" disabled>        
             </div> <!-- end input-group -->
 
-            <div class="row mt-3">
-                <div class="col-sm-4" for="inputDefault">&nbsp;</div>
-                <div class="custom-control custom-checkbox col-sm-8">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked="" v-model="disabled">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-tint"></i>&nbsp;
+                        Blood Type:
+                    </label>
+                </div>
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="bloodtype" class="form-control" disabled>        
+            </div> <!-- end input-group -->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-tint"></i>&nbsp;
+                        Reactive for:
+                    </label>
+                </div>
+                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="tti" class="form-control" disabled>        
+            </div> <!-- end input-group -->
+
+            <div class="input-group mt-3">
+                <div class="col-sm-2" for="inputDefault">&nbsp;</div>
+                <div class="custom-control custom-checkbox col-sm-10">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked="" v-model="disabled" required>
                     <label class="custom-control-label" for="customCheck1">In good condition</label>
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <label class="col-sm-4" for="inputDefault"><strong>Blood Type:</strong></label>
-                <label class="col-form-label col-sm-8" id="inputDefault">{{bloodtype}}</label>
-            </div>
-
-            <div class="row mt-3">
-                <label class="col-sm-4" for="inputDefault"><strong>Reactive for:</strong></label>
-                <label class="col-form-label col-sm-8" id="inputDefault">{{tti}}</label>
-            </div>
-
-            <div class="row mt-3">
-                <label class="col-sm-4" for="exampleTextarea"><strong>Remarks:</strong></label>
-                <textarea class="form-control col-sm-8" id="exampleTextarea" rows="3" v-model="remarks"></textarea>
+            <div class="input-group mt-3">
+                <label class="col-sm-2" for="exampleTextarea"><strong>Remarks:</strong></label>
+                <textarea class="form-control col-sm-10" id="exampleTextarea" rows="6" placeholder="Type-in some remarks" v-model="remarks" required></textarea>
             </div>
 
             <div class="row mt-5">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-danger btn-block pull-right" data-toggle="tooltip" 
-                    data-placement="right" title="Reject the Blood sample" :disabled="disabled"><i class="fa fa-times"></i>&nbsp;REJECT</button>  
+                    <button type="button" class="btn btn-danger btn-block pull-right" data-toggle="modal" data-target="#exampleModalCenter"
+                    data-placement="right" title="Reject the Blood sample" :disabled="disabled"><i class="fa fa-trash"></i>&nbsp;REJECT</button>  
                 </div>
                 <div class="col-md-6">
                     <!-- ROUTER-LINK IS FOR TESTING PURPOSES ONLY !!!! USE BUTTON ON DEVELOPMENT -->
@@ -102,6 +131,35 @@
             No records to display
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content border-primary">
+                    <div class="modal-header bg-primary">
+                        <h3 class="modal-title text-light lead" id="exampleModalCenterTitle">
+                            <i class="fa fa-trash"></i>&nbsp;Reason for Rejection
+                        </h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                                
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-pencil"></i>&nbsp;
+                                </span>
+                            </div>
+                            <textarea class="form-control" aria-label="With textarea" rows="8" placeholder="Type-in the reason for the rejection of the specimen"></textarea>
+                        </div> <!-- end input-group -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         
     </div>
@@ -117,8 +175,8 @@ export default {
             confirmatoryNum : '',
             // NVBSP20190002020
             donationID : '',
-            specimen : '',
-            remarks : 'this is a sample remark',
+            specimen : 'SPL-2',
+            remarks : '',
             facility : 'NVBSP-IMU',
             pointperson : 'Rubena R. Felix',
             position : 'Supreme Leader',

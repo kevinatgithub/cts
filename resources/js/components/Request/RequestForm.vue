@@ -11,61 +11,104 @@
         </div> <!-- end input-group -->
 
         <h5 class="text-info">Specimen Details</h5>
-        <div class="form-group mt-5" v-if="hasResult">
+        <div class="form-group mt-3" v-if="hasResult">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-tint"></i>&nbsp;
+                        Blood Type:
+                    </label>
+                </div>
+                <input type="text" aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="bloodtype" class="form-control" disabled>        
+            </div> <!-- end input-group -->
 
-            <div class="row">
-                <label class="col-sm-5" for="inputDefault"><strong>Blood Type:</strong></label>
-                <label class="col-form-label col-sm-7" id="inputDefault">{{bloodtype}}</label>
-            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-tint"></i>&nbsp;
+                        Reactive for:
+                    </label>
+                </div>
+                <input type="text" aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="tti" class="form-control" disabled>     
+            </div> <!-- end input-group -->
 
-            <div class="row">
-                <label class="col-sm-5" for="inputDefault"><strong>Reactive for:</strong></label>
-                <label class="col-form-label col-sm-7" id="inputDefault">{{tti}}</label>
-            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        Date Collected:
+                    </label>
+                </div>
+                <input type="text" aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="date" class="form-control" disabled>     
+            </div> <!-- end input-group -->
 
-            <div class="row">
-                <label class="col-sm-5" for="inputDefault"><strong>Date Collected:</strong></label>
-                <label class="col-form-label col-sm-7" id="inputDefault">{{date}}</label>
-            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-tint"></i>&nbsp;
+                        Specimen type:
+                    </label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01">
+                    <option selected></option>
+                    <option v-for="(specimen, i) in specimens" :key="i">{{ specimen.val }}</option>
+                </select>
+            </div> <!-- end input-group -->
 
-            <div class="row">
-                <div class="input-group mb-5">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">
-                            <i class="fa fa-tint"></i>&nbsp;
-                            Specimen type:
-                        </label>
+            <h5 class="text-info mt-3">Other Details</h5>
+            <div class="form-group">
+                <div class="custom-control custom-radio">
+                    <div class="col-6 pull-left">
+                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" @click="showInCharge()">
+                        <label class="custom-control-label" for="customRadio1">Hand Carry</label>
                     </div>
-                    <select class="custom-select" id="inputGroupSelect01">
-                        <option selected></option>
-                        <option v-for="(specimen, i) in specimens" :key="i">{{ specimen.val }}</option>
-                    </select>
-                </div> <!-- end input-group -->
+                    <div class="col-6 pull-right">
+                         <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" @click="showCourier()">
+                        <label class="custom-control-label" for="customRadio2">Courier</label>
+                    </div>
+               </div>
             </div>
 
-            <h5 class="text-info mt-3">Final Interpretation</h5>
 
-            <div class="row">
-                <label class="col-sm-5" for="inputDefault"><strong>Confirmatory Request #:</strong></label>
-                <label class="col-form-label col-sm-7 text-primary" id="inputDefault">{{confirmatoryNum}}</label>
-            </div>
+            <!-- IF HAND CARRY -->
+            <div class="input-group mb-3" v-if="inCharge">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-user"></i>&nbsp;
+                        Person in charge:
+                    </label>
+                </div>
+                <input type="text" aria-label="First Name" placeholder="First name" v-model="fname"  class="form-control">
+                <input type="text" aria-label="Middle" placeholder="Middle" v-model="mname" class="form-control">
+                <input type="text" aria-label="Last Name" placeholder="Last name" v-model="lname"  class="form-control">
+            </div> <!-- end input-group -->
 
-            <div class="row">
-                <label class="col-sm-5" for="inputDefault"><strong>Final Interpretation:</strong></label>
-                <label class="col-form-label col-sm-7 text-primary" id="inputDefault">{{finalResult}}</label>
-            </div>
+            <!-- IF COURIER -->
+            <div class="input-group mb-3" v-if="inCourier">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">
+                        <i class="fa fa-truck"></i>&nbsp;
+                        Select Courier:
+                    </label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01">
+                    <option selected></option>
+                    <option v-for="(courier, i) in couriers" :key="i">{{ courier.val }}</option>
+                </select>
+            </div> <!-- end input-group -->
             
-
+            
             <div class="row col-8 mt-5">
                 <button type="button" class="btn btn-success btn-block" data-toggle="tooltip" 
-                    data-placement="left" :title="btnTitle"><i class="fa fa-paper-plane"></i>&nbsp;SUBMIT REQUEST FOR CONFIRMATORY TESTING</button>
+                    data-placement="left" :title="btnTitle"><i class="fa fa-paper-plane"></i>&nbsp;SEND AND SHIP SPECIMEN</button>
             </div>
-        </div>
+        </div><!-- end form-group -->
 
         <div class="text-center" v-if="!hasResult">
             No records to display
         </div>
 
+        
     </div>
 </template>
 
@@ -74,6 +117,8 @@ export default {
     data(){
         return{
             hasResult : '',
+            inCharge : false,
+            inCourier : false,
 
             // NVBSP20190001000
             donationID : '',
@@ -91,7 +136,36 @@ export default {
                 { val : 'SPL 2' },
             ],
 
+            fname : '',
+            mname : '',
+            lname : '',
+
+            couriers : [
+                { val : 'FedEx' },
+                { val : 'LBC' },
+                { val : 'Lalamove' },
+                { val : 'GrabExpress' },
+            ],
+
         }
+    }, // end data
+
+    computed : {
+        
+        fullname: function(){
+            return this.fname + ' ' + this.mname + ' ' + this.lname;
+        },
+    },
+
+    methods : {
+        showInCharge(){
+            this.inCharge = true;
+            this.inCourier = false;
+        },
+        showCourier(){
+            this.inCourier = true;
+            this.inCharge = false;
+        },
     }
 }
 </script>

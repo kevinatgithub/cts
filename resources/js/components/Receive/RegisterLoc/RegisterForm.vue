@@ -97,7 +97,7 @@
         </div>
 
         <button type="button" class="btn btn-success btn-block mr-5 col-8" data-toggle="tooltip" 
-            data-placement="left" title="Register Blood specimen location"><i class="fa fa-save"></i>&nbsp;REGISTER BLOOD SPECIMEN LOCATION</button>
+            data-placement="left" title="Register Blood specimen location"><i class="fa fa-save"></i>&nbsp;REGISTER SPECIMEN LOCATION</button>
 
 
         
