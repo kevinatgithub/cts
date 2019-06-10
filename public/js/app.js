@@ -2008,7 +2008,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      username: null,
+      password: null,
+      username_error: null,
+      password_error: null
+    };
+  },
+  methods: {
+    submit: function submit() {
+      this.username_error = null;
+      this.password_error = null;
+
+      if (this.validate()) {
+        alert('logging in');
+      }
+    },
+    validate: function validate() {
+      var username = this.username,
+          password = this.password,
+          err = [];
+
+      if (username == null) {
+        this.username_error = "Please enter your valid username";
+        err.push("username");
+      }
+
+      if (password == null) {
+        this.password_error = "Password can't be blank";
+        err.push("password");
+      }
+
+      return err.length == 0;
+    }
+  }
+});
 
 /***/ }),
 
@@ -35773,73 +35817,153 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-4" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("div", { staticClass: "input-group mb-3" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.username,
+                  expression: "username"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                placeholder: "username",
+                "aria-label": "Amount (to the nearest dollar)"
+              },
+              domProps: { value: _vm.username },
+              on: {
+                keypress: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.submit($event)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.username = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm.username_error
+            ? _c("div", { staticClass: "input-group mb-3" }, [
+                _c("i", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.username_error))
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group mb-3" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password,
+                  expression: "password"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "password",
+                placeholder: "password",
+                "aria-label": "Amount (to the nearest dollar)"
+              },
+              domProps: { value: _vm.password },
+              on: {
+                keypress: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.submit($event)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm.password_error
+            ? _c("div", { staticClass: "input-group mb-3" }, [
+                _c("i", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.password_error))
+                ])
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-block",
+            attrs: { type: "button" },
+            on: { click: _vm.submit }
+          },
+          [_vm._v("LOGIN")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(2)
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-4" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "input-group mb-3" }, [
-              _c("div", { staticClass: "input-group-prepend" }, [
-                _c("span", { staticClass: "input-group-text" }, [
-                  _c("i", { staticClass: "fa fa-user" })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: "username",
-                  "aria-label": "Amount (to the nearest dollar)"
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group mb-3" }, [
-              _c("div", { staticClass: "input-group-prepend" }, [
-                _c("span", { staticClass: "input-group-text" }, [
-                  _c("i", { staticClass: "fa fa-key" })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  placeholder: "password",
-                  "aria-label": "Amount (to the nearest dollar)"
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary btn-block",
-              attrs: { type: "button" }
-            },
-            [_vm._v("LOGIN")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-8" }, [
-          _c("img", {
-            attrs: {
-              src: "img/front.png",
-              height: "100%",
-              width: "100%",
-              alt: ""
-            }
-          })
-        ])
-      ])
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "span",
+        { staticClass: "input-group-text", staticStyle: { width: "40px" } },
+        [_c("i", { staticClass: "fa fa-user" })]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "span",
+        { staticClass: "input-group-text", staticStyle: { width: "40px" } },
+        [_c("i", { staticClass: "fa fa-key" })]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-8" }, [
+      _c("img", {
+        attrs: { src: "img/front.png", height: "100%", width: "100%", alt: "" }
+      })
     ])
   }
 ]
@@ -57883,8 +58007,8 @@ axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'cts/public/api'
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\devnew\htdocs\cts\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\devnew\htdocs\cts\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\WORK\XAMPP\htdocs\cts\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\WORK\XAMPP\htdocs\cts\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
