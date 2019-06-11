@@ -2,21 +2,17 @@
     <div>
         <h3 class="text-primary">Confirmatory Request</h3>
         <hr>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Confirmatory Request</li>
-            <li class="breadcrumb-item"><router-link to="/checklist">Check for Confirmatory Test list</router-link></li>
-        </ol>
+        <b-breadcrumb :items="[
+            {text: 'Confirmatory Request', href: '#'},
+            {text: 'Check for Confirmatory Test list', active :true}
+        ]"></b-breadcrumb>
 
-        <div class="content mt-5">
-            <div class="row">
-                <div class="col-6">
-                    <request-form></request-form>
-                </div>
-                <div class="col-6">
-                    <!-- <timeline></timeline> -->
-                </div>
-            </div>
-        </div>
+        <b-row>
+            <b-col>
+                <request-form></request-form>
+            </b-col>
+            <b-col></b-col>
+        </b-row>
     </div>
 </template>
 

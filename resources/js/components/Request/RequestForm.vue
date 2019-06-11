@@ -1,16 +1,69 @@
 <template>
     <div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">
-                    <i class="fa fa-search"></i>&nbsp;
+        <b-input-group class="mb-3">
+            <label for="" class="input-group-text" slot="prepend">
+                 <i class="fa fa-search"></i>&nbsp;
                     Donation ID:
-                </label>
-            </div>
-            <input type="text" aria-label="REF-#" placeholder="Scan /Enter Donation ID" v-model="hasResult" class="form-control">
-        </div> <!-- end input-group -->
+            </label>
+            <b-input aria-label="REF-#" placeholder="Scan /Enter Donation ID" v-model="hasResult"></b-input>
+        </b-input-group>
 
         <h5 class="text-info">Specimen Details</h5>
+
+        <b-form-group class="mt-3" v-if="hasResult">
+            <b-input-group class="mb-3">
+                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                    <i class="fa fa-tint"></i>&nbsp;
+                    Blood Type:
+                </label>
+                <b-input aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="bloodtype" disabled></b-input>
+            </b-input-group>
+
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-tint'></i>&nbsp;
+                    Reactive for:
+                </label>
+                <b-input aria-label='BloodType' placeholder='Scan /Enter Donation ID' v-model='tti' disabled></b-input>
+            </b-input-group>
+
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-calendar'></i>&nbsp;
+                    Date Collected:
+                </label>
+                <b-input aria-label='' placeholder='' v-model='date' disabled></b-input>
+            </b-input-group>
+
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-tint'></i>&nbsp;
+                    Specimen type:
+                </label>
+                <b-form-select :options="specimens"></b-form-select>
+            </b-input-group>
+
+            <h5 class="text-info mt-3">Other Details</h5>
+
+            <b-form-group>
+                <b-form-radio-group label="Courier Details" v-model="courier">
+                    <b-form-radio value="Hand Carry">Hand Carry</b-form-radio>
+                    <b-form-radio value="Courier">Courier</b-form-radio>
+                </b-form-radio-group>
+            </b-form-group>
+
+            <!-- IF HAND CARRY -->
+            <b-input-group class="mb-3" v-if="courier == 'Hand Carry'">
+                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                    <i class="fa fa-user"></i>&nbsp;
+                    Person in charge:
+                </label>
+                <b-input placeholder="" v-model="fname"></b-input>
+                <b-input placeholder="" v-model="mname"></b-input>
+                <b-input placeholder="" v-model="lname"></b-input>
+            </b-input-group>
+        </b-form-group>
+
         <div class="form-group mt-3" v-if="hasResult">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -69,7 +122,6 @@
                </div>
             </div>
 
-
             <!-- IF HAND CARRY -->
             <div class="input-group mb-3" v-if="inCharge">
                 <div class="input-group-prepend">
@@ -117,8 +169,7 @@ export default {
     data(){
         return{
             hasResult : '',
-            inCharge : false,
-            inCourier : false,
+            courier : null,
 
             // NVBSP20190001000
             donationID : '',
@@ -132,8 +183,8 @@ export default {
             finalResult : 'None',
 
             specimens : [
-                { val : 'SPL 1' },
-                { val : 'SPL 2' },
+                { value : 'SPL 1', text : 'SPL 1' },
+                { value : 'SPL 2', text : 'SPL 2' },
             ],
 
             fname : '',
@@ -158,14 +209,7 @@ export default {
     },
 
     methods : {
-        showInCharge(){
-            this.inCharge = true;
-            this.inCourier = false;
-        },
-        showCourier(){
-            this.inCourier = true;
-            this.inCharge = false;
-        },
+        
     }
 }
 </script>

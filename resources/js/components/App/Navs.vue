@@ -1,49 +1,48 @@
 <template>
     <div>
-        <div class="fixed-top" style="background: #FFF; height: 140px;">
-            <div class="row-fluid">
-                <div class="text-center mt-3">
-                    <router-link to="/"><img src="img/RITMmasthead.gif" alt=""></router-link>
-                </div>
-            </div>
-        </div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="margin-top:140px">
-            <router-link class="navbar-brand" to="/">
-                <img src="img/favicon.png" alt="">
-                TTI - Confirmatory Testing
-            </router-link>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
+            <b-navbar-brand>
+                <router-link class="navbar-brand" to="/">
+                    <img src="img/favicon.png" alt="">
+                    TTI - Confirmatory Testing
+                </router-link>
+            </b-navbar-brand>
 
-            <div class="collapse navbar-collapse" id="navbarColor03">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/request">Confirmatory Request &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/receiving">Receiving &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/testing">Testing &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/report">Reports &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/stockyard">Stock yard &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </li>
-                </ul>
+            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-                <ul class="text-white">
-                    <li style="list-style-type: none; !important" class="text-right"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;Abdul Mahatir Aljamalul Kiram</li>
-                    <li style="list-style-type: none; !important" class="text-right">
-                        <span class="small">Administrator | <router-link class="text-white" to="#">logout</router-link></span>
-                    </li>
-                </ul>   
-                
-            </div>
-        </nav>
+            <b-collapse id="nav-collapse" is-nav>
+                <b-navbar-nav class="mr-auto">
+                    <b-nav-item>
+                        <router-link class="nav-link text-nowrap" to="/request">Confirmatory Request &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
+                    </b-nav-item>
+                    <b-nav-item>
+                        <router-link class="nav-link text-nowrap" to="/receiving" nowrap>Receiving &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
+                    </b-nav-item>
+                    <b-nav-item>
+                        <router-link class="nav-link text-nowrap" to="/testing" nowrap>Testing &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
+                    </b-nav-item>
+                    <b-nav-item>
+                        <router-link class="nav-link text-nowrap" to="/report" nowrap>Reports &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
+                    </b-nav-item>
+                    <b-nav-item>
+                        <router-link class="nav-link text-nowrap" to="/stockyard" nowrap>Stock yard &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
+                    </b-nav-item>
+                    <b-nav-item class="d-block d-sm-block d-md-block d-lg-block d-xl-none">
+                        <router-link class="nav-link text-nowrap" to="/logout" nowrap>Logout</router-link>
+                    </b-nav-item>
+                </b-navbar-nav>
+                 <b-navbar-nav class="ml-auto">
+                    <b-nav-form class="d-none d-xl-block">
+                        <ul class="text-white text-nowrap">
+                            <li style="list-style-type: none; !important" class="text-right"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;Abdul Mahatir Aljamalul Kiram</li>
+                            <li style="list-style-type: none; !important" class="text-right">
+                                <span class="small">Administrator | <router-link class="text-white" to="#">logout</router-link></span>
+                            </li>
+                        </ul>
+                    </b-nav-form>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
     </div>
 </template>
 

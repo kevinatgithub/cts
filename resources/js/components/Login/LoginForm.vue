@@ -1,41 +1,28 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="col-4">
-                <div class="form-group">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" style="width:40px;"><i class="fa fa-user"></i></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="username" aria-label="Amount (to the nearest dollar)" v-model="username" @keypress.enter="submit">
-                    </div>
+    <b-container>
+        <b-row>
+            <b-col lg="4" md="6" sm="12">
+                <b-form-group>
+                    <b-input-group class="mb-3">
+                        <span slot="prepend" class="input-group-text" style="width:40px;"><i class="fa fa-user"></i></span>
+                        <b-input placeholder="username" v-model="username" @keypress.enter="submit" :state="username_error"></b-input>
+                        <b-form-invalid-feedback :state="username_error">Please enter your valid username</b-form-invalid-feedback>
+                    </b-input-group>
+                    
+                    <b-input-group class="mb-3">
+                        <span slot="prepend" class="input-group-text" style="width:40px;"><i class="fa fa-key"></i></span>
+                        <b-input placeholder="password" v-model="password" @keypress.enter="submit" type="password" :state="password_error"></b-input>
+                        <b-form-invalid-feedback :state="password_error">Password can't be blank</b-form-invalid-feedback>
+                    </b-input-group>
 
-                    <div class="input-group mb-3" v-if="username_error">
-                        <i class="text-danger">{{username_error}}</i>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" style="width:40px;"><i class="fa fa-key"></i></span>
-                        </div>
-                        <input type="password" class="form-control" placeholder="password" aria-label="Amount (to the nearest dollar)" v-model="password" @keypress.enter="submit">
-                    </div>
-
-                    <div class="input-group mb-3" v-if="password_error">
-                        <i class="text-danger">{{password_error}}</i>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-primary btn-block" @click="submit">LOGIN</button>
-            </div>
-
-            <div class="col-8">
-                <!-- <img src="img/ritm_logo.png" height="75%" width="60%" alt=""> -->
-                <img src="img/front.png" height="100%" width="100%" alt="">
-            </div>
-        </div>
-        
-    </div><!-- main div -->
+                    <b-button block variant="primary" @click="submit">LOGIN</b-button>
+                </b-form-group>
+            </b-col>
+            <b-col lg="8" md="6" sm="12">
+                <b-img src="img/front.png" fluid alt="CTS Logo"></b-img>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
@@ -57,18 +44,16 @@ export default {
             }
         },
         validate(){
-            let {username,password} = this, err = [];
+            let {username,password} = this;
             if(username == null){
-                this.username_error = "Please enter your valid username";
-                err.push("username");
+                this.username_error = false;
             }
 
             if(password == null){
-                this.password_error = "Password can't be blank";
-                err.push("password");
+                this.password_error = false;
             }
 
-            return err.length == 0;
+            return username && password;
         }
     }
 }
