@@ -1,22 +1,20 @@
 <template>
     <div>
+        <comp-url>Receive</comp-url>
         <h3 class="text-primary">Receive Blood Sample</h3>
         <hr>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Receive Blood Sample</li>
-        </ol>
+        <b-breadcrumb :items="[
+            {text: 'Receive Blood Sample', active: true},
+        ]"></b-breadcrumb>
         
-        <div class="content mt-5">
-            <div class="row">
-                <div class="col-6">
-                    <details-form></details-form>
-                </div> <!-- end col-6 -->
-
-                <div class="col-6">
-                    <timeline></timeline>
-                </div><!-- end col-6 -->
-            </div> <!-- end row -->
-        </div> <!-- end content -->
+        <b-row class="mt-5">
+            <b-col>
+                <details-form></details-form>
+            </b-col>
+            <b-col>
+                <timeline></timeline>
+            </b-col>
+        </b-row>
         
         
     </div>    

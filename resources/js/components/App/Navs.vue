@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>App / Navs</comp-url>
         <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
             <b-navbar-brand>
                 <router-link class="navbar-brand" to="/">
@@ -27,6 +28,10 @@
                     <b-nav-item>
                         <router-link class="nav-link text-nowrap" to="/stockyard" nowrap>Stock yard &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
                     </b-nav-item>
+                    <b-nav-item-dropdown text="Administration" class="nav-link text-nowrap">
+                        <b-dropdown-item><router-link to="/users" class="nav-dropdown-link">User Accounts</router-link></b-dropdown-item>
+                        <b-dropdown-item><router-link to="/references" class="nav-dropdown-link">Manage References</router-link></b-dropdown-item>
+                    </b-nav-item-dropdown>
                     <b-nav-item class="d-block d-sm-block d-md-block d-lg-block d-xl-none">
                         <router-link class="nav-link text-nowrap" to="/logout" nowrap>Logout</router-link>
                     </b-nav-item>
@@ -52,6 +57,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.nav-dropdown-link:hover{
+    text-decoration: none;
+}
+.nav-dropdown-link{
+    color:#000;
+}
 </style>

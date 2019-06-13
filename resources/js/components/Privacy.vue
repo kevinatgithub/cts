@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Privacy</comp-url>
         <h3 class="text-primary">Privacy Policy</h3>
         <hr>
         <ol class="breadcrumb">

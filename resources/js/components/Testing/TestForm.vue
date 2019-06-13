@@ -1,18 +1,13 @@
 <template>
     <div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">
-                    <i class="fa fa-search"></i>&nbsp;
-                    Confirmatory Request #:
-                </label>
-            </div>
-            <input type="text" aria-label="REF-#" placeholder="Scan /Enter Confirmatory Reference #" v-model="confirmatoryNum" class="form-control">
-            <select class="custom-select" id="inputGroupSelect01" v-model="hasResult">
-                <option selected></option>
-                <option v-for="(result, i) in results" :key="i">{{result.ttival}}</option>
-            </select>
-        </div> <!-- end input-group -->
+        <comp-url>Testing / TestForm</comp-url>
+        <b-input-group class="mb-3">
+            <label for="" class="input-group-text" slot="prepend">
+                <i class="fa fa-search"></i>&nbsp;Confirmatory Request #:
+            </label>
+            <b-input placeholder="Scan /Enter Confirmatory Reference #" v-model="confirmatoryNum"></b-input>
+            <b-form-select v-model="hasResult" :options="results"></b-form-select>
+        </b-input-group>
 
         <!-- IF USER SELECTS FROM THE SELECT BOX -->
         <div v-if="hasResult" class="mt-5">
@@ -40,11 +35,11 @@ export default {
             hasResult: false,
 
             results: [
-                { ttival : 'HEP C' },
-                { ttival : 'HEP B' },
-                { ttival : 'HIV' },
-                { ttival : 'MALARIA' },
-                { ttival : 'SYPHILIS' },
+                { text : 'HEP C' },
+                { text : 'HEP B' },
+                { text : 'HIV' },
+                { text : 'MALARIA' },
+                { text : 'SYPHILIS' },
             ],
         }
     },

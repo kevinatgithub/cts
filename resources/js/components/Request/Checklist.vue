@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Request / Checklist</comp-url>
          <h3 class="text-primary">For Confirmatory Test List</h3>
         <hr>
         <ol class="breadcrumb">

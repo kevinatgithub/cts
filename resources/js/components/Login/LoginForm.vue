@@ -1,5 +1,6 @@
 <template>
     <b-container>
+        <comp-url>Login / LoginForm</comp-url>
         <b-row>
             <b-col lg="4" md="6" sm="12">
                 <b-form-group>

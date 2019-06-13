@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>App / Footer</comp-url>
         <div class="mt-5">
             <section id="footer">
                 

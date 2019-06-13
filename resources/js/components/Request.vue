@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Request</comp-url>
         <h3 class="text-primary">Confirmatory Request</h3>
         <hr>
         <b-breadcrumb :items="[
