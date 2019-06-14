@@ -5,6 +5,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import router from './router'
+import store from './store'
 
 require('./bootstrap');
 
@@ -34,8 +35,11 @@ Vue.component('comp-url', require('./components/ComponentURL.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
 const app = new Vue({
     el: '#app',
     template: '<app></app>',
     router,
+    store,
 });
+

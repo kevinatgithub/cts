@@ -25,8 +25,8 @@
                         <b-button variant="info" @click="modify=true">Edit Values</b-button>
                     </b-col>
                     <b-col v-if="modify">
-                        <b-button variant="success" @click="save">Save</b-button>
-                        <b-button varient="danger">Cancel</b-button>
+                        <b-button variant="success" @click="save" :disabled="isBusy">{{isBusy ? 'Saving..' : 'Save'}}</b-button>
+                        <b-button varient="danger" :disabled="isBusy">Cancel</b-button>
                     </b-col>
                 </b-row>
             </b-col>
@@ -43,7 +43,7 @@
                 <b-img width="400" src="https://assets.fishersci.com/TFS-Assets/LCD/product-images/F80681~p.eps-650.jpg"></b-img>
             </b-col>
         </b-row>
- 
+        {{$store.state.cryobox}}
         
 
         
@@ -53,16 +53,29 @@
 
 <script>
 export default {
+    mounted(){
+        let {cryobox} = this.$store.getters
+        this.rows = cryobox.rows
+        this.columns = cryobox.columns
+    },
     data(){
         return {
             modify : false,
-            columns : 9,
             rows : 9,
+            columns : 9,
+            isBusy : false,
         }
     },
     methods : {
         save(){
-            this.modify = false
+            this.isBusy = true
+            let {rows,columns} = this
+            this.$store.dispatch('setCryobox',{
+                rows, columns
+            }).then(r=>{
+                this.isBusy = false
+                this.modify = false
+            })
         }
     },
     computed : {

@@ -4,8 +4,13 @@
         <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
             <b-navbar-brand>
                 <router-link class="navbar-brand" to="/">
-                    <img src="img/favicon.png" alt="">
-                    TTI - Confirmatory Testing
+                    <span class="d-none d-md-block d-lg-block d-xl-block">
+                        <img src="img/favicon.png" alt="">
+                        TTI - Confirmatory Testing
+                    </span>
+                    <span class="d-sm-block d-md-none d-lg-none d-xl-none">
+                        <img src="img/favicon.png" alt=""> TTI - CTS
+                    </span>
                 </router-link>
             </b-navbar-brand>
 

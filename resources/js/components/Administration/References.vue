@@ -13,13 +13,13 @@
                 <b-list-group>
                     <b-list-group-item v-for="(link,i) in links" :key="i">
                         <router-link :to="link.url">
-                            {{link.text}}
+                            {{link.text}} <i class="fa fa-angle-double-right" />
                         </router-link>
                     </b-list-group-item>
                 </b-list-group>
             </b-col>
             <b-col>
-                <div class="mt-3 d-none d-sm-block"></div>
+                <div class="mt-3 d-sm-block d-md-none d-lg-none d-xl-none"></div>
                 <router-view></router-view>
             </b-col>
         </b-row>
@@ -36,8 +36,8 @@ export default {
                 {text : "Specimen" , url : "/references/specimen"},
                 {text : "Courier Services" , url : "/references/courier"},
                 // {text : "Interpretation Formula" , url : "/references/interpretation"},
-                {text : "Cryobox" , url : "/references/cryobox"},
-                {text : "Refrigerator" , url : "/references/refrigerator"},
+                {text : "Cryoboxes" , url : "/references/cryobox"},
+                {text : "Refrigerators" , url : "/references/refrigerator"},
             ]
         }
     }

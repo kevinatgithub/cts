@@ -3,9 +3,10 @@
         <comp-url>Administration / Referemces / Refrigerator</comp-url>
         <b-row>
 
+
             <!-- Refrigerator -->
             <b-col v-show="!refrigerator">
-                <refrigerator-list :items="items" @refSelected="selectRef" @savePressed="newRefrigerator"></refrigerator-list>
+                <refrigerator-list :items="items" @refSelected="selectRef" @savePressed="newRefrigerator" @deletePressed="deleteRefrigerator"></refrigerator-list>
             </b-col>
 
             <!-- Compartments -->
@@ -37,42 +38,15 @@ export default {
     data(){
         return {
             mode : 'list',
-            items : [
-                {
-                    name : "Ref #1",
-                    compartments : [
-                        {
-                            compartment_name : "C #1",
-                            sections : [
-                                {
-                                    rows : [
-                                        {
-                                            row_name : "FR #1",
-                                            cryoboxSlots : [
-                                                { name : "FR1C1"}
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    rows : [
-                                        {
-                                            row_name : "BR #1",
-                                            cryoboxSlots : [
-                                                { name : "BR1C1"}
-                                            ]
-                                        }
-                                    ]
-                                },
-                            ]
-                        }
-                    ]
-                }
-            ],
             refrigerator: null,
             compartment : null,
             currentRow : null,
             cryoboxSlot : null,
+        }
+    },
+    computed : {
+        items(){
+            return this.$store.getters.refrigerators
         }
     },
     methods : {
@@ -81,6 +55,11 @@ export default {
         },
         newRefrigerator(ref){
             this.items.push(ref)
+        },
+        deleteRefrigerator(ref){
+            this.items = _.filter(this.items,function(r){
+                return r.name != ref.name
+            });
         },
         selectCompartment(compartment){
             this.compartment = compartment

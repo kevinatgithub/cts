@@ -1841,10 +1841,10 @@ __webpack_require__.r(__webpack_exports__);
         url: "/references/courier"
       }, // {text : "Interpretation Formula" , url : "/references/interpretation"},
       {
-        text: "Cryobox",
+        text: "Cryoboxes",
         url: "/references/cryobox"
       }, {
-        text: "Refrigerator",
+        text: "Refrigerators",
         url: "/references/refrigerator"
       }]
     };
@@ -1862,6 +1862,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -1884,40 +1885,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       courier: null,
       selected: null,
-      items: [{
-        id: 0,
-        name: 'FedEx'
-      }, {
-        id: 1,
-        name: 'LBC'
-      }, {
-        id: 2,
-        name: 'Lalamove'
-      }, {
-        id: 3,
-        name: 'GrabExpress'
-      }]
+      isBusy: false
     };
+  },
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['couriers']),
+  mounted: function mounted() {
+    var _this = this;
+
+    this.isBusy = true;
+    this.$store.dispatch('fetchCouriers').then(function (r) {
+      _this.isBusy = false;
+    });
   },
   methods: {
     save: function save() {
+      var _this2 = this;
+
       var selected = this.selected,
           courier = this.courier;
 
       if (selected && courier) {
-        this.courier = null;
+        this.selected.name = courier;
+        this.isBusy = true;
+        this.$store.dispatch('updateCourier', selected).then(function (r) {
+          _this2.isBusy = false;
+        });
         this.selected = null;
-      }
-
-      if (courier) {
-        this.items.push({
-          id: this.items.length,
-          name: courier
+      } else if (courier) {
+        this.isBusy = true;
+        this.$store.dispatch('addCourier', courier).then(function (r) {
+          _this2.isBusy = false;
         });
       }
 
@@ -1927,13 +1945,17 @@ __webpack_require__.r(__webpack_exports__);
       this.selected = items[0];
       this.courier = items[0].name;
     },
+    confirmDelete: function confirmDelete(courier) {
+      this.selected = courier;
+      this.$bvModal.show("confirm");
+    },
     deleteCourier: function deleteCourier() {
-      var _this = this;
+      var _this3 = this;
 
-      _.remove(this.items, function (item) {
-        return item.id == _this.selected.id * 1;
+      this.isBusy = true;
+      this.$store.dispatch('deleteCourier', this.selected).then(function (r) {
+        _this3.isBusy = false;
       });
-
       this.selected = null;
       this.courier = null;
     }
@@ -2005,16 +2027,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var cryobox = this.$store.getters.cryobox;
+    this.rows = cryobox.rows;
+    this.columns = cryobox.columns;
+  },
   data: function data() {
     return {
       modify: false,
+      rows: 9,
       columns: 9,
-      rows: 9
+      isBusy: false
     };
   },
   methods: {
     save: function save() {
-      this.modify = false;
+      var _this = this;
+
+      this.isBusy = true;
+      var rows = this.rows,
+          columns = this.columns;
+      this.$store.dispatch('setCryobox', {
+        rows: rows,
+        columns: columns
+      }).then(function (r) {
+        _this.isBusy = false;
+        _this.modify = false;
+      });
     }
   },
   computed: {
@@ -2082,6 +2121,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2096,32 +2136,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       mode: 'list',
-      items: [{
-        name: "Ref #1",
-        compartments: [{
-          compartment_name: "C #1",
-          sections: [{
-            rows: [{
-              row_name: "FR #1",
-              cryoboxSlots: [{
-                name: "FR1C1"
-              }]
-            }]
-          }, {
-            rows: [{
-              row_name: "BR #1",
-              cryoboxSlots: [{
-                name: "BR1C1"
-              }]
-            }]
-          }]
-        }]
-      }],
       refrigerator: null,
       compartment: null,
       currentRow: null,
       cryoboxSlot: null
     };
+  },
+  computed: {
+    items: function items() {
+      return this.$store.getters.refrigerators;
+    }
   },
   methods: {
     selectRef: function selectRef(ref) {
@@ -2129,6 +2153,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     newRefrigerator: function newRefrigerator(ref) {
       this.items.push(ref);
+    },
+    deleteRefrigerator: function deleteRefrigerator(ref) {
+      this.items = _.filter(this.items, function (r) {
+        return r.name != ref.name;
+      });
     },
     selectCompartment: function selectCompartment(compartment) {
       this.compartment = compartment;
@@ -2197,11 +2226,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['refrigerator'],
   data: function data() {
     return {
-      compartment: null
+      compartment: null,
+      update: null,
+      toDelete: null
     };
   },
   methods: {
@@ -2212,6 +2259,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('compartmentSelected', items[0]);
     },
     save: function save() {
+      if (this.update) {
+        this.update.compartment_name = this.compartment;
+        this.compartment = null;
+        this.update = null;
+        return;
+      }
+
       var compartment = {
         compartment_name: this.compartment,
         sections: [{
@@ -2222,6 +2276,24 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$emit("savePressed", compartment);
       this.compartment = null;
+    },
+    edit: function edit(compartment) {
+      this.update = compartment;
+      this.compartment = compartment.compartment_name;
+    },
+    cancel: function cancel() {
+      this.update = null;
+      this.compartment = null;
+    },
+    confirmDelete: function confirmDelete(compartment) {
+      this.toDelete = compartment;
+      this.$bvModal.show("compartment");
+    },
+    deleteCompartment: function deleteCompartment() {
+      var toDelete = this.toDelete;
+      this.refrigerator.compartments = _.filter(this.refrigerator.compartments, function (c) {
+        return c.compartment_name != toDelete.compartment_name;
+      });
     }
   }
 });
@@ -2328,11 +2400,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['items'],
   data: function data() {
     return {
-      refrigerator: null
+      refrigerator: null,
+      update: null,
+      toDelete: null,
+      isBusy: false
     };
   },
   methods: {
@@ -2341,9 +2438,45 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("refSelected", ref);
     },
     save: function save() {
-      this.$emit("savePressed", {
-        name: this.refrigerator
+      var _this = this;
+
+      if (this.update) {
+        this.update.name = this.refrigerator;
+        this.isBusy = true;
+        this.$store.dispatch('updateRefrigerator', this.update).then(function (r) {
+          _this.isBusy = false;
+        });
+        this.update = null;
+        this.refrigerator = null;
+        return;
+      }
+
+      this.isBusy = true;
+      this.$store.dispatch('newRefrigerator', this.refrigerator).then(function (r) {
+        _this.isBusy = false;
       });
+      this.refrigerator = null; // this.$emit("savePressed",{name : this.refrigerator})
+    },
+    edit: function edit(ref) {
+      this.update = ref;
+      this.refrigerator = ref.name;
+    },
+    confirmDelete: function confirmDelete(ref) {
+      this.toDelete = ref;
+      this.$bvModal.show("refrigerator");
+    },
+    confirm: function confirm() {
+      var _this2 = this;
+
+      this.isBusy = true;
+      this.$store.dispatch('deleteRefrigerator', this.toDelete).then(function (r) {
+        _this2.isBusy = false;
+      }); // this.$emit("deletePressed",this.toDelete)
+
+      this.toDelete = null;
+    },
+    cancel: function cancel() {
+      this.update = null;
       this.refrigerator = null;
     }
   }
@@ -2360,6 +2493,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RowList_List__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RowList/List */ "./resources/js/components/Administration/References/Refrigerator/RowList/List.vue");
 //
 //
 //
@@ -2390,88 +2524,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    RowList: _RowList_List__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: ['compartment'],
   data: function data() {
-    return {
-      frow: null,
-      brow: null,
-      updateF: null,
-      updateB: null
-    };
+    return {};
   },
   methods: {
     back: function back() {
       this.$emit('backPressed', true);
     },
-    selectRowFront: function selectRowFront(items) {
-      var row = items[0];
-
-      if (row == undefined) {
-        return;
-      }
-
-      this.updateF = row;
-      this.frow = row.row_name; // this.$emit('rowSelected',row)
+    selectRowFront: function selectRowFront(row) {
+      this.$emit('rowSelected', row);
     },
-    open: function open(isFront) {
-      if (isFront) {
-        this.$emit('rowSelected', this.updateF);
-      } else {
-        this.$emit('rowSelected', this.updateB);
-      }
+    selectRowBack: function selectRowBack(row) {
+      this.$emit('rowSelected', row);
     },
-    deleteSlot: function deleteSlot(isFront) {},
-    selectRowBack: function selectRowBack(items) {
-      var row = items[0];
-
-      if (row == undefined) {
-        return;
-      }
-
-      this.updateB = row;
-      this.brow = row.row_name; // this.$emit('rowSelected',row)
-    },
-    saveFront: function saveFront() {
-      if (this.updateF) {
-        this.updateF.row_name = this.frow;
-        this.frow = null;
-        this.updateF = null;
-        return;
-      }
-
-      var row = {
-        row_name: this.frow
-      };
+    saveFront: function saveFront(row) {
       this.$emit("savePressedFront", row);
-      this.frow = null;
     },
-    saveBack: function saveBack() {
-      if (this.updateB) {
-        this.updateB.row_name = this.brow;
-        this.brow = null;
-        this.updateB = null;
-        return;
-      }
-
-      var row = {
-        row_name: this.brow
-      };
+    saveBack: function saveBack(row) {
       this.$emit("savePressedBack", row);
-      this.brow = null;
+    },
+    deleteRowFront: function deleteRowFront(row) {
+      this.deleteRow(row, 0);
+    },
+    deleteRowBack: function deleteRowBack(row) {
+      this.deleteRow(row, 1);
+    },
+    deleteRow: function deleteRow(row, section) {
+      this.compartment.sections[section].rows = _.filter(this.compartment.sections[section].rows, function (r) {
+        return r.row_name != row.row_name;
+      });
     }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Administration/References/Specimen.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Administration/References/Specimen.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2503,47 +2600,159 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['items', 'section'],
+  data: function data() {
+    return {
+      row_name: null,
+      update: null,
+      toDelete: null
+    };
+  },
+  methods: {
+    selectRow: function selectRow(items) {
+      var row = items[0];
+
+      if (row != undefined) {
+        this.$emit("rowSelected", row);
+      }
+    },
+    save: function save() {
+      if (this.update) {
+        this.update.row_name = this.row_name; // this.$emit("savePressed",this.update)
+
+        this.row_name = null;
+        this.update = null;
+      } else {
+        this.$emit("savePressed", {
+          row_name: this.row_name
+        });
+        this.row_name = null;
+      }
+    },
+    edit: function edit(row) {
+      this.update = row;
+      this.row_name = row.row_name;
+    },
+    cancel: function cancel() {
+      this.update = null;
+      this.row_name = null;
+    },
+    confirmDelete: function confirmDelete(row) {
+      this.toDelete = row;
+      this.$bvModal.show(this.section);
+    },
+    confirm: function confirm() {
+      this.$emit("deletePressed", this.toDelete);
+      this.toDelete = null;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Administration/References/Specimen.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Administration/References/Specimen.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       specimen: null,
-      specimens: [{
-        id: 0,
-        name: 'SPL 1'
-      }, {
-        id: 1,
-        name: 'SPL 2'
-      }],
-      update: null
+      update: null,
+      busy: false
     };
+  },
+  mounted: function mounted() {
+    // todo : remove
+    this.busy = true;
+    var t = this;
+    this.$store.dispatch('fetchSpecimens').then(function (res) {
+      t.busy = false;
+    });
   },
   methods: {
     doSave: function doSave() {
+      var _this = this;
+
       if (this.update && this.specimen) {
         this.update.name = this.specimen;
+        this.busy = true;
+        this.$store.dispatch('updateSpecimen', this.update).then(function (r) {
+          _this.busy = false;
+        });
+        this.update = null;
         this.specimen = null;
       }
 
       if (this.specimen != null) {
-        this.specimens.push({
-          id: this.specimens.length,
-          name: this.specimen
+        this.busy = true;
+        this.$store.dispatch('addSpecimen', this.specimen).then(function (r) {
+          _this.busy = false;
         });
         this.specimen = null;
       }
     },
-    specimenSelected: function specimenSelected(item) {
-      this.update = item[0];
-      this.specimen = item[0].name;
+    specimenSelected: function specimenSelected(items) {
+      this.update = items[0];
+      this.specimen = items[0].name;
     },
     deleteSelected: function deleteSelected() {
-      this.specimens = _.remove(this.specimens, {
-        id: this.update.id * 1
+      var _this2 = this;
+
+      this.busy = true;
+      this.$store.dispatch('deleteSpecimen', this.update).then(function (r) {
+        _this2.busy = false;
       });
       this.specimen = null;
       this.update = null;
     }
-  }
+  },
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['specimens'])
 });
 
 /***/ }),
@@ -2642,6 +2851,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -64180,10 +64394,9 @@ var render = function() {
                     [
                       _c("router-link", { attrs: { to: link.url } }, [
                         _vm._v(
-                          "\n                        " +
-                            _vm._s(link.text) +
-                            "\n                    "
-                        )
+                          "\n                        " + _vm._s(link.text) + " "
+                        ),
+                        _c("i", { staticClass: "fa fa-angle-double-right" })
                       ])
                     ],
                     1
@@ -64198,7 +64411,9 @@ var render = function() {
           _c(
             "b-col",
             [
-              _c("div", { staticClass: "mt-3 d-none d-sm-block" }),
+              _c("div", {
+                staticClass: "mt-3 d-sm-block d-md-none d-lg-none d-xl-none"
+              }),
               _vm._v(" "),
               _c("router-view")
             ],
@@ -64295,7 +64510,7 @@ var render = function() {
             ? _c(
                 "b-button",
                 {
-                  attrs: { slot: "append", variant: "danger" },
+                  attrs: { slot: "append", variant: "dark" },
                   on: {
                     click: function($event) {
                       _vm.courier = null
@@ -64311,34 +64526,55 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.selected
-        ? _c(
-            "b-button",
+      _c(
+        "b-table",
+        {
+          staticClass: "mt-3",
+          attrs: {
+            items: _vm.couriers,
+            selectable: "",
+            "selected-variant": "success",
+            "select-mode": "single",
+            striped: true,
+            busy: _vm.isBusy,
+            fields: ["id", "name", "options"]
+          },
+          on: { "row-selected": _vm.select },
+          scopedSlots: _vm._u([
             {
-              directives: [
-                {
-                  name: "b-modal",
-                  rawName: "v-b-modal.confirm",
-                  modifiers: { confirm: true }
-                }
-              ],
-              attrs: { variant: "danger", size: "sm" }
-            },
-            [_vm._v("Delete Selected Courier")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("b-table", {
-        staticClass: "mt-3",
-        attrs: {
-          items: _vm.items,
-          selectable: "",
-          "selected-variant": "success",
-          "select-mode": "single",
-          striped: true
+              key: "options",
+              fn: function(data) {
+                return [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "danger", size: "sm" },
+                      on: {
+                        click: function($event) {
+                          return _vm.confirmDelete(data.item)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-remove" })]
+                  )
+                ]
+              }
+            }
+          ])
         },
-        on: { "row-selected": _vm.select }
-      }),
+        [
+          _c(
+            "template",
+            { slot: "table-busy" },
+            [
+              _c("b-img", { attrs: { width: "30", src: "./img/loading.gif" } }),
+              _vm._v(" Please wait..\n        ")
+            ],
+            1
+          )
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "b-modal",
@@ -64537,15 +64773,22 @@ var render = function() {
                           _c(
                             "b-button",
                             {
-                              attrs: { variant: "success" },
+                              attrs: {
+                                variant: "success",
+                                disabled: _vm.isBusy
+                              },
                               on: { click: _vm.save }
                             },
-                            [_vm._v("Save")]
+                            [_vm._v(_vm._s(_vm.isBusy ? "Saving.." : "Save"))]
                           ),
                           _vm._v(" "),
-                          _c("b-button", { attrs: { varient: "danger" } }, [
-                            _vm._v("Cancel")
-                          ])
+                          _c(
+                            "b-button",
+                            {
+                              attrs: { varient: "danger", disabled: _vm.isBusy }
+                            },
+                            [_vm._v("Cancel")]
+                          )
                         ],
                         1
                       )
@@ -64607,7 +64850,8 @@ var render = function() {
           )
         ],
         1
-      )
+      ),
+      _vm._v("\n    " + _vm._s(_vm.$store.state.cryobox) + "\n    \n\n    \n")
     ],
     1
   )
@@ -64691,7 +64935,8 @@ var render = function() {
                 attrs: { items: _vm.items },
                 on: {
                   refSelected: _vm.selectRef,
-                  savePressed: _vm.newRefrigerator
+                  savePressed: _vm.newRefrigerator,
+                  deletePressed: _vm.deleteRefrigerator
                 }
               })
             ],
@@ -64788,7 +65033,7 @@ var render = function() {
     "div",
     [
       _c("b-breadcrumb", {
-        attrs: { items: [{ text: "Refrigerator" }, { text: "Compartments" }] }
+        attrs: { items: [{ text: "Refrigerators" }, { text: "Compartments" }] }
       }),
       _vm._v(" "),
       _c(
@@ -64807,20 +65052,54 @@ var render = function() {
       _c("h6", { staticClass: "text-info float-right" }, [
         _vm._v(_vm._s(_vm.refrigerator.name) + " "),
         _c("i", { staticClass: "fa fa-angle-double-right" }),
-        _vm._v(" Compartments")
+        _vm._v(" Refrigerator Compartments")
       ]),
       _vm._v(" "),
       _c("b-table", {
         attrs: {
           selectable: "",
           "select-mode": "single",
-          fields: ["compartment_name"],
+          fields: ["compartment_name", "options"],
           items: _vm.refrigerator.compartments,
           bordered: "",
           striped: "",
           "head-variant": "dark"
         },
-        on: { "row-selected": _vm.selectCompartment }
+        on: { "row-selected": _vm.selectCompartment },
+        scopedSlots: _vm._u([
+          {
+            key: "options",
+            fn: function(data) {
+              return [
+                _c(
+                  "b-button",
+                  {
+                    attrs: { variant: "dark", size: "sm" },
+                    on: {
+                      click: function($event) {
+                        return _vm.edit(data.item)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-pencil" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  {
+                    attrs: { variant: "danger", size: "sm" },
+                    on: {
+                      click: function($event) {
+                        return _vm.confirmDelete(data.item)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-remove" })]
+                )
+              ]
+            }
+          }
+        ])
       }),
       _vm._v(" "),
       _c(
@@ -64858,10 +65137,40 @@ var render = function() {
               on: { click: _vm.save },
               slot: "append"
             },
-            [_vm._v("Add Compartment")]
-          )
+            [_vm._v(_vm._s(_vm.update ? "Update" : "Add") + " Compartment")]
+          ),
+          _vm._v(" "),
+          _vm.update
+            ? _c(
+                "b-button",
+                {
+                  attrs: { slot: "append", variant: "dark" },
+                  on: { click: _vm.cancel },
+                  slot: "append"
+                },
+                [_vm._v("Cancel")]
+              )
+            : _vm._e()
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "compartment",
+            "header-bg-variant": "danger",
+            "header-text-variant": "light",
+            title: "Delete Compartment"
+          },
+          on: { ok: _vm.deleteCompartment }
+        },
+        [
+          _vm._v(
+            "\n        Are you sure you wan't to delete this compartment?\n    "
+          )
+        ]
       )
     ],
     1
@@ -64895,7 +65204,7 @@ var render = function() {
       _c("b-breadcrumb", {
         attrs: {
           items: [
-            { text: "Refrigerator" },
+            { text: "Refrigerators" },
             { text: "Compartments" },
             { text: "Rows" },
             { text: "Cryobox Slots" }
@@ -65037,20 +65346,71 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("b-breadcrumb", { attrs: { items: [{ text: "Refrigerator" }] } }),
+      _c("b-breadcrumb", { attrs: { items: [{ text: "Refrigerators" }] } }),
       _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          selectable: "",
-          "select-mode": "single",
-          items: _vm.items,
-          fields: ["name"],
-          bordered: "",
-          striped: "",
-          "head-variant": "dark"
+      _c(
+        "b-table",
+        {
+          attrs: {
+            selectable: "",
+            "select-mode": "single",
+            items: _vm.items,
+            fields: ["name", "options"],
+            bordered: "",
+            striped: "",
+            "head-variant": "dark",
+            busy: _vm.isBusy
+          },
+          on: { "row-selected": _vm.selectRef },
+          scopedSlots: _vm._u([
+            {
+              key: "options",
+              fn: function(data) {
+                return [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "dark", size: "sm" },
+                      on: {
+                        click: function($event) {
+                          return _vm.edit(data.item)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-pencil" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { variant: "danger", size: "sm" },
+                      on: {
+                        click: function($event) {
+                          return _vm.confirmDelete(data.item)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-remove" })]
+                  )
+                ]
+              }
+            }
+          ])
         },
-        on: { "row-selected": _vm.selectRef }
-      }),
+        [
+          _vm._v(" "),
+          _c(
+            "template",
+            { slot: "table-busy" },
+            [
+              _c("b-img", { attrs: { width: "30", src: "./img/loading.gif" } }),
+              _vm._v(" Please wait..\n        ")
+            ],
+            1
+          )
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "b-input-group",
@@ -65089,10 +65449,40 @@ var render = function() {
               on: { click: _vm.save },
               slot: "append"
             },
-            [_vm._v("Add Refrigerator")]
-          )
+            [_vm._v(_vm._s(_vm.update ? "Update" : "Add") + " Refrigerator")]
+          ),
+          _vm._v(" "),
+          _vm.update
+            ? _c(
+                "b-button",
+                {
+                  attrs: { slot: "append", variant: "dark" },
+                  on: { click: _vm.cancel },
+                  slot: "append"
+                },
+                [_vm._v("Cancel")]
+              )
+            : _vm._e()
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "refrigerator",
+            "header-bg-variant": "danger",
+            "header-text-variant": "light",
+            title: "Delete Refrigerator"
+          },
+          on: { ok: _vm.confirm }
+        },
+        [
+          _vm._v(
+            "\n        Are you sure you wan't to delete this refrigerator?\n    "
+          )
+        ]
       )
     ],
     1
@@ -65126,7 +65516,7 @@ var render = function() {
       _c("b-breadcrumb", {
         attrs: {
           items: [
-            { text: "Refrigerator" },
+            { text: "Refrigerators" },
             { text: "Compartments" },
             { text: "Rows" }
           ]
@@ -65149,7 +65539,7 @@ var render = function() {
       _c("h6", { staticClass: "text-info float-right" }, [
         _vm._v(_vm._s(_vm.compartment.compartment_name) + " "),
         _c("i", { staticClass: "fa fa-angle-double-right" }),
-        _vm._v(" Sections")
+        _vm._v(" Compartment Rows")
       ]),
       _vm._v(" "),
       _c(
@@ -65164,167 +65554,38 @@ var render = function() {
                 [
                   _c(
                     "b-tab",
-                    { attrs: { title: "Front" } },
+                    { attrs: { title: "Front Section" } },
                     [
-                      _c("b-table", {
+                      _c("row-list", {
                         attrs: {
-                          selectable: "",
-                          fields: ["row_name"],
                           items: _vm.compartment.sections[0].rows,
-                          bordered: "",
-                          striped: "",
-                          "head-variant": "dark"
+                          section: "f"
                         },
-                        on: { "row-selected": _vm.selectRowFront }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "b-input-group",
-                        { staticClass: "mb-1" },
-                        [
-                          _c("b-input", {
-                            attrs: { placeholder: "Enter Row Name" },
-                            model: {
-                              value: _vm.frow,
-                              callback: function($$v) {
-                                _vm.frow = $$v
-                              },
-                              expression: "frow"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-button",
-                            {
-                              attrs: { slot: "append", variant: "success" },
-                              on: { click: _vm.saveFront },
-                              slot: "append"
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(_vm.updateF ? "Update" : "Add") + " Row"
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm.updateF
-                            ? _c(
-                                "b-button",
-                                {
-                                  attrs: { slot: "append", variant: "dark" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.open(true)
-                                    }
-                                  },
-                                  slot: "append"
-                                },
-                                [_vm._v("Open")]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.updateF
-                            ? _c(
-                                "b-button",
-                                {
-                                  attrs: { slot: "append", variant: "danger" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deleteSlot(true)
-                                    }
-                                  },
-                                  slot: "append"
-                                },
-                                [_vm._v("Delete")]
-                              )
-                            : _vm._e()
-                        ],
-                        1
-                      )
+                        on: {
+                          rowSelected: _vm.selectRowFront,
+                          savePressed: _vm.saveFront,
+                          deletePressed: _vm.deleteRowFront
+                        }
+                      })
                     ],
                     1
                   ),
                   _vm._v(" "),
                   _c(
                     "b-tab",
-                    { attrs: { title: "Back" } },
+                    { attrs: { title: "Back Section" } },
                     [
-                      _c("b-table", {
+                      _c("row-list", {
                         attrs: {
-                          selectable: "",
-                          "select-mode": "single",
-                          fields: ["row_name"],
                           items: _vm.compartment.sections[1].rows,
-                          bordered: "",
-                          striped: "",
-                          "head-variant": "dark"
+                          section: "b"
                         },
-                        on: { "row-selected": _vm.selectRowBack }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "b-input-group",
-                        { staticClass: "mb-1" },
-                        [
-                          _c("b-input", {
-                            attrs: { placeholder: "Enter Row Name" },
-                            model: {
-                              value: _vm.brow,
-                              callback: function($$v) {
-                                _vm.brow = $$v
-                              },
-                              expression: "brow"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-button",
-                            {
-                              attrs: { slot: "append", variant: "success" },
-                              on: { click: _vm.saveBack },
-                              slot: "append"
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(_vm.updateB ? "Update" : "Add") + " Row"
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _vm.updateB
-                            ? _c(
-                                "b-button",
-                                {
-                                  attrs: { slot: "append", variant: "dark" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.open(false)
-                                    }
-                                  },
-                                  slot: "append"
-                                },
-                                [_vm._v("Open")]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.updateB
-                            ? _c(
-                                "b-button",
-                                {
-                                  attrs: { slot: "append", variant: "danger" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deleteSlot(false)
-                                    }
-                                  },
-                                  slot: "append"
-                                },
-                                [_vm._v("Delete")]
-                              )
-                            : _vm._e()
-                        ],
-                        1
-                      )
+                        on: {
+                          rowSelected: _vm.selectRowBack,
+                          savePressed: _vm.saveBack,
+                          deletePressed: _vm.deleteRowBack
+                        }
+                      })
                     ],
                     1
                   )
@@ -65336,6 +65597,134 @@ var render = function() {
           )
         ],
         1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=template&id=dca5571a&":
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=template&id=dca5571a& ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("b-table", {
+        attrs: {
+          selectable: "",
+          fields: ["row_name", "options"],
+          items: _vm.items,
+          bordered: "",
+          striped: "",
+          "head-variant": "dark"
+        },
+        on: { "row-selected": _vm.selectRow },
+        scopedSlots: _vm._u([
+          {
+            key: "options",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button",
+                  {
+                    attrs: { variant: "dark", size: "sm" },
+                    on: {
+                      click: function($event) {
+                        return _vm.edit(row.item)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-pencil" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  {
+                    attrs: { variant: "danger", size: "sm" },
+                    on: {
+                      click: function($event) {
+                        return _vm.confirmDelete(row.item)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-remove" })]
+                )
+              ]
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-1" },
+        [
+          _c("b-input", {
+            attrs: { placeholder: "Enter Row Name" },
+            model: {
+              value: _vm.row_name,
+              callback: function($$v) {
+                _vm.row_name = $$v
+              },
+              expression: "row_name"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: { slot: "append", variant: "success" },
+              on: { click: _vm.save },
+              slot: "append"
+            },
+            [_vm._v(_vm._s(_vm.update ? "Update" : "Add") + " Row")]
+          ),
+          _vm._v(" "),
+          _vm.update
+            ? _c(
+                "b-button",
+                {
+                  attrs: { slot: "append", variant: "dark" },
+                  on: { click: _vm.cancel },
+                  slot: "append"
+                },
+                [_vm._v("Cancel")]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: _vm.section,
+            "header-bg-variant": "danger",
+            "header-text-variant": "light",
+            title: "Delete Row"
+          },
+          on: { ok: _vm.confirm }
+        },
+        [_vm._v("\n        Are you sure you wan't to delete this row?\n    ")]
       )
     ],
     1
@@ -65421,7 +65810,7 @@ var render = function() {
                 ? _c(
                     "b-button",
                     {
-                      attrs: { slot: "append", variant: "danger" },
+                      attrs: { slot: "append", variant: "dark" },
                       on: {
                         click: function($event) {
                           _vm.update = null
@@ -65457,17 +65846,33 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _c("b-table", {
-        staticClass: "mt-3",
-        attrs: {
-          selectable: "",
-          items: _vm.specimens,
-          striped: true,
-          "select-mode": "single",
-          "select-variant": "success"
+      _c(
+        "b-table",
+        {
+          staticClass: "mt-3",
+          attrs: {
+            selectable: "",
+            items: _vm.specimens,
+            striped: true,
+            "select-mode": "single",
+            "select-variant": "success",
+            busy: _vm.busy
+          },
+          on: { "row-selected": _vm.specimenSelected }
         },
-        on: { "row-selected": _vm.specimenSelected }
-      }),
+        [
+          _c(
+            "template",
+            { slot: "table-busy" },
+            [
+              _c("b-img", { attrs: { src: "./img/loading.gif", width: "30" } }),
+              _vm._v("Please wait, loading..\n        ")
+            ],
+            1
+          )
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "b-modal",
@@ -65720,9 +66125,24 @@ var render = function() {
                 "router-link",
                 { staticClass: "navbar-brand", attrs: { to: "/" } },
                 [
-                  _c("img", { attrs: { src: "img/favicon.png", alt: "" } }),
-                  _vm._v(
-                    "\n                TTI - Confirmatory Testing\n            "
+                  _c(
+                    "span",
+                    { staticClass: "d-none d-md-block d-lg-block d-xl-block" },
+                    [
+                      _c("img", { attrs: { src: "img/favicon.png", alt: "" } }),
+                      _vm._v(
+                        "\n                    TTI - Confirmatory Testing\n                "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "d-sm-block d-md-none d-lg-none d-xl-none" },
+                    [
+                      _c("img", { attrs: { src: "img/favicon.png", alt: "" } }),
+                      _vm._v(" TTI - CTS\n                ")
+                    ]
                   )
                 ]
               )
@@ -68677,7 +69097,16 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-row",
-        [_c("b-col", [_c("request-form")], 1), _vm._v(" "), _c("b-col")],
+        [
+          _c(
+            "b-col",
+            { attrs: { sm: "12", md: "6" } },
+            [_c("request-form")],
+            1
+          ),
+          _vm._v(" "),
+          _c("b-col")
+        ],
         1
       )
     ],
@@ -84987,6 +85416,1037 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/vuex/dist/vuex.esm.js":
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: default, Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v3.1.1
+ * (c) 2019 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (true) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (true) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (true) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (true) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if (true) {
+    assert(false, "use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+     true &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if (true) {
+      console.warn("[vuex] error in before action subscribers: ");
+      console.error(e);
+    }
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return result.then(function (res) {
+    try {
+      this$1._actionSubscribers
+        .filter(function (sub) { return sub.after; })
+        .forEach(function (sub) { return sub.after(action, this$1.state); });
+    } catch (e) {
+      if (true) {
+        console.warn("[vuex] error in after action subscribers: ");
+        console.error(e);
+      }
+    }
+    return res
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (true) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure enviroment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (true) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (true) {
+      assert(store._committing, "do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (true) {
+    assert(typeof type === 'string', ("expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (true) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if ( true && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if ( true && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.1.1',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -85130,11 +86590,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
-/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_4__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -85142,11 +86603,12 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 
 /**
@@ -85170,7 +86632,8 @@ Vue.component('comp-url', __webpack_require__(/*! ./components/ComponentURL.vue 
 var app = new Vue({
   el: '#app',
   template: '<app></app>',
-  router: _router__WEBPACK_IMPORTED_MODULE_0__["default"]
+  router: _router__WEBPACK_IMPORTED_MODULE_0__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_1__["default"]
 });
 
 /***/ }),
@@ -85831,6 +87294,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RowList_vue_vue_type_template_id_618f2a2c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RowList_vue_vue_type_template_id_618f2a2c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Administration/References/Refrigerator/RowList/List.vue":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/Administration/References/Refrigerator/RowList/List.vue ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _List_vue_vue_type_template_id_dca5571a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./List.vue?vue&type=template&id=dca5571a& */ "./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=template&id=dca5571a&");
+/* harmony import */ var _List_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./List.vue?vue&type=script&lang=js& */ "./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _List_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _List_vue_vue_type_template_id_dca5571a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _List_vue_vue_type_template_id_dca5571a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Administration/References/Refrigerator/RowList/List.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_List_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./List.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_List_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=template&id=dca5571a&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=template&id=dca5571a& ***!
+  \************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_List_vue_vue_type_template_id_dca5571a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./List.vue?vue&type=template&id=dca5571a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Administration/References/Refrigerator/RowList/List.vue?vue&type=template&id=dca5571a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_List_vue_vue_type_template_id_dca5571a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_List_vue_vue_type_template_id_dca5571a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -87839,6 +89371,342 @@ axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'cts/public/api'
     redirect: '/references'
   }]
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/index.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/common */ "./resources/js/store/modules/common.js");
+/* harmony import */ var _modules_specimen__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/specimen */ "./resources/js/store/modules/specimen.js");
+/* harmony import */ var _modules_courier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/courier */ "./resources/js/store/modules/courier.js");
+/* harmony import */ var _modules_refrigerator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/refrigerator */ "./resources/js/store/modules/refrigerator.js");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  modules: {
+    specimens: _modules_specimen__WEBPACK_IMPORTED_MODULE_3__["specimens"],
+    couriers: _modules_courier__WEBPACK_IMPORTED_MODULE_4__["couriers"],
+    common: _modules_common__WEBPACK_IMPORTED_MODULE_2__["common"],
+    refrigerator: _modules_refrigerator__WEBPACK_IMPORTED_MODULE_5__["refrigerator"]
+  }
+}));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/common.js":
+/*!**********************************************!*\
+  !*** ./resources/js/store/modules/common.js ***!
+  \**********************************************/
+/*! exports provided: common */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "common", function() { return common; });
+var common = {
+  state: {
+    cryobox: {
+      rows: 9,
+      columns: 9
+    }
+  },
+  getters: {
+    cryobox: function cryobox(state) {
+      return state.cryobox;
+    }
+  },
+  mutations: {
+    cryobox: function cryobox(state, payload) {
+      state.cryobox.rows = payload.rows;
+      state.cryobox.columns = payload.columns;
+    }
+  },
+  actions: {
+    setCryobox: function setCryobox(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('cryobox', payload);
+          resolve(true);
+        }, 500);
+      });
+    }
+  }
+};
+
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/courier.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/courier.js ***!
+  \***********************************************/
+/*! exports provided: couriers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "couriers", function() { return couriers; });
+var couriers = {
+  state: {
+    couriers: []
+  },
+  getters: {
+    couriers: function couriers(state) {
+      return state.couriers;
+    }
+  },
+  mutations: {
+    initCouriers: function initCouriers(state, payload) {
+      state.couriers = payload;
+    },
+    addCourier: function addCourier(state, payload) {
+      state.couriers.push(payload);
+    },
+    updateCourier: function updateCourier(state, payload) {
+      var courier = _.find(state.couriers, {
+        id: payload.id
+      });
+
+      _.extend(courier, payload);
+    },
+    deleteCourier: function deleteCourier(state, payload) {
+      state.couriers = _.filter(state.couriers, function (c) {
+        return c.id != payload.id;
+      });
+    }
+  },
+  actions: {
+    fetchCouriers: function fetchCouriers(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit("initCouriers", [{
+            id: 0,
+            name: 'FedEx'
+          }, {
+            id: 1,
+            name: 'LBC'
+          }, {
+            id: 2,
+            name: 'Lalamove'
+          }, {
+            id: 3,
+            name: 'GrabExpress'
+          }]);
+          resolve(true);
+        }, 500);
+      });
+    },
+    addCourier: function addCourier(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          var courier = {
+            id: context.getters.couriers.length,
+            name: payload
+          };
+          context.commit("addCourier", courier);
+          resolve(true);
+        }, 500);
+      });
+    },
+    updateCourier: function updateCourier(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('updateCourier', payload);
+          resolve(true);
+        }, 500);
+      });
+    },
+    deleteCourier: function deleteCourier(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('deleteCourier', payload);
+          resolve(true);
+        }, 500);
+      });
+    }
+  }
+};
+
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/refrigerator.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/refrigerator.js ***!
+  \****************************************************/
+/*! exports provided: refrigerator */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "refrigerator", function() { return refrigerator; });
+var refrigerator = {
+  state: {
+    refrigerators: []
+  },
+  getters: {
+    refrigerators: function refrigerators(state) {
+      return state.refrigerators;
+    }
+  },
+  mutations: {
+    newRefrigerator: function newRefrigerator(state, payload) {
+      state.refrigerators.push(payload);
+    },
+    updateRefrigerator: function updateRefrigerator(state, payload) {
+      var ref = _.find(state.refrigerators, {
+        id: payload.id
+      });
+
+      _.extend(ref, payload);
+    },
+    deleteRefrigerator: function deleteRefrigerator(state, payload) {
+      state.refrigerators = _.filter(state.refrigerators, function (r) {
+        return r.id != payload.id;
+      });
+    }
+  },
+  actions: {
+    newRefrigerator: function newRefrigerator(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          var ref = {
+            id: context.getters.refrigerators.length,
+            name: payload
+          };
+          context.commit("newRefrigerator", ref);
+          resolve(true);
+        }, 500);
+      });
+    },
+    updateRefrigerator: function updateRefrigerator(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('updateRefrigerator', payload);
+          resolve(true);
+        }, 500);
+      });
+    },
+    deleteRefrigerator: function deleteRefrigerator(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('deleteRefrigerator', payload);
+          resolve(true);
+        }, 500);
+      });
+    }
+  }
+};
+
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/specimen.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/specimen.js ***!
+  \************************************************/
+/*! exports provided: specimens */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "specimens", function() { return specimens; });
+var specimens = {
+  state: {
+    specimens: []
+  },
+  getters: {
+    specimens: function specimens(state) {
+      return state.specimens;
+    }
+  },
+  mutations: {
+    initSpecimens: function initSpecimens(state, payload) {
+      state.specimens = payload;
+    },
+    addSpecimen: function addSpecimen(state, payload) {
+      state.specimens.push(payload);
+    },
+    updateSpecimen: function updateSpecimen(state, payload) {
+      var s = _.find(state.specimens, {
+        id: payload.id
+      });
+
+      _.extend(s, payload);
+    },
+    deleteSpecimen: function deleteSpecimen(state, payload) {
+      state.specimens = _.filter(state.specimens, function (s) {
+        return s.id != payload.id;
+      });
+    }
+  },
+  actions: {
+    fetchSpecimens: function fetchSpecimens(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('initSpecimens', [{
+            id: 0,
+            name: 'FedEx'
+          }, {
+            id: 1,
+            name: 'LBC'
+          }, {
+            id: 2,
+            name: 'Lalamove'
+          }, {
+            id: 3,
+            name: 'GrabExpress'
+          }]);
+          resolve(true);
+        }, 500);
+      });
+    },
+    addSpecimen: function addSpecimen(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          var specimen = {
+            id: context.getters.specimens.length,
+            name: payload
+          };
+          context.commit("addSpecimen", specimen);
+          resolve(true);
+        }, 500);
+      });
+    },
+    updateSpecimen: function updateSpecimen(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit("updateSpecimen", payload);
+          resolve(true);
+        }, 500);
+      });
+    },
+    deleteSpecimen: function deleteSpecimen(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('deleteSpecimen', payload);
+          resolve(true);
+        }, 500);
+      });
+    }
+  }
+};
+
 
 /***/ }),
 

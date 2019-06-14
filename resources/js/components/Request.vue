@@ -9,7 +9,7 @@
         ]"></b-breadcrumb>
 
         <b-row>
-            <b-col>
+            <b-col sm="12" md="6">
                 <request-form></request-form>
             </b-col>
             <b-col></b-col>

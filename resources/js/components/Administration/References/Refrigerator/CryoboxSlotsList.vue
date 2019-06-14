@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-breadcrumb :items="[{text:'Refrigerator'},{text:'Compartments'},{text:'Rows'},{text : 'Cryobox Slots'}]"></b-breadcrumb>
+        <b-breadcrumb :items="[{text:'Refrigerators'},{text:'Compartments'},{text:'Rows'},{text : 'Cryobox Slots'}]"></b-breadcrumb>
         <b-button variant="info" size="sm" class="mb-1" @click="back"><i class="fa fa-arrow-up"></i> Back to Rows</b-button>
         <h6 class="text-info float-right">{{currentRow.row_name}} <i class="fa fa-angle-double-right"></i> Cryobox Slots</h6>
         <b-table selectable select-mode="single" @row-selected="selectCryoboxSlot" :items="currentRow.cryoboxSlots" bordered striped head-variant="dark"></b-table>
