@@ -1,35 +1,24 @@
 <template>
     <div>
-        <div class="input-group mb-3" v-for="(result, i) in results" :key="i">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <i :class="'fa fa-' + result.icon"></i>&nbsp;
-                </span>
-            </div>
-            <input type="text" aria-label="Type-in your entry" placeholder="Type-in your entry" v-model="result.row"  class="form-control" >
-            <select class="custom-select" id="inputGroupSelect01">
-                <option selected></option>
-                <option v-for="(test, i) in tests" :key="i">{{ test.val }}</option>
-            </select>
+        <comp-url>Testing / Records</comp-url>
+        <b-input-group class="mb-3" v-for="(result,i) in results" :key="i">
+            <label for="" class="input-group-text" slot="prepend">
+                <i :class="'fa fa-'+result.icon"></i>&nbsp;
+            </label>
+            <b-input placeholder="" v-model="result.row"></b-input>
+            <b-form-select :options="tests"></b-form-select>
+        </b-input-group>
 
-        </div><!-- input group -->
+        <b-input-group class="mb-3">
+            <label for="" class="input-group-text" slot="prepend">
+                <i class="fa fa-file"></i>&nbsp; FINAL INTERPRETATION
+            </label>
+            <b-form-select :options="tests"></b-form-select>
+        </b-input-group>
         
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">
-                    <i class="fa fa-file"></i>&nbsp; FINAL INTERPRETATION
-                </span>
-            </div>
-            <select class="custom-select" id="inputGroupSelect01">
-                <option selected></option>
-                <option v-for="(test, i) in tests" :key="i">{{ test.val }}</option>
-            </select>
-        </div>
-
-        <div class="row col-8 mt-5">
-            <button type="button" class="btn btn-success btn-block" data-toggle="tooltip" 
-                data-placement="left" :title="btnTitle"><i class="fa fa-paper-plane"></i>&nbsp;SUBMIT RESULTS</button>
-        </div>
+        <b-input-group class="mb-3">
+            <b-button variant="success" :title="btnTitle"><i class="fa fa-paper-plane"></i>&nbsp;SUBMIT RESULTS</b-button>
+        </b-input-group>
     </div><!-- main div -->
 </template>
 
@@ -47,8 +36,8 @@ export default {
             ],
 
             tests: [
-                { val: 'POSITIVE' },
-                { val: 'NEGATIVE' }
+                { text: 'POSITIVE' },
+                { text: 'NEGATIVE' }
             ],
         }
     },

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Timeline</comp-url>
         <div class="container">
             <div class="row">
                 <timeline-slot></timeline-slot>

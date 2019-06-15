@@ -1,23 +1,23 @@
 <template>
     <div>
+        <comp-url>Report</comp-url>
         <h3 class="text-primary">Generate Report</h3>
         <hr>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Generate Report</li>
-            <li class="breadcrumb-item"><router-link to="/reportlist">View report list</router-link></li>
-        </ol>
+        <b-breadcrumb :items="[
+            {text: 'Generate Report', href: '#'},
+            {text: 'View report list', active: true},
+        ]"></b-breadcrumb>
 
-        <div class="content mt-5">
-            <div class="row">
-                <div class="col-6">
-                     <report-form></report-form>
-                </div> <!-- end col-6 -->
+        <b-row class="mt-5">
+            <b-col>
+                <report-form></report-form>
+            </b-col>
+            <b-col>
+                <div class="mt-5 d-block d-sm-block d-md-none d-lg-none d-xl-none"></div>
+                <timeline></timeline>
+            </b-col>
+        </b-row>
 
-                <div class="col-6">
-                    <timeline></timeline>
-                </div><!-- end col-6 -->
-            </div> <!-- end row -->
-        </div> <!-- end content -->
     </div>
 </template>
 

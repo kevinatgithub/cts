@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Request / RequestForm</comp-url>
         <b-input-group class="mb-3">
             <label for="" class="input-group-text" slot="prepend">
                  <i class="fa fa-search"></i>&nbsp;
@@ -58,103 +59,41 @@
                     <i class="fa fa-user"></i>&nbsp;
                     Person in charge:
                 </label>
-                <b-input placeholder="" v-model="fname"></b-input>
-                <b-input placeholder="" v-model="mname"></b-input>
-                <b-input placeholder="" v-model="lname"></b-input>
+                <b-input placeholder="First Name" v-model="fname"></b-input>
+                <b-input placeholder="Middle Name" v-model="mname"></b-input>
+                <b-input placeholder="Last Name" v-model="lname"></b-input>
             </b-input-group>
-        </b-form-group>
-
-        <div class="form-group mt-3" v-if="hasResult">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-tint"></i>&nbsp;
-                        Blood Type:
-                    </label>
-                </div>
-                <input type="text" aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="bloodtype" class="form-control" disabled>        
-            </div> <!-- end input-group -->
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-tint"></i>&nbsp;
-                        Reactive for:
-                    </label>
-                </div>
-                <input type="text" aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="tti" class="form-control" disabled>     
-            </div> <!-- end input-group -->
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-calendar"></i>&nbsp;
-                        Date Collected:
-                    </label>
-                </div>
-                <input type="text" aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="date" class="form-control" disabled>     
-            </div> <!-- end input-group -->
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-tint"></i>&nbsp;
-                        Specimen type:
-                    </label>
-                </div>
-                <select class="custom-select" id="inputGroupSelect01">
-                    <option selected></option>
-                    <option v-for="(specimen, i) in specimens" :key="i">{{ specimen.val }}</option>
-                </select>
-            </div> <!-- end input-group -->
-
-            <h5 class="text-info mt-3">Other Details</h5>
-            <div class="form-group">
-                <div class="custom-control custom-radio">
-                    <div class="col-6 pull-left">
-                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" @click="showInCharge()">
-                        <label class="custom-control-label" for="customRadio1">Hand Carry</label>
-                    </div>
-                    <div class="col-6 pull-right">
-                         <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" @click="showCourier()">
-                        <label class="custom-control-label" for="customRadio2">Courier</label>
-                    </div>
-               </div>
-            </div>
-
-            <!-- IF HAND CARRY -->
-            <div class="input-group mb-3" v-if="inCharge">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-user"></i>&nbsp;
-                        Person in charge:
-                    </label>
-                </div>
-                <input type="text" aria-label="First Name" placeholder="First name" v-model="fname"  class="form-control">
-                <input type="text" aria-label="Middle" placeholder="Middle" v-model="mname" class="form-control">
-                <input type="text" aria-label="Last Name" placeholder="Last name" v-model="lname"  class="form-control">
-            </div> <!-- end input-group -->
+            <b-input-group class="mb-3" v-if="courier == 'Hand Carry'">
+                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                    <i class="fa fa-phone"></i>&nbsp;
+                    Contact Number:
+                </label>
+                <b-input placeholder="Contact Number"></b-input>
+            </b-input-group>
 
             <!-- IF COURIER -->
-            <div class="input-group mb-3" v-if="inCourier">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-truck"></i>&nbsp;
-                        Select Courier:
-                    </label>
-                </div>
-                <select class="custom-select" id="inputGroupSelect01">
-                    <option selected></option>
-                    <option v-for="(courier, i) in couriers" :key="i">{{ courier.val }}</option>
-                </select>
-            </div> <!-- end input-group -->
-            
-            
-            <div class="row col-8 mt-5">
-                <button type="button" class="btn btn-success btn-block" data-toggle="tooltip" 
-                    data-placement="left" :title="btnTitle"><i class="fa fa-paper-plane"></i>&nbsp;SEND AND SHIP SPECIMEN</button>
-            </div>
-        </div><!-- end form-group -->
+            <b-input-group class="mb-3" v-if="courier == 'Courier'">
+                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                    <i class="fa fa-truck"></i>&nbsp;
+                    Select Courier:
+                </label>
+                <b-form-select v-model="courier_provider" :options="couriers"></b-form-select>
+            </b-input-group>
+            <b-input-group class="mb-3" v-if="courier == 'Courier'">
+                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                    <i class="fa fa-id-card"></i>&nbsp;
+                    Reference Number:
+                </label>
+                <b-input placeholder="Referenence Number"></b-input>
+            </b-input-group>
+
+            <b-row>
+                <b-col cols="8" class="mt-3">
+                    <b-button block variant="success"><i class="fa fa-paper-plane"></i>&nbsp;SEND AND SHIP SPECIMEN</b-button>
+                </b-col>
+            </b-row>
+
+        </b-form-group>
 
         <div class="text-center" v-if="!hasResult">
             No records to display
@@ -192,10 +131,10 @@ export default {
             lname : '',
 
             couriers : [
-                { val : 'FedEx' },
-                { val : 'LBC' },
-                { val : 'Lalamove' },
-                { val : 'GrabExpress' },
+                { value : 'FedEx', text : 'FedEx' },
+                { value : 'LBC', text : 'LBC' },
+                { value : 'Lalamove', text : 'Lalamove' },
+                { value : 'GrabExpress', text : 'GrabExpress' },
             ],
 
         }

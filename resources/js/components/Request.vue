@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Request</comp-url>
         <h3 class="text-primary">Confirmatory Request</h3>
         <hr>
         <b-breadcrumb :items="[
@@ -8,7 +9,7 @@
         ]"></b-breadcrumb>
 
         <b-row>
-            <b-col>
+            <b-col sm="12" md="6">
                 <request-form></request-form>
             </b-col>
             <b-col></b-col>

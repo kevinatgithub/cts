@@ -1,96 +1,78 @@
 <template>
     <div>
-        <div class="form-group">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-search"></i>&nbsp;
-                        Confirmatory Request #:
-                    </label>
-                </div>
-                <input type="text" aria-label="" placeholder="Scan /Enter Confirmatory Reference #" v-model="hasResult" class="form-control">       
-            </div> <!-- end input-group -->
+        <comp-url>Stockyard / StockyardForm</comp-url>
+        <b-form-group>
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-search'></i>&nbsp;
+                    Confirmatory Request #:
+                </label>
+                <b-input placeholder='Scan /Enter Confirmatory Reference #' v-model='hasResult'></b-input>
+            </b-input-group>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <i class="fa fa-barcode"></i>&nbsp;
-                        Donation ID:
-                    </label>
-                </div>
-                <input type="text" aria-label="Donation ID" placeholder="Donation ID" v-if="hasResult" v-model="donationID" class="form-control" disabled>      
-                <input type="text" aria-label="Donation ID" placeholder="Donation ID" v-if="!hasResult" v-model="displayNone" class="form-control" disabled>
-            </div>
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-barcode'></i>&nbsp;
+                    Donation ID:
+                </label>
+                <b-input placeholder='Donation ID' v-model='donationID' disabled></b-input>
+            </b-input-group>
 
             <h5 class="text-info mt-4">Cryobox Details</h5>
-            <div class="input-group mb-3  col-12">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Cryobox #:</strong>
-                    </label>
-                </div>
-                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Cryobox #" v-model="cryoboxnum" class="form-control" disabled>
-                <div class="col-2">
-                    <button type="button" class="btn btn-primary btn-sm text-center" @click="showCryoBox()" title="Add Cryobox details">+</button>
-                </div>          
-            </div> <!-- end input-group -->
 
-            <div class="input-group mb-3  col-10">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Slot #:</strong>
-                    </label>
-                </div>
-                <input type="text" aria-label="REF-#" placeholder="Select Cryobox Slot #" v-model="cryoslot" class="form-control" disabled>        
-            </div> <!-- end input-group -->
-            <!-- CRYOBOX SECTION -->
-            
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-cube'></i>&nbsp;
+                    Cryobox #:
+                </label>
+                <b-input placeholder='Scan /Enter Cryobox #' v-model='cryoboxnum'></b-input>
+                <b-button slot="append" variant="primary">+</b-button>
+            </b-input-group>
+
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-cubes'></i>&nbsp;
+                    Slot #:
+                </label>
+                <b-input placeholder='Select Cryobox Slot #' v-model='cryoslot'></b-input>
+            </b-input-group>
 
             <h5 class="text-info mt-5">Ref Details</h5>
-            <div class="input-group mb-3 col-12">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Ref #:</strong>
-                    </label>
-                </div>
-                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Ref #" v-model="refnum" class="form-control" disabled>
-                <div class="col-2">
-                    <button type="button" class="btn btn-primary btn-sm text-center" @click="showRef()" title="Add Ref details">+</button>
-                </div>          
-            </div> <!-- end input-group -->
 
-            <!-- REF DEETAILS SECTION -->
-            <div class="input-group mb-3 col-10">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Compartment #:</strong>
-                    </label>
-                </div>
-                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Compartment #" v-model="refcomp" class="form-control" disabled>        
-            </div> <!-- end input-group -->
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-list'></i>&nbsp;
+                    Ref #:
+                </label>
+                <b-input placeholder='Scan /Enter Ref #' v-model='refnum'></b-input>
+            </b-input-group>
 
-            <div class="input-group mb-3 col-10">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Row #:</strong>
-                    </label>
-                </div>
-                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Row #" v-model="refrow" class="form-control" disabled>        
-            </div> <!-- end input-group -->
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-clone'></i>&nbsp;
+                    Compartment #:
+                </label>
+                <b-input placeholder='Compartment #' v-model='refcomp'></b-input>
+            </b-input-group>
 
-            <div class="input-group mb-3 col-10">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">
-                        <strong>Column #:</strong>
-                    </label>
-                </div>
-                <input type="text" aria-label="REF-#" placeholder="Scan /Enter Column #" v-model="refcol" class="form-control" disabled>        
-            </div> <!-- end input-group -->
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-bars'></i>&nbsp;
+                    Row #:
+                </label>
+                <b-input placeholder='Row #' v-model='refrow'></b-input>
+            </b-input-group>
 
-            <button type="button" class="btn btn-success btn-block mt-5 col-8" data-toggle="tooltip" 
-            data-placement="left" title="Register Blood specimen location"><i class="fa fa-save"></i>&nbsp;REGISTER SPECIMEN LOCATION</button>
+            <b-input-group class='mb-3'>
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-columns'></i>&nbsp;
+                    Column #:
+                </label>
+                <b-input placeholder='Column #' v-model='refcol'></b-input>
+            </b-input-group>
 
-        </div><!-- end form-group -->
+            <b-button variant="success" block title="Register Blood specimen location"><i class="fa fa-save"></i>&nbsp;REGISTER SPECIMEN LOCATION</b-button>
+        </b-form-group>
     </div><!-- main div -->
 </template>
 

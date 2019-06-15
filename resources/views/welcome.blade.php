@@ -11,9 +11,9 @@
     <meta name="author" content="">
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://bootswatch.com/4/simplex/bootstrap.css">
     <!-- <link href="{{asset('css/app.css')}}" rel="stylesheet"> -->
     <link href="{{asset('css/custom.css')}}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/4/simplex/bootstrap.css"> -->
 </head>
 <body>
     <div id="app"></div>

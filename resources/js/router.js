@@ -16,6 +16,8 @@ import Report from './components/Report'
 import Stockyard from './components/Stockyard'
 import Privacy from './components/Privacy'
 
+import References from './components/Administration/References'
+
 Vue.use(VueRouter);
 Axios.defaults.baseURL = 'cts/public/api';
 
@@ -30,5 +32,11 @@ export default new VueRouter({
         { path: '/report', component: Report },
         { path: '/stockyard', component: Stockyard },
         { path: '/privacy', component: Privacy },
+        { path: '/references', component: References },
+        { path: '/references/specimen', redirect: '/references' },
+        { path: '/references/refrigerator', redirect: '/references' },
+        { path: '/references/cryobox', redirect: '/references' },
+        { path: '/references/interpretation', redirect: '/references' },
+        { path: '/references/courier', redirect: '/references' },
     ]
 })

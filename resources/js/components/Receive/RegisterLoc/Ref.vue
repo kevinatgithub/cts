@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Receive / RegisterLoc / Ref</comp-url>
         <div class="card text-white border-info bg-info">
             <div class="card-header">
                 <div class="form-group">
@@ -79,9 +80,11 @@
 </template>
 
 <script>
+import Cryo from './CryoboxData'
 export default {
     data(){
         return{
+            ref : Cryo.ref,
             refnum : 'REF000-12F',
         }
     }

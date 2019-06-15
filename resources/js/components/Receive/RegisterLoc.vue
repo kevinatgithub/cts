@@ -1,5 +1,6 @@
 <template>
     <div>
+        <comp-url>Receive / RegisterLoc</comp-url>
         <h3 class="text-primary">Register Specimen Location</h3>
         <hr>
         <ol class="breadcrumb">
