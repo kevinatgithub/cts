@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Axios from 'axios'
 
 //Added Components
+import Dashboard from './components/Dashboard'
 import Login from './components/Login'
 
 import Request from './components/Request'
@@ -23,7 +24,8 @@ Axios.defaults.baseURL = 'cts/public/api';
 
 export default new VueRouter({
     routes: [
-        { path: '/', component: Login },
+        { path: '/', component: Dashboard },
+        { path: '/login', component: Login },
         { path: '/request', component: Request },
         { path: '/checklist', component: Checklist },
         { path: '/receiving', component: Receive },
@@ -38,5 +40,6 @@ export default new VueRouter({
         { path: '/references/cryobox', redirect: '/references' },
         { path: '/references/interpretation', redirect: '/references' },
         { path: '/references/courier', redirect: '/references' },
-    ]
+    ],
+    // mode : 'history',
 })

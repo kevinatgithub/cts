@@ -17,7 +17,13 @@ import Navs from './components/App/Navs.vue'
 import Footah from './components/App/Footer.vue'
 
 export default {
-    components: {Navs, Footah}
+    components: {Navs, Footah},
+    mounted(){
+        let user = this.$session.get('user')
+        if(user != undefined || user != null){
+            this.$store.dispatch('initUser',this.$session.get('user'))
+        }
+    },
 }
 </script>
 

@@ -27,10 +27,8 @@ const specimens = {
             return new Promise((resolve, reject) => {
                 setTimeout(i=>{
                     context.commit('initSpecimens',[
-                        {id : 0, name :'FedEx'},
-                        {id : 1, name :'LBC'},
-                        {id : 2, name :'Lalamove'},
-                        {id : 3, name :'GrabExpress'},
+                        {id : 0, name :'SP 1'},
+                        {id : 1, name :'SP 2'},
                     ])
                     resolve(true)
                 },500)

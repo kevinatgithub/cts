@@ -6,22 +6,22 @@
 
             <!-- Refrigerator -->
             <b-col v-show="!refrigerator">
-                <refrigerator-list :items="items" @refSelected="selectRef" @savePressed="newRefrigerator" @deletePressed="deleteRefrigerator"></refrigerator-list>
+                <refrigerator-list :items="items" @refSelected="selectRef" ></refrigerator-list>
             </b-col>
 
             <!-- Compartments -->
             <b-col v-if="refrigerator && !compartment">
-                <compartment-list :refrigerator="refrigerator" @compartmentSelected="selectCompartment" @savePressed="newCompartment" @backPressed="refrigerator=null"></compartment-list>
+                <compartment-list :refrigerator="refrigerator" @compartmentSelected="selectCompartment" @backPressed="refrigerator=null"></compartment-list>
             </b-col>
 
             <!-- Rows -->
             <b-col v-if="compartment && !currentRow">
-                <row-list :compartment="compartment" @rowSelected="selectRow" @backPressed="compartment=null" @savePressedFront="newRowFront" @savePressedBack="newRowBack"></row-list>
+                <row-list :refrigerator="refrigerator" :compartment="compartment" @rowSelected="selectRow" @sectionSelected="selectSection" @backPressed="compartment=null" ></row-list>
             </b-col>
 
             <!-- Cryobox Slots -->
             <b-col v-if="currentRow">
-                <cryobox-slot-list :currentRow="currentRow" @cryoboxSlotSelected="selectCryoboxSlot" @backPressed="currentRow=null" @savePressed="newSlot"></cryobox-slot-list>
+                <cryobox-slot-list :refrigerator="refrigerator" :compartment="compartment" :section="currentSection" :currentRow="currentRow" @cryoboxSlotSelected="selectCryoboxSlot" @backPressed="currentRow=null"></cryobox-slot-list>
             </b-col>
         </b-row>
     </div>
@@ -41,6 +41,7 @@ export default {
             refrigerator: null,
             compartment : null,
             currentRow : null,
+            currentSection : 0,
             cryoboxSlot : null,
         }
     },
@@ -53,47 +54,24 @@ export default {
         selectRef(ref){
             this.refrigerator = ref
         },
-        newRefrigerator(ref){
-            this.items.push(ref)
-        },
-        deleteRefrigerator(ref){
-            this.items = _.filter(this.items,function(r){
-                return r.name != ref.name
-            });
-        },
+        
         selectCompartment(compartment){
             this.compartment = compartment
         },
-        newCompartment(compartment){
-            if(!this.refrigerator.compartments){
-                this.refrigerator.compartments = []
-            }
-            this.refrigerator.compartments.push(compartment)
+
+        selectSection(section){
+            this.currentSection = section
         },
+        
         selectRow(row){
             this.currentRow = row
         },
-        newRowFront(row){
-            if(!this.compartment.sections[0].rows){
-                this.compartment.sections[0].rows = []
-            }
-            this.compartment.sections[0].rows.push(row)
-        },
-        newRowBack(row){
-            if(!this.compartment.sections[1].rows){
-                this.compartment.sections[1].rows = []
-            }
-            this.compartment.sections[1].rows.push(row)
-        },
+        
         selectCryoboxSlot(cryoboxSlot){
             this.cryoboxSlot = cryoboxSlot
         },
-        newSlot(slot){
-            if(!this.currentRow.cryoboxSlots){
-                this.currentRow.cryoboxSlots = []
-            }
-            this.currentRow.cryoboxSlots.push(slot)
-        }
+        
+
     }
 }
 </script>

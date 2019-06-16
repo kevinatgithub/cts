@@ -1,7 +1,19 @@
 <template>
     <div>
         <b-breadcrumb :items="[{text : 'Refrigerators'}]"></b-breadcrumb>
+
+        <b-input-group class='mb-1'>
+            <label class='input-group-text' slot='prepend'>
+                <i class='fa fa-columns'></i>&nbsp;
+                Refrigerator Name:
+            </label>
+            <b-input placeholder='Enter the name or label of the Refrigerator' v-model='refrigerator' @keypress.enter="save"></b-input>
+            <b-button variant="success" slot="append" @click="save">{{update ? "Update" : "Add"}} Refrigerator</b-button>
+            <b-button v-if="update" variant="dark" slot="append" @click="cancel">Cancel</b-button>
+        </b-input-group>
+
         <b-table 
+        class="mt-3"
         selectable 
         select-mode="single" 
         @row-selected="selectRef" 
@@ -19,18 +31,14 @@
                 <b-img width="30" src="./img/loading.gif"></b-img> Please wait..
             </template>
         </b-table>
-        <b-input-group class='mb-1'>
-            <label class='input-group-text' slot='prepend'>
-                <i class='fa fa-columns'></i>&nbsp;
-                Refrigerator Name:
-            </label>
-            <b-input placeholder='Enter the name or label of the Refrigerator' v-model='refrigerator'></b-input>
-            <b-button variant="success" slot="append" @click="save">{{update ? "Update" : "Add"}} Refrigerator</b-button>
-            <b-button v-if="update" variant="dark" slot="append" @click="cancel">Cancel</b-button>
-        </b-input-group>
+        
 
         <b-modal id="refrigerator" header-bg-variant="danger" header-text-variant="light" title="Delete Refrigerator" @ok="confirm">
             Are you sure you wan't to delete this refrigerator?
+        </b-modal>
+
+        <b-modal id="validationError" title="Validation Failed" header-bg-variant="danger" header-text-variant="light">
+            Refrigerator name already exists!
         </b-modal>
     </div>
 </template>
@@ -51,6 +59,10 @@ export default {
             this.$emit("refSelected",ref)
         },
         save(){
+            if(this.validate()){
+                this.$bvModal.show('validationError')
+                return
+            }
             if(this.update){
                 this.update.name = this.refrigerator
                 this.isBusy = true
@@ -69,6 +81,13 @@ export default {
             })
             this.refrigerator = null
             // this.$emit("savePressed",{name : this.refrigerator})
+        },
+        validate(){
+            let {refrigerator, items} = this
+            let exists = _.filter(items, ref=>{
+                return ref.name == refrigerator
+            })
+            return exists.length > 0
         },
         edit(ref){
             this.update = ref

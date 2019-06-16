@@ -17,7 +17,12 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
-                <b-navbar-nav class="mr-auto">
+                <b-navbar-nav class="ml-auto" v-if="!user">
+                    <b-nav-item>
+                        <router-link class="nav-link text-nowrap" to="/login" nowrap>User Login &nbsp;&nbsp; <i class="fa fa-user"></i></router-link>
+                    </b-nav-item>
+                </b-navbar-nav>
+                <b-navbar-nav class="mr-auto" v-if="user">
                     <b-nav-item>
                         <router-link class="nav-link text-nowrap" to="/request">Confirmatory Request &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
                     </b-nav-item>
@@ -41,7 +46,7 @@
                         <router-link class="nav-link text-nowrap" to="/logout" nowrap>Logout</router-link>
                     </b-nav-item>
                 </b-navbar-nav>
-                 <b-navbar-nav class="ml-auto">
+                 <b-navbar-nav class="ml-auto" v-if="user">
                     <b-nav-form class="d-none d-xl-block">
                         <ul class="text-white text-nowrap">
                             <li style="list-style-type: none; !important" class="text-right"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;Abdul Mahatir Aljamalul Kiram</li>
@@ -58,7 +63,14 @@
 
 <script>
 export default {
-
+    mounted(){
+        console.log(this.user)
+    },
+    computed : {
+        user(){
+            return this.$store.getters.user
+        }
+    }
 }
 </script>
 

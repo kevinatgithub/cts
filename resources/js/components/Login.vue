@@ -1,7 +1,7 @@
 <template>
     <div>
         <comp-url>Login</comp-url>
-        <h3>User Login</h3>
+        <h3 class="text-info">User Login</h3>
         <hr>
             <div class="content mt-5">
                 

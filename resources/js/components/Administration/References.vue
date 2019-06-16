@@ -9,7 +9,7 @@
         ]"></b-breadcrumb>
 
         <b-row>
-            <b-col xs="12" sm="12" md="4" lg="4">
+            <b-col xs="12" sm="12" md="3" lg="3">
                 <b-list-group>
                     <b-list-group-item v-for="(link,i) in links" :key="i">
                         <router-link :to="link.url">

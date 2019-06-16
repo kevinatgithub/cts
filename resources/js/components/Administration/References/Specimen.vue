@@ -9,7 +9,7 @@
                     <i class='fa fa-tint'></i>&nbsp;
                     {{update ? "Update":"New"}} Specimen:
                 </label>
-                <b-input placeholder='Specimen Name' v-model='specimen'></b-input>
+                <b-input placeholder='Specimen Name' v-model='specimen' class="text-uppercase" @keypress.enter="doSave"></b-input>
                 <b-button slot="append" variant="success" @click="doSave"><i class="fa fa-check"></i></b-button>
                 <b-button slot="append" v-if="specimen" @click="update = null; specimen = null;" variant="dark"><i class="fa fa-remove"></i></b-button>
             </b-input-group>
@@ -55,7 +55,7 @@ export default {
     methods : {
         doSave(){
             if(this.update && this.specimen){
-                this.update.name = this.specimen
+                this.update.name = this.specimen.toUpperCase()
                 this.busy = true
                 this.$store.dispatch('updateSpecimen',this.update).then(r=>{
                     this.busy = false
@@ -65,7 +65,7 @@ export default {
             }
             if(this.specimen != null){
                 this.busy = true
-                this.$store.dispatch('addSpecimen',this.specimen).then(r=>{
+                this.$store.dispatch('addSpecimen',this.specimen.toUpperCase()).then(r=>{
                     this.busy = false
                 })
                 this.specimen = null
