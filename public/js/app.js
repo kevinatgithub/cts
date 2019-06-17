@@ -1787,11 +1787,8 @@ __webpack_require__.r(__webpack_exports__);
     Footah: _components_App_Footer_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   mounted: function mounted() {
-    var user = this.$session.get('user');
-
-    if (user != undefined || user != null) {
-      this.$store.dispatch('initUser', this.$session.get('user'));
-    }
+    this.$store.dispatch('fetchSpecimens');
+    this.$store.dispatch('fetchCouriers');
   }
 });
 
@@ -1917,17 +1914,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['couriers']),
-  mounted: function mounted() {
-    var _this = this;
-
-    this.isBusy = true;
-    this.$store.dispatch('fetchCouriers').then(function (r) {
-      _this.isBusy = false;
-    });
-  },
+  mounted: function mounted() {},
   methods: {
     save: function save() {
-      var _this2 = this;
+      var _this = this;
 
       var selected = this.selected,
           courier = this.courier;
@@ -1936,13 +1926,13 @@ __webpack_require__.r(__webpack_exports__);
         this.selected.name = courier;
         this.isBusy = true;
         this.$store.dispatch('updateCourier', selected).then(function (r) {
-          _this2.isBusy = false;
+          _this.isBusy = false;
         });
         this.selected = null;
       } else if (courier) {
         this.isBusy = true;
         this.$store.dispatch('addCourier', courier).then(function (r) {
-          _this2.isBusy = false;
+          _this.isBusy = false;
         });
       }
 
@@ -1957,11 +1947,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$bvModal.show("confirm");
     },
     deleteCourier: function deleteCourier() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.isBusy = true;
       this.$store.dispatch('deleteCourier', this.selected).then(function (r) {
-        _this3.isBusy = false;
+        _this2.isBusy = false;
       });
       this.selected = null;
       this.courier = null;
@@ -2881,14 +2871,7 @@ __webpack_require__.r(__webpack_exports__);
       busy: false
     };
   },
-  mounted: function mounted() {
-    // todo : remove
-    this.busy = true;
-    var t = this;
-    this.$store.dispatch('fetchSpecimens').then(function (res) {
-      t.busy = false;
-    });
-  },
+  mounted: function mounted() {},
   methods: {
     doSave: function doSave() {
       var _this = this;
@@ -3081,25 +3064,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.checkLogin();
+  },
   computed: {
     user: function user() {
-      return this.$session.get("user");
+      return this.$store.getters.user;
+    },
+    navItems: function navItems() {
+      if (!this.user) {
+        return [];
+      } else {
+        if (this.user.facility_cd == 'RITM') {
+          return [{
+            to: '/receiving',
+            text: 'Receiving'
+          }, {
+            to: '/testing',
+            text: 'Testing'
+          }, {
+            to: '/report',
+            text: 'Reports'
+          }, {
+            to: '/stockyard',
+            text: 'Stock yard'
+          }];
+        } else {
+          return [{
+            to: '/request',
+            text: 'Confirmatory Request'
+          }, {
+            to: '/status',
+            text: 'Status'
+          }];
+        }
+      }
     }
   },
   methods: {
-    logout: function logout() {
-      // this.$session.remove('user')
-      // this.$store.dispatch('initUser',null)
+    performLogout: function performLogout() {
+      this.$session.remove('user');
+      this.$store.dispatch('initUser', null);
       this.$router.push('/login');
+    },
+    checkLogin: function checkLogin() {
+      var user = this.$session.get('user');
+
+      if (user != undefined || user != null) {
+        this.$store.dispatch('initUser', user);
+      } else {
+        this.$router.push('/login');
+      }
     }
   }
 });
@@ -3213,7 +3229,6 @@ __webpack_require__.r(__webpack_exports__);
           username: this.username,
           password: this.password
         }).then(function (response) {
-          console.log(response);
           _this.busy = false;
           _this.username = null;
           _this.password = null;
@@ -3226,7 +3241,7 @@ __webpack_require__.r(__webpack_exports__);
 
             _this.$store.dispatch('initUser', response);
 
-            alert('logged in');
+            _this.$router.push('/');
           }
         });
       }
@@ -3418,6 +3433,16 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Timeline: _Timeline__WEBPACK_IMPORTED_MODULE_0__["default"],
     DetailsForm: _Receive_DetailsForm__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      referral: null
+    };
+  },
+  methods: {
+    setReferral: function setReferral(referral) {
+      this.referral = referral;
+    }
   }
 });
 
@@ -3427,6 +3452,303 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Receive/DetailsForm.vue?vue&type=script&lang=js& ***!
   \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DetailsForm_BloodSampleDetailsCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DetailsForm/BloodSampleDetailsCard */ "./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue");
+/* harmony import */ var _DetailsForm_RequestDetailsCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DetailsForm/RequestDetailsCard */ "./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    BloodSampleDetailsCard: _DetailsForm_BloodSampleDetailsCard__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RequestDetailsCard: _DetailsForm_RequestDetailsCard__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      donation_id: null,
+      donation_id_state: null,
+      donation_id_busy: false,
+      referral: null,
+      confirmatory_reference_number: null,
+      accept: null,
+      remarks: null,
+      process_mode: null,
+      reject_reason: null,
+      receive_busy: false,
+      reject_busy: false
+    };
+  },
+  methods: {
+    fetchReferral: _.debounce(function () {
+      var _this = this;
+
+      this.donation_id_busy = true;
+      this.$store.dispatch('fetchReferral', this.donation_id.toUpperCase()).then(function (response) {
+        _this.donation_id_busy = false;
+
+        if (response) {
+          _this.referral = response;
+          _this.donation_id_state = true;
+
+          _this.$emit('referralSet', response);
+        } else {
+          _this.donation_id_state = false;
+        }
+      });
+    }, 500),
+    receive: function receive() {
+      var _this2 = this;
+
+      this.process_mode = 'RECEIVE';
+      this.receive_busy = true;
+      this.$store.dispatch('receiveOrRejectReferral', this.payload).then(function (response) {
+        _this2.$bvModal.show('processDone');
+
+        _this2.receive_busy = false;
+
+        _this2.clearForm();
+      });
+    },
+    reject: function reject() {
+      var _this3 = this;
+
+      this.process_mode = 'REJECT';
+      this.reject_busy = true;
+      this.$store.dispatch('receiveOrRejectReferral', this.payload).then(function (response) {
+        _this3.$bvModal.hide('rejectModal');
+
+        _this3.$bvModal.show('processDone');
+
+        _this3.reject_busy = false;
+
+        _this3.clearForm();
+      });
+    },
+    clearForm: function clearForm() {
+      this.referral = null;
+      this.confirmatory_reference_number = null;
+      this.$emit('referralSet', null);
+      this.donation_id = null;
+      this.donation_id_state = null;
+      this.$refs.donation_id.focus();
+    }
+  },
+  computed: {
+    confirmatory_reference_number_valid: function confirmatory_reference_number_valid() {
+      return this.confirmatory_reference_number;
+    },
+    confirmatory_reference_number_disabled: function confirmatory_reference_number_disabled() {
+      if (this.referral) {
+        return this.referral.confirmatory_reference_number != null;
+      }
+
+      return false;
+    },
+    payload: function payload() {
+      if (!this.referral) {
+        return;
+      }
+
+      var referral = this.referral,
+          confirmatory_reference_number = this.confirmatory_reference_number,
+          remarks = this.remarks,
+          reject_reason = this.reject_reason;
+
+      _.extend(referral, {
+        confirmatory_reference_number: confirmatory_reference_number,
+        remarks: remarks,
+        reject_reason: reject_reason,
+        received_by: this.$store.getters.user,
+        received_dt: new Date()
+      });
+
+      return referral;
+    }
+  },
+  watch: {
+    donation_id: function donation_id() {
+      if (this.donation_id) {
+        this.fetchReferral();
+      }
+    },
+    referral: function referral() {
+      if (this.referral) {
+        this.confirmatory_reference_number = this.referral.confirmatory_reference_number;
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['referral'],
+  computed: {
+    reactive_for: function reactive_for() {
+      if (this.referral) {
+        return this.referral.donation.reactiveResults.join();
+      } else {
+        return null;
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3466,118 +3788,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      hasResult: '',
-      accept: false,
-      // CTS2019-000001
-      confirmatoryNum: '',
-      // NVBSP20190002020
-      donationID: '',
-      specimen: 'SPL-2',
-      remarks: '',
-      facility: 'NVBSP-IMU',
-      pointperson: 'Rubena R. Felix',
-      position: 'Supreme Leader',
-      requestDate: 'April 16, 2019 - 09:45:45AM',
-      bloodtype: 'A POS',
-      tti: 'HIV'
-    };
-  },
-  methods: {}
+  props: ['referral']
 });
 
 /***/ }),
@@ -4479,10 +4691,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   // end data
-  mounted: function mounted() {
-    this.$store.dispatch('fetchSpecimens', true);
-    this.$store.dispatch('fetchCouriers', true);
-  },
+  mounted: function mounted() {},
   computed: {
     specimens: function specimens() {
       var specimens = this.$store.getters.specimens;
@@ -4558,17 +4767,29 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.saving = true;
+      var user = this.$store.getters.user;
       this.$store.dispatch('newReferral', {
         donation: this.donation,
         courier: this.courier,
         courierMode: this.courierMode,
         donation_id: this.donation.donation_id,
-        confirmatory_reference_no: null
+        confirmatory_reference_no: null,
+        specimen: this.specimen,
+        request_by: user,
+        created_dt: Date.now()
       }).then(function (r) {
         _this2.saving = false;
         _this2.donation_id = null;
         _this2.donation = null;
-        _this2.courier = null;
+        _this2.courier = {
+          fname: null,
+          mname: null,
+          lname: null,
+          provider: null,
+          reference_no: null
+        };
+        _this2.specimen = null;
+        _this2.courierMode = null;
         _this2.donation_id_valid = null;
 
         _this2.$bvModal.show('success');
@@ -4928,6 +5149,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['referral'],
   components: {
     TimelineSlot: _Timeline_TimelineSlot__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
@@ -4944,6 +5166,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -4966,37 +5193,77 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['referral'],
   data: function data() {
-    return {
-      timelines: [{
-        title: 'Request Sent',
-        name: 'NVBSP-IMU',
-        description: 'CTS2019-000001',
-        date: 'Mon, April 22, 2019 09:45:45AM',
-        icon: 'paper-plane'
-      }, {
-        title: 'Receive Specimen',
-        name: 'Pedro Pendukot',
-        description: 'accepted',
-        date: 'Tue, April 23, 2019 09:45:45AM',
-        icon: 'database'
-      }, {
-        title: 'Test Specimen',
-        name: 'Sharle Lilipad',
-        description: 'done final interpretation',
-        date: 'Thu, April 25, 2019 09:45:45AM',
-        icon: 'tint'
-      }, {
-        title: 'Submit Final Interpretation',
-        name: 'Mahatir Muhammad',
-        description: 'submit single electronic copy',
-        date: 'Fri, April 26, 2019 09:45:45AM',
-        icon: 'info'
-      }]
+    return {// timelines:[
+      //     { title : 'Request Sent', name : 'NVBSP-IMU', description : 'CTS2019-000001', date: 'Mon, April 22, 2019 09:45:45AM', icon:'paper-plane' },
+      //     { title : 'Receive Specimen', name : 'Pedro Pendukot', description : 'accepted', date: 'Tue, April 23, 2019 09:45:45AM', icon:'database' },
+      //     { title : 'Test Specimen', name : 'Sharle Lilipad', description : 'done final interpretation', date: 'Thu, April 25, 2019 09:45:45AM', icon:'tint' },
+      //     { title : 'Submit Final Interpretation', name : 'Mahatir Muhammad', description : 'submit single electronic copy', date: 'Fri, April 26, 2019 09:45:45AM', icon:'info' },
+      // ],
     };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['couriers', 'specimens']), {
+    timelines: function timelines() {
+      var timelines = [];
+
+      if (!this.referral) {
+        return timelines;
+      }
+
+      if (this.referral.courier) {
+        timelines.push(this.step1(this.referral));
+      }
+
+      if (this.referral.received_by) {
+        timelines.push(this.step2(this.referral));
+      }
+
+      return timelines;
+    }
+  }),
+  methods: {
+    getCourierName: function getCourierName(courier_id) {
+      var courier = _.find(this.couriers, {
+        id: courier_id
+      });
+
+      if (!courier) {
+        return;
+      } else {
+        return courier.name;
+      }
+    },
+    step1: function step1(referral) {
+      var _this$referral = this.referral,
+          donation = _this$referral.donation,
+          courier = _this$referral.courier,
+          courierMode = _this$referral.courierMode,
+          created_dt = _this$referral.created_dt;
+      var courier_name = courierMode == 'Hand Carry' ? courier.name : this.getCourierName(courier.provider);
+      var date = new Date(Date.parse(created_dt));
+      return {
+        title: 'Request Sent',
+        name: courier_name,
+        date: date,
+        icon: 'paper-plane'
+      };
+    },
+    step2: function step2(referral) {
+      var _this$referral2 = this.referral,
+          received_by = _this$referral2.received_by,
+          received_dt = _this$referral2.received_dt;
+      var status = referral.reject_reason ? 'Rejected' : 'Accepted';
+      return {
+        title: 'Receive Specimen',
+        name: received_by.name,
+        description: status,
+        date: received_dt,
+        icon: 'database'
+      };
+    }
   }
 });
 
@@ -32487,7 +32754,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/******************* Timeline Demo - 7 *****************/\n.main-timeline7[data-v-474efd32]{overflow:hidden;position:relative}\n.main-timeline7 .timeline[data-v-474efd32]{width:50%;float:left;z-index:1;position:relative}\n.main-timeline7 .timeline[data-v-474efd32]:after,.main-timeline7 .timeline[data-v-474efd32]:before{content:\"\";display:block;clear:both}\n.main-timeline7 .timeline[data-v-474efd32]:before{content:\"\";width:40px;height:90%;background:#727cb6;position:absolute;top:10%;right:-20px}\n.main-timeline7 .timeline[data-v-474efd32]:last-child:before{height:0}\n.main-timeline7 .timeline-icon[data-v-474efd32]{width:80px;height:80px;border-radius:50%;background:#727cb6;overflow:hidden;text-align:center;position:absolute;top:0;right:-40px;z-index:3}\n.main-timeline7 .timeline-icon[data-v-474efd32]:before{content:\"\";width:60px;height:60px;border-radius:50%;background:#fff;border:2px solid #727cb6;box-shadow:0 0 0 4px #a5afe4;margin:auto;position:absolute;top:0;left:0;bottom:0;right:0}\n.main-timeline7 .timeline-icon i[data-v-474efd32]{font-size:35px;color:#303a3b;line-height:80px;z-index:1;position:relative}\n.main-timeline7 .year[data-v-474efd32]{display:block;padding:0 60px 0 30px;font-size:12px;color:#303a3b;text-align:right;border-bottom:2px solid #303a3b;z-index:2;position:relative}\n.main-timeline7 .year[data-v-474efd32]:before{content:\"\";display:block;width:30px;height:30px;border-radius:50%;background:#727cb6;border:5px solid #fff;box-shadow:0 0 0 4px #727cb6;margin:auto;position:absolute;bottom:-15px;left:4px}\n.main-timeline7 .year[data-v-474efd32]:after{content:\"\";border-left:10px solid #303a3b;border-top:10px solid transparent;border-bottom:10px solid transparent;position:absolute;bottom:-11px;left:50px}\n.main-timeline7 .timeline-content[data-v-474efd32]{padding:18px 60px 18px 40px;text-align:right;position:relative;z-index:1\n}\n.main-timeline7 .timeline-content[data-v-474efd32]:after,.main-timeline7 .timeline-content[data-v-474efd32]:before{content:\"\";width:80px;height:0;border-radius:50%;background:#000;position:absolute;top:-7%;right:15px;z-index:-1}\n.main-timeline7 .timeline-content[data-v-474efd32]:after{left:auto;right:-95px}\n.main-timeline7 .timeline:last-child .timeline-content[data-v-474efd32]:after,.main-timeline7 .timeline:last-child .timeline-content[data-v-474efd32]:before{width:0;height:0}\n.main-timeline7 .title[data-v-474efd32]{font-size:22px;font-weight:700;color:#727cb6;margin-top:0}\n.main-timeline7 .description[data-v-474efd32]{font-size:15px;color:#7f8386;line-height:25px}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(2){margin-top:140px}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(even){margin-bottom:80px}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(odd){margin:-140px 0 0}\n.main-timeline7 .timeline[data-v-474efd32]:first-child,.main-timeline7 .timeline[data-v-474efd32]:last-child:nth-child(even){margin:0!important}\n.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32],.main-timeline7 .timeline[data-v-474efd32]:nth-child(2n):before{right:auto;left:-20px;background:#e77e21}\n.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32]{left:-40px}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]{padding:0 30px 0 60px;text-align:left}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:before{left:auto;right:3px}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:after{border-left:none;border-right:10px solid #303a3b;right:50px}\n.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]{padding:18px 40px 18px 60px;text-align:left}\n.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]:before{left:-95px}\n.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]:after{left:15px}\n.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32]:before{border-color:#e77e21;box-shadow:0 0 0 4px #f1a563}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:before{background:#e77e21;box-shadow:0 0 0 4px #e77e21}\n.main-timeline7 .timeline:nth-child(2n) .title[data-v-474efd32]{color:#e77e21}\n.main-timeline7 .timeline:nth-child(3n) .timeline-icon[data-v-474efd32],.main-timeline7 .timeline[data-v-474efd32]:nth-child(3n):before{background:#008b8b}\n.main-timeline7 .timeline:nth-child(3n) .timeline-icon[data-v-474efd32]:before{border-color:#008b8b;box-shadow:0 0 0 4px #50b5b4}\n.main-timeline7 .timeline:nth-child(3n) .year[data-v-474efd32]:before{background:#008b8b;box-shadow:0 0 0 4px #008b8b}\n.main-timeline7 .timeline:nth-child(3n) .title[data-v-474efd32]{color:#008b8b}\n.main-timeline7 .timeline:nth-child(4n) .timeline-icon[data-v-474efd32],.main-timeline7 .timeline[data-v-474efd32]:nth-child(4n):before{background:#ed687c}\n.main-timeline7 .timeline:nth-child(4n) .timeline-icon[data-v-474efd32]:before{border-color:#ed687c;box-shadow:0 0 0 4px #f798a8}\n.main-timeline7 .timeline:nth-child(4n) .year[data-v-474efd32]:before{background:#ed687c;box-shadow:0 0 0 4px #ed687c}\n.main-timeline7 .timeline:nth-child(4n) .title[data-v-474efd32]{color:#ed687c}\n@media only screen and (max-width:990px){.main-timeline7 .timeline[data-v-474efd32]{width:100%}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(even),.main-timeline7 .timeline[data-v-474efd32]:nth-child(odd){margin:0}\n.main-timeline7 .timeline[data-v-474efd32]:before,.main-timeline7 .timeline[data-v-474efd32]:nth-child(2n):before{width:30px;height:100%;left:25px}\n.main-timeline7 .timeline-icon[data-v-474efd32],.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32]{left:0}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32],.main-timeline7 .year[data-v-474efd32]{text-align:left;padding:0 30px 0 100px}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:before,.main-timeline7 .year[data-v-474efd32]:before{left:auto;right:4px}\n.main-timeline7 .year[data-v-474efd32]:after{left:auto;right:50px;border-right:10px solid #303a3b;border-left:none}\n.main-timeline7 .timeline-content .description[data-v-474efd32]{color:#666}\n.main-timeline7 .timeline-content[data-v-474efd32],.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]{text-align:left;padding:18px 40px 18px 100px}\n.main-timeline7 .timeline-content[data-v-474efd32]:after,.main-timeline7 .timeline-content[data-v-474efd32]:before{width:0;height:0}\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/******************* Timeline Demo - 7 *****************/\n.main-timeline7[data-v-474efd32]{overflow:hidden;position:relative}\n.main-timeline7 .timeline[data-v-474efd32]{width:50%;float:left;z-index:1;position:relative}\n.main-timeline7 .timeline[data-v-474efd32]:after,.main-timeline7 .timeline[data-v-474efd32]:before{content:\"\";display:block;clear:both}\n.main-timeline7 .timeline[data-v-474efd32]:before{content:\"\";width:40px;height:90%;background:#727cb6;position:absolute;top:10%;right:-20px}\n.main-timeline7 .timeline[data-v-474efd32]:last-child:before{height:0}\n.main-timeline7 .timeline-icon[data-v-474efd32]{width:80px;height:80px;border-radius:50%;background:#727cb6;overflow:hidden;text-align:center;position:absolute;top:0;right:-40px;z-index:3}\n.main-timeline7 .timeline-icon[data-v-474efd32]:before{content:\"\";width:60px;height:60px;border-radius:50%;background:#fff;border:2px solid #727cb6;box-shadow:0 0 0 4px #a5afe4;margin:auto;position:absolute;top:0;left:0;bottom:0;right:0}\n.main-timeline7 .timeline-icon i[data-v-474efd32]{font-size:35px;color:#303a3b;line-height:80px;z-index:1;position:relative}\n.main-timeline7 .year[data-v-474efd32]{display:block;padding:0 60px 0 30px;font-size:12px;color:#303a3b;text-align:right;border-bottom:2px solid #303a3b;z-index:2;position:relative}\n.main-timeline7 .year[data-v-474efd32]:before{content:\"\";display:block;width:30px;height:30px;border-radius:50%;background:#727cb6;border:5px solid #fff;box-shadow:0 0 0 4px #727cb6;margin:auto;position:absolute;bottom:-15px;left:4px}\n.main-timeline7 .year[data-v-474efd32]:after{content:\"\";border-left:10px solid #303a3b;border-top:10px solid transparent;border-bottom:10px solid transparent;position:absolute;bottom:-11px;left:50px}\n.main-timeline7 .timeline-content[data-v-474efd32]{padding:18px 60px 18px 40px;text-align:right;position:relative;z-index:1\n}\n.main-timeline7 .timeline-content[data-v-474efd32]:after,.main-timeline7 .timeline-content[data-v-474efd32]:before{content:\"\";width:80px;height:0;border-radius:50%;background:#000;position:absolute;top:-7%;right:15px;z-index:-1}\n.main-timeline7 .timeline-content[data-v-474efd32]:after{left:auto;right:-95px}\n.main-timeline7 .timeline:last-child .timeline-content[data-v-474efd32]:after,.main-timeline7 .timeline:last-child .timeline-content[data-v-474efd32]:before{width:0;height:0}\n.main-timeline7 .title[data-v-474efd32]{font-size:22px;font-weight:700;color:#727cb6;margin-top:0}\n.main-timeline7 .description[data-v-474efd32]{font-size:15px;color:#7f8386;line-height:25px}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(2){margin-top:140px}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(even){margin-bottom:80px}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(odd){margin:-140px 0 0}\n.main-timeline7 .timeline[data-v-474efd32]:first-child,.main-timeline7 .timeline[data-v-474efd32]:last-child:nth-child(even){margin:0!important}\n.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32],.main-timeline7 .timeline[data-v-474efd32]:nth-child(2n):before{right:auto;left:-20px;background:#e77e21}\n.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32]{left:-40px}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]{padding:0 30px 0 60px;text-align:left}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:before{left:auto;right:3px}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:after{border-left:none;border-right:10px solid #303a3b;right:50px}\n.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]{padding:18px 40px 18px 60px;text-align:left}\n.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]:before{left:-95px}\n.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]:after{left:15px}\n.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32]:before{border-color:#e77e21;box-shadow:0 0 0 4px #f1a563}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:before{background:#e77e21;box-shadow:0 0 0 4px #e77e21}\n.main-timeline7 .timeline:nth-child(2n) .title[data-v-474efd32]{color:#e77e21}\n.main-timeline7 .timeline:nth-child(3n) .timeline-icon[data-v-474efd32],.main-timeline7 .timeline[data-v-474efd32]:nth-child(3n):before{background:#008b8b}\n.main-timeline7 .timeline:nth-child(3n) .timeline-icon[data-v-474efd32]:before{border-color:#008b8b;box-shadow:0 0 0 4px #50b5b4}\n.main-timeline7 .timeline:nth-child(3n) .year[data-v-474efd32]:before{background:#008b8b;box-shadow:0 0 0 4px #008b8b}\n.main-timeline7 .timeline:nth-child(3n) .title[data-v-474efd32]{color:#008b8b}\n.main-timeline7 .timeline:nth-child(4n) .timeline-icon[data-v-474efd32],.main-timeline7 .timeline[data-v-474efd32]:nth-child(4n):before{background:#ed687c}\n.main-timeline7 .timeline:nth-child(4n) .timeline-icon[data-v-474efd32]:before{border-color:#ed687c;box-shadow:0 0 0 4px #f798a8}\n.main-timeline7 .timeline:nth-child(4n) .year[data-v-474efd32]:before{background:#ed687c;box-shadow:0 0 0 4px #ed687c}\n.main-timeline7 .timeline:nth-child(4n) .title[data-v-474efd32]{color:#ed687c}\n@media only screen and (max-width:990px){.main-timeline7 .timeline[data-v-474efd32]{width:100%}\n.main-timeline7 .timeline[data-v-474efd32]:nth-child(even),.main-timeline7 .timeline[data-v-474efd32]:nth-child(odd){margin:0}\n.main-timeline7 .timeline[data-v-474efd32]:before,.main-timeline7 .timeline[data-v-474efd32]:nth-child(2n):before{width:30px;height:100%;left:25px}\n.main-timeline7 .timeline-icon[data-v-474efd32],.main-timeline7 .timeline:nth-child(2n) .timeline-icon[data-v-474efd32]{left:0}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32],.main-timeline7 .year[data-v-474efd32]{text-align:left;padding:0 30px 0 100px}\n.main-timeline7 .timeline:nth-child(2n) .year[data-v-474efd32]:before,.main-timeline7 .year[data-v-474efd32]:before{left:auto;right:4px}\n.main-timeline7 .year[data-v-474efd32]:after{left:auto;right:50px;border-right:10px solid #303a3b;border-left:none}\n.main-timeline7 .timeline-content .description[data-v-474efd32]{color:#666}\n.main-timeline7 .timeline-content[data-v-474efd32],.main-timeline7 .timeline:nth-child(2n) .timeline-content[data-v-474efd32]{text-align:left;padding:18px 40px 18px 100px}\n.main-timeline7 .timeline-content[data-v-474efd32]:after,.main-timeline7 .timeline-content[data-v-474efd32]:before{width:0;height:0}\n}\r\n", ""]);
 
 // exports
 
@@ -66640,9 +66907,7 @@ var render = function() {
                     [
                       _c("img", { attrs: { src: "img/favicon.png", alt: "" } }),
                       _vm._v(
-                        "\n                    TTI - Confirmatory Testing " +
-                          _vm._s(_vm.user) +
-                          "\n                "
+                        "\n                    TTI - Confirmatory Testing\n                "
                       )
                     ]
                   ),
@@ -66699,145 +66964,70 @@ var render = function() {
                     "b-navbar-nav",
                     { staticClass: "mr-auto" },
                     [
-                      _c(
-                        "b-nav-item",
-                        [
-                          _c(
-                            "router-link",
+                      _vm._l(_vm.navItems, function(item, i) {
+                        return _c(
+                          "b-nav-item",
+                          { key: i },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "nav-link text-nowrap",
+                                attrs: { to: item.to }
+                              },
+                              [
+                                _vm._v(_vm._s(item.text) + "    "),
+                                _c("i", {
+                                  staticClass: "fa fa-angle-double-right"
+                                })
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      }),
+                      _vm._v(" "),
+                      _vm.user.facility_cd == "RITM"
+                        ? _c(
+                            "b-nav-item-dropdown",
                             {
                               staticClass: "nav-link text-nowrap",
-                              attrs: { to: "/request" }
+                              attrs: { text: "Administration" }
                             },
-                            [
-                              _vm._v("Confirmatory Request    "),
-                              _c("i", {
-                                staticClass: "fa fa-angle-double-right"
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-nav-item",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link text-nowrap",
-                              attrs: { to: "/receiving", nowrap: "" }
-                            },
-                            [
-                              _vm._v("Receiving    "),
-                              _c("i", {
-                                staticClass: "fa fa-angle-double-right"
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-nav-item",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link text-nowrap",
-                              attrs: { to: "/testing", nowrap: "" }
-                            },
-                            [
-                              _vm._v("Testing    "),
-                              _c("i", {
-                                staticClass: "fa fa-angle-double-right"
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-nav-item",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link text-nowrap",
-                              attrs: { to: "/report", nowrap: "" }
-                            },
-                            [
-                              _vm._v("Reports    "),
-                              _c("i", {
-                                staticClass: "fa fa-angle-double-right"
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-nav-item",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link text-nowrap",
-                              attrs: { to: "/stockyard", nowrap: "" }
-                            },
-                            [
-                              _vm._v("Stock yard    "),
-                              _c("i", {
-                                staticClass: "fa fa-angle-double-right"
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-nav-item-dropdown",
-                        {
-                          staticClass: "nav-link text-nowrap",
-                          attrs: { text: "Administration" }
-                        },
-                        [
-                          _c(
-                            "b-dropdown-item",
                             [
                               _c(
-                                "router-link",
-                                {
-                                  staticClass: "nav-dropdown-link",
-                                  attrs: { to: "/users" }
-                                },
-                                [_vm._v("User Accounts")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-dropdown-item",
-                            [
+                                "b-dropdown-item",
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "nav-dropdown-link",
+                                      attrs: { to: "/users" }
+                                    },
+                                    [_vm._v("User Accounts")]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
                               _c(
-                                "router-link",
-                                {
-                                  staticClass: "nav-dropdown-link",
-                                  attrs: { to: "/references" }
-                                },
-                                [_vm._v("Manage References")]
+                                "b-dropdown-item",
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "nav-dropdown-link",
+                                      attrs: { to: "/references" }
+                                    },
+                                    [_vm._v("Manage References")]
+                                  )
+                                ],
+                                1
                               )
                             ],
                             1
                           )
-                        ],
-                        1
-                      ),
+                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "b-nav-item",
@@ -66858,7 +67048,7 @@ var render = function() {
                         1
                       )
                     ],
-                    1
+                    2
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -66877,7 +67067,7 @@ var render = function() {
                             },
                             [
                               _c("i", { staticClass: "fa fa-user-circle" }),
-                              _vm._v("  Abdul Mahatir Aljamalul Kiram")
+                              _vm._v("  " + _vm._s(_vm.user.name))
                             ]
                           ),
                           _vm._v(" "),
@@ -66888,23 +67078,22 @@ var render = function() {
                               staticStyle: { "list-style-type": "none" }
                             },
                             [
-                              _c("span", { staticClass: "small" }, [
-                                _vm._v("Administrator | "),
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass: "text-white",
-                                    attrs: { href: "#" },
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.logout($event)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("logout")]
-                                )
-                              ])
+                              _c(
+                                "span",
+                                { staticClass: "small" },
+                                [
+                                  _vm._v(_vm._s(_vm.user.position) + " | "),
+                                  _c(
+                                    "b-button",
+                                    {
+                                      attrs: { variant: "dark", size: "sm" },
+                                      on: { click: _vm.performLogout }
+                                    },
+                                    [_vm._v("Logout")]
+                                  )
+                                ],
+                                1
+                              )
                             ]
                           )
                         ])
@@ -67611,11 +67800,19 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-row",
-        { staticClass: "mt-5" },
+        { staticClass: "mt-3" },
         [
-          _c("b-col", [_c("details-form")], 1),
+          _c(
+            "b-col",
+            [_c("details-form", { on: { referralSet: _vm.setReferral } })],
+            1
+          ),
           _vm._v(" "),
-          _c("b-col", [_c("timeline")], 1)
+          _c(
+            "b-col",
+            [_c("timeline", { attrs: { referral: _vm.referral } })],
+            1
+          )
         ],
         1
       )
@@ -67652,7 +67849,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-input-group",
-        { staticClass: "mb-3" },
+        { staticClass: "mb-3", attrs: { size: "sm" } },
         [
           _c(
             "label",
@@ -67668,22 +67865,51 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("b-input", {
-            attrs: { placeholder: "Scan /Enter Donation ID" },
+            ref: "donation_id",
+            attrs: {
+              placeholder: "Scan /Enter Donation ID",
+              state: _vm.donation_id_state
+            },
             model: {
-              value: _vm.hasResult,
+              value: _vm.donation_id,
               callback: function($$v) {
-                _vm.hasResult = $$v
+                _vm.donation_id = $$v
               },
-              expression: "hasResult"
+              expression: "donation_id"
             }
-          })
+          }),
+          _vm._v(" "),
+          _vm.donation_id_busy
+            ? _c(
+                "div",
+                {
+                  staticClass: "text-center mt-1 ml-3",
+                  attrs: { slot: "append" },
+                  slot: "append"
+                },
+                [
+                  _c("b-img", {
+                    attrs: {
+                      src: "./img/loading-circle.gif",
+                      width: "27",
+                      height: "27"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("b-form-invalid-feedback", [
+            _vm._v("\n            Referral not found\n        ")
+          ])
         ],
         1
       ),
       _vm._v(" "),
       _c(
         "b-input-group",
-        { staticClass: "mb-3" },
+        { staticClass: "mb-3", attrs: { size: "sm" } },
         [
           _c(
             "label",
@@ -67699,250 +67925,36 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("b-input", {
-            attrs: { placeholder: "Scan /Enter Confirmatory Request #" },
+            attrs: {
+              placeholder: "Scan /Enter Confirmatory Request #",
+              disabled: _vm.confirmatory_reference_number_disabled
+            },
             model: {
-              value: _vm.confirmatoryNum,
+              value: _vm.confirmatory_reference_number,
               callback: function($$v) {
-                _vm.confirmatoryNum = $$v
+                _vm.confirmatory_reference_number = $$v
               },
-              expression: "confirmatoryNum"
+              expression: "confirmatory_reference_number"
             }
           })
         ],
         1
       ),
       _vm._v(" "),
-      _c("h5", { staticClass: "text-info" }, [_vm._v("Request Details")]),
-      _vm._v(" "),
-      _vm.hasResult
+      _vm.referral
         ? _c(
             "b-form-group",
             { staticClass: "mt-3" },
             [
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-building" }),
-                      _vm._v(" Requesting Facility:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.facility,
-                      callback: function($$v) {
-                        _vm.facility = $$v
-                      },
-                      expression: "facility"
-                    }
-                  })
-                ],
-                1
-              ),
+              _c("request-details-card", { attrs: { referral: _vm.referral } }),
+              _vm._v(" "),
+              _c("blood-sample-details-card", {
+                attrs: { referral: _vm.referral }
+              }),
               _vm._v(" "),
               _c(
                 "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-user" }),
-                      _vm._v(" Requested By:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.pointperson,
-                      callback: function($$v) {
-                        _vm.pointperson = $$v
-                      },
-                      expression: "pointperson"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-user" }),
-                      _vm._v(" Position:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.position,
-                      callback: function($$v) {
-                        _vm.position = $$v
-                      },
-                      expression: "position"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-calendar" }),
-                      _vm._v(" Date of Request:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.requestDate,
-                      callback: function($$v) {
-                        _vm.requestDate = $$v
-                      },
-                      expression: "requestDate"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("h5", { staticClass: "text-info mt-4" }, [
-                _vm._v("Blood Sample Details")
-              ]),
-              _vm._v(" "),
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-tint" }),
-                      _vm._v(" Specimen #:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.specimen,
-                      callback: function($$v) {
-                        _vm.specimen = $$v
-                      },
-                      expression: "specimen"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-tint" }),
-                      _vm._v(" Blood Type:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.bloodtype,
-                      callback: function($$v) {
-                        _vm.bloodtype = $$v
-                      },
-                      expression: "bloodtype"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
-                [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "input-group-text",
-                      attrs: { slot: "prepend", for: "" },
-                      slot: "prepend"
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-tint" }),
-                      _vm._v(" Reactive For:\n            ")
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("b-input", {
-                    attrs: { placeholder: "", disabled: "" },
-                    model: {
-                      value: _vm.tti,
-                      callback: function($$v) {
-                        _vm.tti = $$v
-                      },
-                      expression: "tti"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-input-group",
-                { staticClass: "mb-3" },
+                { staticClass: "mb-3", attrs: { size: "sm" } },
                 [
                   _c("b-col", { attrs: { sm: "2" } }, [
                     _vm._v("\n                 \n            ")
@@ -67972,7 +67984,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "b-input-group",
-                { staticClass: "mt-3" },
+                { staticClass: "mt-3", attrs: { size: "sm" } },
                 [
                   _c("label", { staticClass: "col-sm-2", attrs: { for: "" } }, [
                     _c("strong", [_vm._v("Remarks:")])
@@ -68016,12 +68028,25 @@ var render = function() {
                           attrs: {
                             variant: "danger",
                             block: "",
-                            disabled: _vm.accept
+                            disabled:
+                              _vm.accept &&
+                              (_vm.reject_busy || _vm.receive_busy)
                           }
                         },
                         [
-                          _c("i", { staticClass: "fa fa-trash" }),
-                          _vm._v(" REJECT\n                ")
+                          _vm.reject_busy
+                            ? _c("span", [
+                                _c("i", { staticClass: "fa fa-spinner" }),
+                                _vm._v(" REJECTING..\n                    ")
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !_vm.reject_busy
+                            ? _c("span", [
+                                _c("i", { staticClass: "fa fa-trash" }),
+                                _vm._v(" REJECT\n                    ")
+                              ])
+                            : _vm._e()
                         ]
                       )
                     ],
@@ -68034,16 +68059,37 @@ var render = function() {
                       _c(
                         "b-button",
                         {
+                          directives: [
+                            {
+                              name: "b-modal",
+                              rawName: "v-b-modal.confirmReceive",
+                              modifiers: { confirmReceive: true }
+                            }
+                          ],
                           attrs: {
                             variant: "success",
                             block: "",
                             title: "Accept the Blood sample",
-                            disabled: !_vm.accept
+                            disabled:
+                              !_vm.accept ||
+                              !_vm.confirmatory_reference_number_valid ||
+                              (_vm.reject_busy || _vm.receive_busy)
                           }
                         },
                         [
-                          _c("i", { staticClass: "fa fa-check" }),
-                          _vm._v(" ACCEPT\n                ")
+                          _vm.receive_busy
+                            ? _c("span", [
+                                _c("i", { staticClass: "fa fa-spinner" }),
+                                _vm._v(" ACCEPTING..\n                    ")
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !_vm.receive_busy
+                            ? _c("span", [
+                                _c("i", { staticClass: "fa fa-check" }),
+                                _vm._v(" ACCEPT\n                    ")
+                              ])
+                            : _vm._e()
                         ]
                       )
                     ],
@@ -68057,7 +68103,7 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      !_vm.hasResult
+      !_vm.referral
         ? _c("div", { staticClass: "form-group text-center" }, [
             _vm._v("\n        No records to display\n    ")
           ])
@@ -68065,7 +68111,13 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-modal",
-        { attrs: { id: "rejectModal", "header-bg-variant": "primary" } },
+        {
+          attrs: {
+            id: "rejectModal",
+            "header-bg-variant": "danger",
+            "header-text-variant": "light"
+          }
+        },
         [
           _c("template", { slot: "modal-title" }, [
             _c(
@@ -68103,6 +68155,13 @@ var render = function() {
                   placeholder:
                     "Type-in the reason for the rejection of the specimen",
                   rows: "8"
+                },
+                model: {
+                  value: _vm.reject_reason,
+                  callback: function($$v) {
+                    _vm.reject_reason = $$v
+                  },
+                  expression: "reject_reason"
                 }
               })
             ],
@@ -68113,14 +68172,372 @@ var render = function() {
             "template",
             { slot: "modal-footer" },
             [
-              _c("b-button", { attrs: { variant: "primary" } }, [
-                _vm._v("SUBMIT")
-              ])
+              _c(
+                "b-button",
+                {
+                  directives: [
+                    {
+                      name: "b-modal",
+                      rawName: "v-b-modal.confirmReject",
+                      modifiers: { confirmReject: true }
+                    }
+                  ],
+                  attrs: { variant: "primary", disabled: !_vm.reject_reason }
+                },
+                [_vm._v("SUBMIT")]
+              )
             ],
             1
           )
         ],
         2
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "confirmReceive",
+            "header-bg-variant": "info",
+            "header-text-variant": "light",
+            title: "Receive Referral"
+          },
+          on: { ok: _vm.receive }
+        },
+        [
+          _vm._v(
+            "\n        Confirm that this referral has been received?\n    "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "confirmReject",
+            "header-bg-variant": "danger",
+            "header-text-variant": "light",
+            title: "Reject Referral"
+          },
+          on: { ok: _vm.reject }
+        },
+        [
+          _vm._v(
+            "\n        Are you sure you wan't to reject this referral?\n    "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            id: "processDone",
+            "header-bg-variant": "success",
+            "header-text-variant": "light",
+            title:
+              (_vm.process_mode == "RECEIVE" ? "Receive" : "Reject") +
+              " Successful",
+            "ok-only": ""
+          }
+        },
+        [
+          _vm.process_mode == "RECEIVE"
+            ? _c("div", [
+                _vm._v(
+                  "\n            The confirmatory referral has been succesfully received!\n        "
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.process_mode == "REJECT"
+            ? _c("div", [
+                _vm._v(
+                  "\n            The confirmatory referral has been rejected!\n        "
+                )
+              ])
+            : _vm._e()
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h5", { staticClass: "text-info mt-4" }, [
+        _vm._v("Blood Sample Details")
+      ]),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-tint" }),
+              _vm._v(" Specimen #:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.referral.specimen.name,
+              callback: function($$v) {
+                _vm.$set(_vm.referral.specimen, "name", $$v)
+              },
+              expression: "referral.specimen.name"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-tint" }),
+              _vm._v(" Blood Type:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.referral.donation.blood_type,
+              callback: function($$v) {
+                _vm.$set(_vm.referral.donation, "blood_type", $$v)
+              },
+              expression: "referral.donation.blood_type"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-tint" }),
+              _vm._v(" Reactive For:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.reactive_for,
+              callback: function($$v) {
+                _vm.reactive_for = $$v
+              },
+              expression: "reactive_for"
+            }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=template&id=2d6cbc03&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=template&id=2d6cbc03& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h5", { staticClass: "text-info" }, [_vm._v("Request Details")]),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-building" }),
+              _vm._v(" Requesting Facility:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.referral.donation.facility.facility_name,
+              callback: function($$v) {
+                _vm.$set(_vm.referral.donation.facility, "facility_name", $$v)
+              },
+              expression: "referral.donation.facility.facility_name"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-user" }),
+              _vm._v(" Requested By:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.referral.request_by.name,
+              callback: function($$v) {
+                _vm.$set(_vm.referral.request_by, "name", $$v)
+              },
+              expression: "referral.request_by.name"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-user" }),
+              _vm._v(" Position:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.referral.request_by.position,
+              callback: function($$v) {
+                _vm.$set(_vm.referral.request_by, "position", $$v)
+              },
+              expression: "referral.request_by.position"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-input-group",
+        { staticClass: "mb-3", attrs: { size: "sm" } },
+        [
+          _c(
+            "label",
+            {
+              staticClass: "input-group-text",
+              attrs: { slot: "prepend", for: "" },
+              slot: "prepend"
+            },
+            [
+              _c("i", { staticClass: "fa fa-calendar" }),
+              _vm._v(" Date of Request:\n        ")
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-input", {
+            attrs: { placeholder: "", disabled: "" },
+            model: {
+              value: _vm.referral.created_dt,
+              callback: function($$v) {
+                _vm.$set(_vm.referral, "created_dt", $$v)
+              },
+              expression: "referral.created_dt"
+            }
+          })
+        ],
+        1
       )
     ],
     1
@@ -70183,7 +70600,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-input-group",
-        { staticClass: "mb-3" },
+        { staticClass: "mb-3", attrs: { size: "sm" } },
         [
           _c(
             "label",
@@ -70249,7 +70666,7 @@ var render = function() {
             [
               _c(
                 "b-input-group",
-                { staticClass: "mb-3" },
+                { staticClass: "mb-3", attrs: { size: "sm" } },
                 [
                   _c(
                     "label",
@@ -70284,7 +70701,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "b-input-group",
-                { staticClass: "mb-3" },
+                { staticClass: "mb-3", attrs: { size: "sm" } },
                 [
                   _c(
                     "label",
@@ -70319,7 +70736,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "b-input-group",
-                { staticClass: "mb-3" },
+                { staticClass: "mb-3", attrs: { size: "sm" } },
                 [
                   _c(
                     "label",
@@ -70350,7 +70767,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "b-input-group",
-                { staticClass: "mb-3" },
+                { staticClass: "mb-3", attrs: { size: "sm" } },
                 [
                   _c(
                     "label",
@@ -70431,7 +70848,7 @@ var render = function() {
                     [
                       _c(
                         "b-input-group",
-                        { staticClass: "mb-3" },
+                        { staticClass: "mb-3", attrs: { size: "sm" } },
                         [
                           _c(
                             "label",
@@ -70489,7 +70906,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "b-input-group",
-                        { staticClass: "mb-3" },
+                        { staticClass: "mb-3", attrs: { size: "sm" } },
                         [
                           _c(
                             "label",
@@ -70541,7 +70958,7 @@ var render = function() {
                     [
                       _c(
                         "b-input-group",
-                        { staticClass: "mb-3" },
+                        { staticClass: "mb-3", attrs: { size: "sm" } },
                         [
                           _c(
                             "label",
@@ -70577,7 +70994,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "b-input-group",
-                        { staticClass: "mb-3" },
+                        { staticClass: "mb-3", attrs: { size: "sm" } },
                         [
                           _c(
                             "label",
@@ -70752,7 +71169,7 @@ var render = function() {
         [
           _c("b-col", [_c("stockyard-form")], 1),
           _vm._v(" "),
-          _c("b-col", [_c("cryobox"), _vm._v(" "), _c("ref")], 1)
+          _c("b-col", [_c("cryobox")], 1)
         ],
         1
       )
@@ -71338,7 +71755,12 @@ var render = function() {
       _c("comp-url", [_vm._v("Timeline")]),
       _vm._v(" "),
       _c("div", { staticClass: "container" }, [
-        _c("div", { staticClass: "row" }, [_c("timeline-slot")], 1)
+        _c(
+          "div",
+          { staticClass: "row" },
+          [_c("timeline-slot", { attrs: { referral: _vm.referral } })],
+          1
+        )
       ])
     ],
     1
@@ -71371,44 +71793,48 @@ var render = function() {
     [
       _c("comp-url", [_vm._v("Timeline / TimelineSlot")]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-12" }, [
-        _c(
-          "div",
-          { staticClass: "main-timeline7" },
-          _vm._l(_vm.timelines, function(timeline, i) {
-            return _c("div", { key: i, staticClass: "timeline" }, [
-              _c("div", { staticClass: "timeline-icon" }, [
-                _c("i", { class: "fa fa-" + timeline.icon })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "year" }, [_vm._v(" ")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "timeline-content" }, [
-                _c("h5", { staticClass: "title" }, [
-                  _vm._v(_vm._s(timeline.title))
+      _c(
+        "div",
+        { staticStyle: { "min-width": "550px", "min-height": "1000px" } },
+        [
+          _c(
+            "div",
+            { staticClass: "main-timeline7" },
+            _vm._l(_vm.timelines, function(timeline, i) {
+              return _c("div", { key: i, staticClass: "timeline" }, [
+                _c("div", { staticClass: "timeline-icon" }, [
+                  _c("i", { class: "fa fa-" + timeline.icon })
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "name lead" }, [
-                  _vm._v(_vm._s(timeline.name))
-                ]),
+                _c("span", { staticClass: "year" }, [_vm._v(" ")]),
                 _vm._v(" "),
-                _c("div", { staticClass: "description" }, [
-                  _c("span", { staticClass: "small text-success" }, [
-                    _c("i", { class: "fa fa-" + timeline.icon }),
-                    _vm._v(" " + _vm._s(timeline.description))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("small", { staticClass: "text-info" }, [
-                  _vm._v(_vm._s(timeline.date))
-                ]),
-                _c("div")
+                _c("div", { staticClass: "timeline-content" }, [
+                  _c("h5", { staticClass: "title" }, [
+                    _vm._v(_vm._s(timeline.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "name lead" }, [
+                    _vm._v(_vm._s(timeline.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "description" }, [
+                    _c("span", { staticClass: "small text-success" }, [
+                      _c("i", { class: "fa fa-" + timeline.icon }),
+                      _vm._v(" " + _vm._s(timeline.description))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("small", { staticClass: "text-info" }, [
+                    _vm._v(_vm._s(timeline.date))
+                  ]),
+                  _c("div")
+                ])
               ])
-            ])
-          }),
-          0
-        )
-      ])
+            }),
+            0
+          )
+        ]
+      )
     ],
     1
   )
@@ -88991,6 +89417,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BloodSampleDetailsCard_vue_vue_type_template_id_46c5a5ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae& */ "./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae&");
+/* harmony import */ var _BloodSampleDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BloodSampleDetailsCard.vue?vue&type=script&lang=js& */ "./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BloodSampleDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BloodSampleDetailsCard_vue_vue_type_template_id_46c5a5ae___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BloodSampleDetailsCard_vue_vue_type_template_id_46c5a5ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BloodSampleDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./BloodSampleDetailsCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BloodSampleDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae& ***!
+  \***************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BloodSampleDetailsCard_vue_vue_type_template_id_46c5a5ae___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/BloodSampleDetailsCard.vue?vue&type=template&id=46c5a5ae&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BloodSampleDetailsCard_vue_vue_type_template_id_46c5a5ae___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BloodSampleDetailsCard_vue_vue_type_template_id_46c5a5ae___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RequestDetailsCard_vue_vue_type_template_id_2d6cbc03___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RequestDetailsCard.vue?vue&type=template&id=2d6cbc03& */ "./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=template&id=2d6cbc03&");
+/* harmony import */ var _RequestDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RequestDetailsCard.vue?vue&type=script&lang=js& */ "./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RequestDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RequestDetailsCard_vue_vue_type_template_id_2d6cbc03___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RequestDetailsCard_vue_vue_type_template_id_2d6cbc03___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./RequestDetailsCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestDetailsCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=template&id=2d6cbc03&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=template&id=2d6cbc03& ***!
+  \***********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestDetailsCard_vue_vue_type_template_id_2d6cbc03___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./RequestDetailsCard.vue?vue&type=template&id=2d6cbc03& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Receive/DetailsForm/RequestDetailsCard.vue?vue&type=template&id=2d6cbc03&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestDetailsCard_vue_vue_type_template_id_2d6cbc03___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RequestDetailsCard_vue_vue_type_template_id_2d6cbc03___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Receive/RegisterLoc.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/Receive/RegisterLoc.vue ***!
@@ -90985,12 +91549,18 @@ var donation = {
       donation_id: 'NVBSP20190000111',
       blood_type: 'A POS',
       donation_dt: '2018-11-05',
-      reactiveResults: ['HIV']
+      reactiveResults: ['HIV'],
+      facility: {
+        facility_name: 'Philippine Blood Center'
+      }
     }, {
       donation_id: 'NVBSP20190000112',
       blood_type: 'O POS',
       donation_dt: '2019-01-23',
-      reactiveResults: ['MALA']
+      reactiveResults: ['MALA'],
+      facility: {
+        facility_name: 'Philippine Blood Center'
+      }
     }]
   },
   actions: {
@@ -91023,7 +91593,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "referral", function() { return referral; });
 var referral = {
   state: {
-    referrals: []
+    referrals: [{
+      "donation": {
+        "donation_id": "NVBSP20190000111",
+        "blood_type": "A POS",
+        "donation_dt": "2018-11-05",
+        "reactiveResults": ["HIV"],
+        "facility": {
+          "facility_name": "Philippine Blood Center"
+        }
+      },
+      "courier": {
+        "fname": null,
+        "mname": null,
+        "lname": null,
+        "contact_no": null,
+        "provider": 0,
+        "reference_no": "1"
+      },
+      "courierMode": "Courier",
+      "donation_id": "NVBSP20190000111",
+      "confirmatory_reference_no": null,
+      "specimen": {
+        id: 0,
+        name: 'SPL 1'
+      },
+      "request_by": {
+        "username": "bsf",
+        "facility_cd": "BSF",
+        "name": "Rico Blanko",
+        "position": "RMT"
+      },
+      "created_dt": "2019-06-17T12:38:45.982Z",
+      "id": 0
+    }]
   },
   getters: {
     referrals: function referrals(state) {
@@ -91033,13 +91636,40 @@ var referral = {
   mutations: {
     newReferral: function newReferral(state, payload) {
       state.referrals.push(payload);
+    },
+    receiveOrRejectReferral: function receiveOrRejectReferral(state, payload) {
+      var referral = _.find(state.referrals, function (r) {
+        return r.donation_id.toUpperCase() == payload.donation_id.toUpperCase();
+      });
+
+      _.extend(referral, payload);
     }
   },
   actions: {
+    fetchReferral: function fetchReferral(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          var referral = _.find(context.getters.referrals, {
+            donation_id: payload
+          });
+
+          resolve(referral);
+        }, 500);
+      });
+    },
     newReferral: function newReferral(context, payload) {
       return new Promise(function (resolve, reject) {
         setTimeout(function (i) {
+          payload.id = context.getters.referrals.length;
           context.commit('newReferral', payload);
+          resolve(true);
+        }, 500);
+      });
+    },
+    receiveOrRejectReferral: function receiveOrRejectReferral(context, payload) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function (i) {
+          context.commit('receiveOrRejectReferral', payload);
           resolve(true);
         }, 500);
       });
@@ -91062,20 +91692,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "user", function() { return user; });
 var user = {
   state: {
+    users: [{
+      username: 'ritm',
+      facility_cd: 'RITM',
+      name: 'Juan Karlos',
+      position: 'RMT'
+    }, {
+      username: 'bsf',
+      facility_cd: 'BSF',
+      name: 'Rico Blanko',
+      position: 'RMT'
+    }],
     user: null
   },
   getters: {
+    users: function users(state) {
+      return state.users;
+    },
     user: function user(state) {
       return state.user;
     }
   },
   mutations: {
     initUser: function initUser(state, payload) {
-      var user = payload.user;
-
-      if (user) {
-        state.user = user;
-      }
+      state.user = payload;
     }
   },
   actions: {
@@ -91085,18 +91725,11 @@ var user = {
     attemptLogin: function attemptLogin(context, payload) {
       return new Promise(function (resolve, reject) {
         setTimeout(function (i) {
-          if (payload.username == 'ritm') {
-            var _user = {
-              username: 'ritm',
-              facility_cd: 'RITM',
-              name: 'Juan Karlos',
-              position: 'RMT'
-            };
-            context.dispatch('initUser', _user);
-            resolve(_user);
-          } else {
-            resolve(false);
-          }
+          var user = _.find(context.getters.users, {
+            username: payload.username
+          });
+
+          resolve(user);
         }, 500);
       });
     }
@@ -91124,8 +91757,8 @@ var user = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\WORK\XAMPP\htdocs\cts\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\WORK\XAMPP\htdocs\cts\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\WEB\htdocs\cts\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\WEB\htdocs\cts\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

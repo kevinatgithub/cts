@@ -3,7 +3,7 @@
         <comp-url>Timeline</comp-url>
         <div class="container">
             <div class="row">
-                <timeline-slot></timeline-slot>
+                <timeline-slot :referral="referral"></timeline-slot>
             </div> <!-- row-->
         </div> <!-- container -->
     </div> <!-- main div -->
@@ -12,6 +12,7 @@
 <script>
 import TimelineSlot from './Timeline/TimelineSlot'
 export default {
+   props : ['referral'],
    components: {TimelineSlot}
 }
 </script>

@@ -1,9 +1,8 @@
 <template>
     <div>
         <comp-url>Timeline / TimelineSlot</comp-url>
-        <div class="col-md-12">
+        <div style="min-width : 550px;min-height:1000px;">
             <div class="main-timeline7">
-
                 <div class="timeline" v-for="(timeline, i) in timelines" :key="i">
                     <div class="timeline-icon"><i :class="'fa fa-' + timeline.icon"></i></div>
                     <span class="year">&nbsp;</span>
@@ -16,25 +15,70 @@
                         <small class="text-info">{{timeline.date}}</small><div></div>
                     </div>
                 </div> 
-               
             </div> <!-- main-timeline7 -->
         </div> <!-- col-md-12 -->
     </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
+    props : ['referral'],
     data(){
         return{
-            timelines:[
-                { title : 'Request Sent', name : 'NVBSP-IMU', description : 'CTS2019-000001', date: 'Mon, April 22, 2019 09:45:45AM', icon:'paper-plane' },
-                { title : 'Receive Specimen', name : 'Pedro Pendukot', description : 'accepted', date: 'Tue, April 23, 2019 09:45:45AM', icon:'database' },
-                { title : 'Test Specimen', name : 'Sharle Lilipad', description : 'done final interpretation', date: 'Thu, April 25, 2019 09:45:45AM', icon:'tint' },
-                { title : 'Submit Final Interpretation', name : 'Mahatir Muhammad', description : 'submit single electronic copy', date: 'Fri, April 26, 2019 09:45:45AM', icon:'info' },
-            ],
+            // timelines:[
+            //     { title : 'Request Sent', name : 'NVBSP-IMU', description : 'CTS2019-000001', date: 'Mon, April 22, 2019 09:45:45AM', icon:'paper-plane' },
+            //     { title : 'Receive Specimen', name : 'Pedro Pendukot', description : 'accepted', date: 'Tue, April 23, 2019 09:45:45AM', icon:'database' },
+            //     { title : 'Test Specimen', name : 'Sharle Lilipad', description : 'done final interpretation', date: 'Thu, April 25, 2019 09:45:45AM', icon:'tint' },
+            //     { title : 'Submit Final Interpretation', name : 'Mahatir Muhammad', description : 'submit single electronic copy', date: 'Fri, April 26, 2019 09:45:45AM', icon:'info' },
+            // ],
 
         }
     },
+    computed : {
+        ...mapGetters(['couriers','specimens']),
+        timelines(){
+            let timelines = [];
+            if(!this.referral){
+                return timelines
+            }
+            
+            if(this.referral.courier){
+                timelines.push(this.step1(this.referral))
+            }
+
+            if(this.referral.received_by){
+                timelines.push(this.step2(this.referral))
+            }
+
+            return timelines
+        }
+    },
+    methods : {
+        getCourierName(courier_id){
+            let courier =  _.find(this.couriers,{id:courier_id})
+            if(!courier){
+                return 
+            }else{
+                return courier.name
+            }
+        },
+        step1(referral){
+            let {referral : {donation,courier,courierMode,created_dt}} = this
+            let courier_name = courierMode == 'Hand Carry' ? courier.name : this.getCourierName(courier.provider)
+            let date = new Date(Date.parse(created_dt))
+            return {
+                title : 'Request Sent', name : courier_name, date, icon : 'paper-plane'
+            }
+        },
+        step2(referral){
+            let {referral : {received_by,received_dt}} = this
+            let status = referral.reject_reason ? 'Rejected' : 'Accepted'
+            return { 
+                title : 'Receive Specimen', name : received_by.name, description : status, date: received_dt, icon:'database' 
+            }
+        }
+    }
 
 }
 </script>

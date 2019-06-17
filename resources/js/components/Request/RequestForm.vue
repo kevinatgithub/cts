@@ -1,7 +1,7 @@
 <template>
     <div>
         <comp-url>Request / RequestForm</comp-url>
-        <b-input-group class="mb-3">
+        <b-input-group class="mb-3" size="sm">
             <label for="" class="input-group-text" slot="prepend">
                  <i class="fa fa-search"></i>&nbsp;
                     Donation ID:
@@ -21,7 +21,7 @@
 
         <b-form-group class="mt-3" v-if="donation">
             <!-- BLOOD TYPE -->
-            <b-input-group class="mb-3">
+            <b-input-group class="mb-3" size="sm">
                 <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
                     <i class="fa fa-tint"></i>&nbsp;
                     Blood Type:
@@ -30,7 +30,7 @@
             </b-input-group>
 
             <!-- REACTIVE FOR -->
-            <b-input-group class='mb-3'>
+            <b-input-group class='mb-3' size="sm">
                 <label class='input-group-text' slot='prepend'>
                     <i class='fa fa-tint'></i>&nbsp;
                     Reactive for:
@@ -39,7 +39,7 @@
             </b-input-group>
 
             <!-- DATE COLLECTED -->
-            <b-input-group class='mb-3'>
+            <b-input-group class='mb-3' size="sm">
                 <label class='input-group-text' slot='prepend'>
                     <i class='fa fa-calendar'></i>&nbsp;
                     Date Collected:
@@ -48,7 +48,7 @@
             </b-input-group>
 
             <!-- SPECIMEN -->
-            <b-input-group class='mb-3'>
+            <b-input-group class='mb-3' size="sm">
                 <label class='input-group-text' slot='prepend'>
                     <i class='fa fa-tint'></i>&nbsp;
                     Specimen type:
@@ -70,7 +70,7 @@
             <b-row>
                 <b-col v-show="courierMode == 'Hand Carry'">
                     <!-- IF HAND CARRY -->
-                    <b-input-group class="mb-3">
+                    <b-input-group class="mb-3" size="sm">
                         <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
                             <i class="fa fa-user"></i>&nbsp;
                             Person in charge:
@@ -79,7 +79,7 @@
                         <b-input placeholder="Middle Name" v-model="courier.mname"></b-input>
                         <b-input placeholder="Last Name" v-model="courier.lname"></b-input>
                     </b-input-group>
-                    <b-input-group class="mb-3">
+                    <b-input-group class="mb-3" size="sm">
                         <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
                             <i class="fa fa-phone"></i>&nbsp;
                             Contact Number:
@@ -90,14 +90,14 @@
 
                 <b-col v-show="courierMode == 'Courier'">
                     <!-- IF COURIER -->
-                    <b-input-group class="mb-3">
+                    <b-input-group class="mb-3" size="sm">
                         <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
                             <i class="fa fa-truck"></i>&nbsp;
                             Select Courier:
                         </label>
                         <b-form-select v-model="courier.provider" :options="couriers"></b-form-select>
                     </b-input-group>
-                    <b-input-group class="mb-3">
+                    <b-input-group class="mb-3" size="sm">
                         <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
                             <i class="fa fa-id-card"></i>&nbsp;
                             Reference Number:
@@ -153,8 +153,7 @@ export default {
     }, // end data
 
     mounted(){
-        this.$store.dispatch('fetchSpecimens',true)
-        this.$store.dispatch('fetchCouriers',true)
+        
     },
 
     computed : {
@@ -240,7 +239,11 @@ export default {
                 this.saving = false
                 this.donation_id = null
                 this.donation = null
-                this.courier = null
+                this.courier = {
+                    fname : null, mname : null, lname : null, provider : null, reference_no : null,
+                }
+                this.specimen = null
+                this.courierMode = null
                 this.donation_id_valid = null
                 this.$bvModal.show('success')
             })

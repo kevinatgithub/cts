@@ -9,7 +9,7 @@ const referral = {
                 "confirmatory_reference_no": null, 
                 "specimen": { id : 0, name : 'SPL 1'}, 
                 "request_by": { "username": "bsf", "facility_cd": "BSF", "name": "Rico Blanko", "position": "RMT" }, 
-                "created_dt": 1560763099658, "id": 0 
+                "created_dt": "2019-06-17T12:38:45.982Z", "id": 0 
             }
         ]
     },
@@ -22,8 +22,10 @@ const referral = {
         newReferral(state, payload) {
             state.referrals.push(payload)
         },
-        receiveReferral(state, payload) {
-            let referral = _.find(state.referrals, { id: payload.id, })
+        receiveOrRejectReferral(state, payload) {
+            let referral = _.find(state.referrals, r=> {
+                return r.donation_id.toUpperCase() == payload.donation_id.toUpperCase()
+            })
             _.extend(referral, payload)
         },
     },
@@ -31,7 +33,7 @@ const referral = {
         fetchReferral(context, payload) {
             return new Promise((resolve, reject) => {
                 setTimeout(i => {
-                    let referral = _.find(context.getters.referrals, { donation_id: payload.donation_id })
+                    let referral = _.find(context.getters.referrals, { donation_id: payload })
                     resolve(referral)
                 }, 500)
             })
@@ -45,10 +47,10 @@ const referral = {
                 }, 500)
             })
         },
-        receiveReferral(context, payload) {
+        receiveOrRejectReferral(context, payload) {
             return new Promise((resolve, reject) => {
                 setTimeout(i => {
-                    context.commit('receiveReferral', payload)
+                    context.commit('receiveOrRejectReferral', payload)
                     resolve(true)
                 }, 500)
             })

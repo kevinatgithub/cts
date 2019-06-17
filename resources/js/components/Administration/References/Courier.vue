@@ -47,10 +47,7 @@ export default {
     },
     computed : mapGetters(['couriers']),
     mounted(){
-        this.isBusy = true
-        this.$store.dispatch('fetchCouriers').then(r=>{
-            this.isBusy = false
-        })
+        
     },
     methods : {
         save(){

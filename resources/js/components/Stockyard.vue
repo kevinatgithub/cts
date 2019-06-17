@@ -13,7 +13,7 @@
             </b-col>
             <b-col>
                 <cryobox></cryobox>
-                <ref></ref>
+                <!-- <ref></ref> -->
             </b-col>
         </b-row>
     </div><!-- main div-->

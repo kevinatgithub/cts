@@ -7,12 +7,12 @@
             {text: 'Receive Blood Sample', active: true},
         ]"></b-breadcrumb>
         
-        <b-row class="mt-5">
+        <b-row class="mt-3">
             <b-col>
-                <details-form></details-form>
+                <details-form @referralSet="setReferral"></details-form>
             </b-col>
             <b-col>
-                <timeline></timeline>
+                <timeline :referral="referral"></timeline>
             </b-col>
         </b-row>
         
@@ -26,6 +26,16 @@ import DetailsForm from './Receive/DetailsForm'
 
 export default {
     components: {Timeline,DetailsForm},
+    data(){
+        return {
+            referral : null
+        }
+    },
+    methods : {
+        setReferral(referral){
+            this.referral = referral
+        }
+    }
     
 }
 </script>

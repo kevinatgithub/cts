@@ -72,9 +72,7 @@ export default {
                         { to : '/receiving' , text : 'Receiving'},
                         { to : '/testing' , text : 'Testing'},
                         { to : '/report' , text : 'Reports'},
-                        { to : '/request' , text : 'Confirmatory Request'},
                         { to : '/stockyard' , text : 'Stock yard'},
-                        { to : '/admini' , text : 'Stock yard'},
                     ];
                 }else{
                     return [

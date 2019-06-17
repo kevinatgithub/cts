@@ -45,12 +45,6 @@ export default {
     },
     mounted(){
 
-        // todo : remove
-        this.busy = true
-        let t = this
-        this.$store.dispatch('fetchSpecimens').then(res=>{
-            t.busy = false
-        })
     },
     methods : {
         doSave(){
