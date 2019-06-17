@@ -226,12 +226,16 @@ export default {
 
         save(){
             this.saving = true
+            let user = this.$store.getters.user
             this.$store.dispatch('newReferral',{
                 donation : this.donation,
                 courier : this.courier,
                 courierMode : this.courierMode,
                 donation_id : this.donation.donation_id,
                 confirmatory_reference_no : null,
+                specimen : this.specimen,
+                request_by : user,
+                created_dt : Date.now(),
             }).then(r=>{
                 this.saving = false
                 this.donation_id = null

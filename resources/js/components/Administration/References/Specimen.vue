@@ -19,7 +19,7 @@
         class="mt-3" 
         selectable 
         :items="specimens" 
-        :striped="true" 
+        striped
         select-mode="single" 
         @row-selected="specimenSelected" 
         select-variant="success"

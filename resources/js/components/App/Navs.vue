@@ -17,41 +17,34 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
+                
                 <b-navbar-nav class="ml-auto" v-if="!user">
                     <b-nav-item>
                         <router-link class="nav-link text-nowrap" to="/login" nowrap>User Login &nbsp;&nbsp; <i class="fa fa-user"></i></router-link>
                     </b-nav-item>
                 </b-navbar-nav>
+
                 <b-navbar-nav class="mr-auto" v-if="user">
-                    <b-nav-item>
-                        <router-link class="nav-link text-nowrap" to="/request">Confirmatory Request &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
+                    <b-nav-item v-for="(item,i) in navItems" :key="i">
+                        <router-link class="nav-link text-nowrap" :to="item.to">{{item.text}} &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
                     </b-nav-item>
-                    <b-nav-item>
-                        <router-link class="nav-link text-nowrap" to="/receiving" nowrap>Receiving &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </b-nav-item>
-                    <b-nav-item>
-                        <router-link class="nav-link text-nowrap" to="/testing" nowrap>Testing &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </b-nav-item>
-                    <b-nav-item>
-                        <router-link class="nav-link text-nowrap" to="/report" nowrap>Reports &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </b-nav-item>
-                    <b-nav-item>
-                        <router-link class="nav-link text-nowrap" to="/stockyard" nowrap>Stock yard &nbsp;&nbsp;&nbsp;<i class="fa fa-angle-double-right"></i></router-link>
-                    </b-nav-item>
-                    <b-nav-item-dropdown text="Administration" class="nav-link text-nowrap">
+                    
+                    <b-nav-item-dropdown text="Administration" class="nav-link text-nowrap" v-if="user.facility_cd == 'RITM'">
                         <b-dropdown-item><router-link to="/users" class="nav-dropdown-link">User Accounts</router-link></b-dropdown-item>
                         <b-dropdown-item><router-link to="/references" class="nav-dropdown-link">Manage References</router-link></b-dropdown-item>
                     </b-nav-item-dropdown>
+                    
                     <b-nav-item class="d-block d-sm-block d-md-block d-lg-block d-xl-none">
                         <router-link class="nav-link text-nowrap" to="/logout" nowrap>Logout</router-link>
                     </b-nav-item>
+
                 </b-navbar-nav>
                  <b-navbar-nav class="ml-auto" v-if="user">
                     <b-nav-form class="d-none d-xl-block">
                         <ul class="text-white text-nowrap">
-                            <li style="list-style-type: none; !important" class="text-right"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;Abdul Mahatir Aljamalul Kiram</li>
+                            <li style="list-style-type: none; !important" class="text-right"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;{{user.name}}</li>
                             <li style="list-style-type: none; !important" class="text-right">
-                                <span class="small">Administrator | <router-link class="text-white" to="#">logout</router-link></span>
+                                <span class="small">{{user.position}} | <b-button variant="dark" size="sm" @click="performLogout">Logout</b-button></span>
                             </li>
                         </ul>
                     </b-nav-form>
@@ -64,13 +57,49 @@
 <script>
 export default {
     mounted(){
-        console.log(this.user)
+        this.checkLogin()
     },
     computed : {
         user(){
             return this.$store.getters.user
+        },
+        navItems(){
+            if(!this.user){
+                return []
+            }else{
+                if(this.user.facility_cd == 'RITM'){
+                    return [
+                        { to : '/receiving' , text : 'Receiving'},
+                        { to : '/testing' , text : 'Testing'},
+                        { to : '/report' , text : 'Reports'},
+                        { to : '/request' , text : 'Confirmatory Request'},
+                        { to : '/stockyard' , text : 'Stock yard'},
+                        { to : '/admini' , text : 'Stock yard'},
+                    ];
+                }else{
+                    return [
+                        { to : '/request' , text : 'Confirmatory Request'},
+                        { to : '/status' , text : 'Status'},
+                    ];
+                }
+            }
         }
-    }
+    },
+    methods : {
+        performLogout(){
+            this.$session.remove('user')
+            this.$store.dispatch('initUser',null)
+            this.$router.push('/login')
+        },
+        checkLogin(){
+            let user = this.$session.get('user')
+            if(user != undefined || user != null){
+                this.$store.dispatch('initUser',user)
+            }else{
+                this.$router.push('/login')
+            }
+        },
+    },
 }
 </script>
 

@@ -7,7 +7,10 @@ const donation = {
                 donation_dt : '2018-11-05',
                 reactiveResults : [
                     'HIV',
-                ]
+                ],
+                facility : {
+                    facility_name : 'Philippine Blood Center',
+                }
             },
             {
                 donation_id : 'NVBSP20190000112',
@@ -15,7 +18,10 @@ const donation = {
                 donation_dt : '2019-01-23',
                 reactiveResults : [
                     'MALA',
-                ]
+                ],
+                facility : {
+                    facility_name : 'Philippine Blood Center',
+                }
             }
         ]
     },

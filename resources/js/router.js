@@ -25,7 +25,7 @@ Axios.defaults.baseURL = 'cts/public/api';
 export default new VueRouter({
     routes: [
         { path: '/', component: Dashboard },
-        { path: '/login', component: Login },
+        { path: '/login', component: Login, name : 'login' },
         { path: '/request', component: Request },
         { path: '/checklist', component: Checklist },
         { path: '/receiving', component: Receive },

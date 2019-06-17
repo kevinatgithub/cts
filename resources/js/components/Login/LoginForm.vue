@@ -1,6 +1,8 @@
 <template>
     <b-container>
         <comp-url>Login / LoginForm</comp-url>
+            <h3 class="text-info">User Login</h3>
+            <hr>
         <b-row>
             <b-col lg="4" md="6" sm="12">
                 <b-form-group>
@@ -53,7 +55,6 @@ export default {
                     username : this.username,
                     password : this.password,
                 }).then(response=>{
-                    console.log(response)
                     this.busy = false
                     this.username = null
                     this.password = null
@@ -62,6 +63,8 @@ export default {
                         this.username_error = false
                     }else{
                         this.$session.set('user',response)
+                        this.$store.dispatch('initUser',response)
+                        this.$router.push('/')
                     }
                 })
             }

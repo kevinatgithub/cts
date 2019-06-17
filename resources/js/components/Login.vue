@@ -1,20 +1,25 @@
 <template>
     <div>
         <comp-url>Login</comp-url>
-        <h3 class="text-info">User Login</h3>
-        <hr>
+        
             <div class="content mt-5">
                 
-                <login-form></login-form>
-                
+                <login-form v-if="!user"></login-form>
+                <dashboard v-if="user" />
             </div>
     </div>
 </template>
 
 <script>
+import Dashboard from './Dashboard'
 import LoginForm from './Login/LoginForm'
 export default {
-    components: {LoginForm}
+    components: {LoginForm,Dashboard},
+    computed : {
+        user(){
+            return this.$session.get('user')
+        }
+    }
 }
 </script>
 

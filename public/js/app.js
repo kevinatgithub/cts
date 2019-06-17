@@ -3089,12 +3089,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log(this.user);
-  },
+  mounted: function mounted() {},
   computed: {
     user: function user() {
-      return this.$store.getters.user;
+      return this.$session.get("user");
+    }
+  },
+  methods: {
+    logout: function logout() {
+      // this.$session.remove('user')
+      // this.$store.dispatch('initUser',null)
+      this.$router.push('/login');
     }
   }
 });
@@ -3110,8 +3115,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Login_LoginForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Login/LoginForm */ "./resources/js/components/Login/LoginForm.vue");
-//
+/* harmony import */ var _Dashboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dashboard */ "./resources/js/components/Dashboard.vue");
+/* harmony import */ var _Login_LoginForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Login/LoginForm */ "./resources/js/components/Login/LoginForm.vue");
 //
 //
 //
@@ -3125,9 +3130,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    LoginForm: _Login_LoginForm__WEBPACK_IMPORTED_MODULE_0__["default"]
+    LoginForm: _Login_LoginForm__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Dashboard: _Dashboard__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {
+    user: function user() {
+      return this.$session.get('user');
+    }
   }
 });
 
@@ -3142,6 +3154,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -3209,6 +3223,10 @@ __webpack_require__.r(__webpack_exports__);
             _this.username_error = false;
           } else {
             _this.$session.set('user', response);
+
+            _this.$store.dispatch('initUser', response);
+
+            alert('logged in');
           }
         });
       }
@@ -66344,7 +66362,7 @@ var render = function() {
           attrs: {
             selectable: "",
             items: _vm.specimens,
-            striped: true,
+            striped: "",
             "select-mode": "single",
             "select-variant": "success",
             busy: _vm.busy
@@ -66622,7 +66640,9 @@ var render = function() {
                     [
                       _c("img", { attrs: { src: "img/favicon.png", alt: "" } }),
                       _vm._v(
-                        "\n                    TTI - Confirmatory Testing\n                "
+                        "\n                    TTI - Confirmatory Testing " +
+                          _vm._s(_vm.user) +
+                          "\n                "
                       )
                     ]
                   ),
@@ -66868,22 +66888,23 @@ var render = function() {
                               staticStyle: { "list-style-type": "none" }
                             },
                             [
-                              _c(
-                                "span",
-                                { staticClass: "small" },
-                                [
-                                  _vm._v("Administrator | "),
-                                  _c(
-                                    "router-link",
-                                    {
-                                      staticClass: "text-white",
-                                      attrs: { to: "#" }
-                                    },
-                                    [_vm._v("logout")]
-                                  )
-                                ],
-                                1
-                              )
+                              _c("span", { staticClass: "small" }, [
+                                _vm._v("Administrator | "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "text-white",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.logout($event)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("logout")]
+                                )
+                              ])
                             ]
                           )
                         ])
@@ -66992,11 +67013,16 @@ var render = function() {
     [
       _c("comp-url", [_vm._v("Login")]),
       _vm._v(" "),
-      _c("h3", { staticClass: "text-info" }, [_vm._v("User Login")]),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _c("div", { staticClass: "content mt-5" }, [_c("login-form")], 1)
+      _c(
+        "div",
+        { staticClass: "content mt-5" },
+        [
+          !_vm.user ? _c("login-form") : _vm._e(),
+          _vm._v(" "),
+          _vm.user ? _c("dashboard") : _vm._e()
+        ],
+        1
+      )
     ],
     1
   )
@@ -67027,6 +67053,10 @@ var render = function() {
     "b-container",
     [
       _c("comp-url", [_vm._v("Login / LoginForm")]),
+      _vm._v(" "),
+      _c("h3", { staticClass: "text-info" }, [_vm._v("User Login")]),
+      _vm._v(" "),
+      _c("hr"),
       _vm._v(" "),
       _c(
         "b-row",
@@ -87487,6 +87517,7 @@ var app = new Vue({
   router: _router__WEBPACK_IMPORTED_MODULE_0__["default"],
   store: _store__WEBPACK_IMPORTED_MODULE_1__["default"]
 });
+window.app = app;
 
 /***/ }),
 
@@ -90236,7 +90267,8 @@ axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'cts/public/api'
     component: _components_Dashboard__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/login',
-    component: _components_Login__WEBPACK_IMPORTED_MODULE_4__["default"]
+    component: _components_Login__WEBPACK_IMPORTED_MODULE_4__["default"],
+    name: 'login'
   }, {
     path: '/request',
     component: _components_Request__WEBPACK_IMPORTED_MODULE_5__["default"]
@@ -91092,8 +91124,8 @@ var user = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\WEB\htdocs\cts\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\WEB\htdocs\cts\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\WORK\XAMPP\htdocs\cts\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\WORK\XAMPP\htdocs\cts\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -1,18 +1,28 @@
 const user = {
     state : {
+        users : [
+            {
+                username : 'ritm', facility_cd : 'RITM', 
+                name : 'Juan Karlos', position : 'RMT'
+            },
+            {
+                username : 'bsf', facility_cd : 'BSF', 
+                name : 'Rico Blanko', position : 'RMT',
+            },
+        ],
         user : null,
     },
     getters : {
+        users(state){
+            return state.users
+        },
         user(state){
             return state.user
         }
     },
     mutations : {
         initUser(state,payload){
-            let user = payload.user
-            if(user){
-                state.user = user
-            }
+            state.user = payload
         },
     },
     actions : {
@@ -22,16 +32,8 @@ const user = {
         attemptLogin(context,payload){
             return new Promise((resolve,reject) => {
                 setTimeout(i=>{
-                    if(payload.username == 'ritm'){
-                        let user  = {
-                            username : 'ritm', facility_cd : 'RITM', 
-                            name : 'Juan Karlos', position : 'RMT'
-                        }
-                        context.dispatch('initUser',user)
-                        resolve(user)
-                    }else{
-                        resolve(false)
-                    }
+                    let user  = _.find(context.getters.users,{username : payload.username})
+                    resolve(user)
                 },500)
             })
         },

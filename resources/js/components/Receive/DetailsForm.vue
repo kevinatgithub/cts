@@ -5,45 +5,51 @@
             <label for="" class="input-group-text" slot="prepend">
                 <i class="fa fa-search"></i>&nbsp;Donation ID:
             </label>
-            <b-input placeholder="Scan /Enter Donation ID" v-model="hasResult"></b-input>
+            <b-input placeholder="Scan /Enter Donation ID" v-model="donation_id" :state="donation_id_state"></b-input>
+            <div slot="append" class="text-center mt-1 ml-3" v-if="donation_id_busy">
+                <b-img src="./img/loading-circle.gif" width="27" height="27"></b-img>
+            </div>
+            <b-form-invalid-feedback>
+                Referral not found
+            </b-form-invalid-feedback>
         </b-input-group>
 
         <b-input-group class="mb-3">
             <label for="" class="input-group-text" slot="prepend">
                 <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
             </label>
-            <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatoryNum"></b-input>
+            <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number"></b-input>
         </b-input-group>
 
         <!-- REQUEST DETAILS SECTIONS -->
         <h5 class="text-info">Request Details</h5>
-        <b-form-group class="mt-3" v-if="hasResult">
+        <b-form-group class="mt-3" v-if="referral">
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-building"></i>&nbsp;Requesting Facility:
                 </label>
-                <b-input placeholder="" v-model="facility" disabled></b-input>
+                <b-input placeholder="" v-model="referral.donation.facility.facility_name" disabled></b-input>
             </b-input-group>
 
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-user"></i>&nbsp;Requested By:
                 </label>
-                <b-input placeholder="" v-model="pointperson" disabled></b-input>
+                <b-input placeholder="" v-model="referral.request_by.name" disabled></b-input>
             </b-input-group>
 
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-user"></i>&nbsp;Position:
                 </label>
-                <b-input placeholder="" v-model="position" disabled></b-input>
+                <b-input placeholder="" v-model="referral.request_by.position" disabled></b-input>
             </b-input-group>
 
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-calendar"></i>&nbsp;Date of Request:
                 </label>
-                <b-input placeholder="" v-model="requestDate" disabled></b-input>
+                <b-input placeholder="" v-model="referral.created_dt" disabled></b-input>
             </b-input-group>
 
             <!-- BLOOD SAMPLE DETAILS -->
@@ -53,21 +59,21 @@
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-tint"></i>&nbsp;Specimen #:
                 </label>
-                <b-input placeholder="" v-model="specimen" disabled></b-input>
+                <b-input placeholder="" v-model="referral.specimen.name" disabled></b-input>
             </b-input-group>
 
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-tint"></i>&nbsp;Blood Type:
                 </label>
-                <b-input placeholder="" v-model="bloodtype" disabled></b-input>
+                <b-input placeholder="" v-model="referral.donation.blood_type" disabled></b-input>
             </b-input-group>
 
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-tint"></i>&nbsp;Reactive For:
                 </label>
-                <b-input placeholder="" v-model="tti" disabled></b-input>
+                <b-input placeholder="" v-text="referral.donation.reactive.reactiveResults.join(' ')" disabled></b-input>
             </b-input-group>
 
             <b-input-group class="mb-3">
@@ -98,11 +104,11 @@
             </b-row>
         </b-form-group>
 
-        <div class="form-group text-center" v-if="!hasResult">
+        <div class="form-group text-center" v-if="!referral">
             No records to display
         </div>
 
-        <b-modal id="rejectModal" header-bg-variant="primary">
+        <b-modal id="rejectModal" header-bg-variant="danger" header-text-variant="light">
             <template slot="modal-title">
                 <h3 class="modal-title text-light lead" id="exampleModalCenterTitle">
                     <i class="fa fa-trash"></i>&nbsp;Reason for Rejection
@@ -128,24 +134,26 @@
 export default {
     data() {
         return{
-            hasResult : '',
-            accept : false,
-            // CTS2019-000001
-            confirmatoryNum : '',
-            // NVBSP20190002020
-            donationID : '',
-            specimen : 'SPL-2',
-            remarks : '',
-            facility : 'NVBSP-IMU',
-            pointperson : 'Rubena R. Felix',
-            position : 'Supreme Leader',
-            requestDate : 'April 16, 2019 - 09:45:45AM',
-            bloodtype : 'A POS',
-            tti : 'HIV',
+            donation_id : null,
+            donation_id_state : null,
+            donation_id_busy : false,
+            referral : null,
+            confirmatory_reference_number : null,
         }
     },
     methods: {
-
+        fetchReferral : _.debounce(function(){
+            this.donation_id_busy = true
+            this.$store.dispatch('fetchReferral',this.donation_id).then(response=>{
+                this.donation_id_busy = false
+                if(response){
+                    this.referral = response
+                    this.donation_id_state = true
+                }else{
+                    this.donation_id_state = false
+                }
+            })
+        },500)
     }
 }
 </script>

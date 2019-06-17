@@ -45,3 +45,4 @@ const app = new Vue({
     store,
 });
 
+window.app = app
