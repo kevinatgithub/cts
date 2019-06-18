@@ -20,23 +20,6 @@
         <h5 class="text-info">Specimen Details</h5>
 
         <b-form-group class="mt-3" v-if="donation">
-            <!-- BLOOD TYPE -->
-            <b-input-group class="mb-3" size="sm">
-                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
-                    <i class="fa fa-tint"></i>&nbsp;
-                    Blood Type:
-                </label>
-                <b-input aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="donation.blood_type" disabled></b-input>
-            </b-input-group>
-
-            <!-- REACTIVE FOR -->
-            <b-input-group class='mb-3' size="sm">
-                <label class='input-group-text' slot='prepend'>
-                    <i class='fa fa-tint'></i>&nbsp;
-                    Reactive for:
-                </label>
-                <b-input aria-label='BloodType' placeholder='Scan /Enter Donation ID' v-model='reactive_results' disabled></b-input>
-            </b-input-group>
 
             <!-- DATE COLLECTED -->
             <b-input-group class='mb-3' size="sm">
@@ -47,20 +30,63 @@
                 <b-input aria-label='' placeholder='' v-model='donation.donation_dt' disabled></b-input>
             </b-input-group>
 
-            <!-- SPECIMEN -->
+            <!-- BLOOD TYPE -->
+            <b-input-group class="mb-3" size="sm">
+                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                    <i class="fa fa-tint"></i>&nbsp;
+                    Blood Type:
+                </label>
+                <b-input aria-label="BloodType" placeholder="Scan /Enter Donation ID" v-model="donation.blood_type" disabled></b-input>
+            </b-input-group>
+
+            <b-input-group class='mb-3' size="sm">
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-user'></i>&nbsp;
+                    Type of Donor:
+                </label>
+                <b-input placeholder='Type of donor' v-model='donation.donation_type' disabled></b-input>
+            </b-input-group>
+
+            <b-input-group class='mb-3' size="sm">
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-user'></i>&nbsp;
+                    Donation Frequency:
+                </label>
+                <b-input placeholder='Donation Frequency' v-model='donation.donor.frequency' disabled></b-input>
+            </b-input-group>
+
             <b-input-group class='mb-3' size="sm">
                 <label class='input-group-text' slot='prepend'>
                     <i class='fa fa-tint'></i>&nbsp;
-                    Specimen type:
+                    Last Donation:
                 </label>
-                <b-form-select v-model="specimen" :options="specimens"></b-form-select>
+                <b-input placeholder='Last Donation' v-model='donation.donor.prev_donation' disabled></b-input>
             </b-input-group>
+
+            <!-- REACTIVE FOR -->
+            <b-input-group class='mb-3' size="sm">
+                <label class='input-group-text' slot='prepend'>
+                    <i class='fa fa-tint'></i>&nbsp;
+                    Reactive for:
+                </label>
+                <b-input aria-label='BloodType' placeholder='Scan /Enter Donation ID' v-model='reactive_results' disabled></b-input>
+            </b-input-group>            
+
+            <!-- SPECIMEN -->
+            <b-form-group>
+                <label for="">Specimen Type</label>
+                <b-form-checkbox-group title="Specimen Type" v-model="specimen">
+                    <b-row >
+                        <b-col v-for="s in specimens" :key="s.id" cols="6"><b-form-checkbox :value="s.id">{{s.name}}</b-form-checkbox></b-col>
+                    </b-row>
+                </b-form-checkbox-group>
+            </b-form-group>
 
             <h5 class="text-info mt-3">Other Details</h5>
 
             <!-- COURIER MODE -->
             <b-form-group>
-                <b-form-radio-group label="Courier Details" v-model="courierMode">
+                <b-form-radio-group title="Courier Details" v-model="courierMode">
                     <b-form-radio value="Hand Carry">Hand Carry</b-form-radio>
                     <b-form-radio value="Courier">Courier</b-form-radio>
                 </b-form-radio-group>
@@ -207,6 +233,7 @@ export default {
         fetchDonation : _.debounce(function(){
             this.donation = false
             this.donationIDBusy = true
+            this.donation_id_valid = null
             this.$store.dispatch('fetchDonation',{donation_id : this.donation_id}).then(response=>{
                 this.donationIDBusy = false
                 if(!response){
@@ -215,6 +242,7 @@ export default {
                 }else{
                     this.donation_id_valid = true
                     this.donation = response
+                    this.$emit('donationSet',response)
                 }
             })
         },1000),

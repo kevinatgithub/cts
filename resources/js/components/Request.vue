@@ -10,18 +10,30 @@
 
         <b-row>
             <b-col sm="12" md="8" lg="6" xl="6">
-                <request-form></request-form>
+                <request-form @donationSet="setDonation"></request-form>
             </b-col>
-            <b-col></b-col>
+            <b-col>
+                <donation-card v-if="donation" :donation="donation"></donation-card>
+            </b-col>
         </b-row>
     </div>
 </template>
 
 <script>
 import RequestForm from './Request/RequestForm'
-import Timeline from './Timeline'
+import DonationCard from './ReferralCard/DonationCard'
 export default {
-    components : {Timeline,RequestForm}    
+    components : {DonationCard,RequestForm},
+    data(){
+        return {
+            donation : null
+        }
+    },
+    methods : {
+        setDonation(donation){
+            this.donation = donation
+        }
+    }
 }
 </script>
 

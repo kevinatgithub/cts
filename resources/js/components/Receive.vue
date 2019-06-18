@@ -12,7 +12,8 @@
                 <details-form @referralSet="setReferral"></details-form>
             </b-col>
             <b-col>
-                <timeline :referral="referral"></timeline>
+                <timeline v-if="referral" :referral="referral" class="mb-3"></timeline>
+                <referral-card v-if="referral" :referral="referral"></referral-card>
             </b-col>
         </b-row>
         
@@ -21,11 +22,12 @@
 </template>
 
 <script>
+import ReferralCard from './ReferralCard/ReferralCard'
 import Timeline from './Timeline'
 import DetailsForm from './Receive/DetailsForm'
 
 export default {
-    components: {Timeline,DetailsForm},
+    components: {ReferralCard,Timeline,DetailsForm},
     data(){
         return {
             referral : null

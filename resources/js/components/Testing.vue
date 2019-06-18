@@ -7,12 +7,13 @@
             {text: 'Confirmatory Test', active: true},
         ]"></b-breadcrumb>
 
-        <b-row class="mt-5">
+        <b-row class="mt-3">
             <b-col>
-                <test-form></test-form>
+                <test-form @referralSet="setReferral"></test-form>
             </b-col>
             <b-col>
-                <timeline></timeline>
+                <referral-card ></referral-card>test
+                <timeline v-if="referral" :referral="referral"></timeline>
             </b-col>
         </b-row>
         
@@ -21,9 +22,20 @@
 
 <script>
 import Timeline from './Timeline'
+import ReferralCard from './ReferralCard/ReferralCard'
 import TestForm from './Testing/Testform'
 export default {
-    components: {Timeline, TestForm}
+    components: {Timeline, ReferralCard, TestForm},
+    data(){
+        return {
+            referral : null
+        }
+    },
+    methods : {
+        setReferral(referral){
+            this.referral = referral
+        }
+    }
 }
 </script>
 

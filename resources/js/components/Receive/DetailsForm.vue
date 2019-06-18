@@ -195,7 +195,7 @@ export default {
                 remarks,
                 reject_reason,
                 received_by : this.$store.getters.user,
-                received_dt : new Date(),
+                received_dt : new Date().toDateString(),
             })
             return referral
         }

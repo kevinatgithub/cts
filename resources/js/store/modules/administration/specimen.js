@@ -27,8 +27,16 @@ const specimens = {
             return new Promise((resolve, reject) => {
                 setTimeout(i=>{
                     context.commit('initSpecimens',[
-                        {id : 0, name :'SP 1'},
-                        {id : 1, name :'SP 2'},
+                        {id : 0, name :'Aliqouted Sample'},
+                        {id : 1, name :'Whole Blood'},
+                        {id : 2, name :'FFP'},
+                        {id : 3, name :'PC'},
+                        {id : 4, name :'PRBC'},
+                        {id : 5, name :'Cryosupernate'},
+                        {id : 6, name :'Cryoprecipitate'},
+                        {id : 7, name :'Blood Smear'},
+                        {id : 8, name :'Dried Blood Spot'},
+                        {id : 9, name :'Apheresis Unit'},
                     ])
                     resolve(true)
                 },500)

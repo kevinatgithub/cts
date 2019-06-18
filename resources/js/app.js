@@ -17,6 +17,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import VueSession from 'vue-session'
 Vue.use(VueSession)
+
+
+import LightTimeline from 'vue-light-timeline';
+Vue.use(LightTimeline);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

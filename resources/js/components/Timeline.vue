@@ -1,19 +1,15 @@
 <template>
     <div>
         <comp-url>Timeline</comp-url>
-        <div class="container">
-            <div class="row">
-                <timeline-slot :referral="referral"></timeline-slot>
-            </div> <!-- row-->
-        </div> <!-- container -->
+        <timeline :referral="referral" />
     </div> <!-- main div -->
 </template>
 
 <script>
-import TimelineSlot from './Timeline/TimelineSlot'
+import Timeline from './Timeline/TimelineMinimalist'
 export default {
    props : ['referral'],
-   components: {TimelineSlot}
+   components: {Timeline}
 }
 </script>
 
