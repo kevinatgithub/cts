@@ -1,15 +1,15 @@
 <template>
     <div>
         <div v-if="donation.donor">
-            <case-identification :donor="donation.donor" class="mb-3" />
+            <case-identification :donor="donation.donor" />
         </div>
-        <div v-if="!donation.donor" class="mb-3">
+        <div v-if="!donation.donor">
             <b-card text-variant="danger"><i class="fa fa-info-circle"></i> Donor Information not provided</b-card>
         </div>
         <div v-if="donation.facility">
-            <blood-service-facility class="mb-3" />
+            <blood-service-facility :facility="donation.facility" />
         </div>
-        <div v-if="!donation.facility" class="mb-3">
+        <div v-if="!donation.facility">
             <b-card text-variant="danger"><i class="fa fa-info-circle"></i> Facility Information not provided</b-card>
         </div>
     </div>

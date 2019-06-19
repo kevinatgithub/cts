@@ -2,7 +2,7 @@
     <div>
         <navs></navs>
 
-        <div class="container mt-5 mb-5"> 
+        <div class="container mt-3 mb-5"> 
             <!--  style="height: 820px" -->
             <router-view></router-view>
         </div>
@@ -21,6 +21,8 @@ export default {
     mounted(){
         this.$store.dispatch('fetchSpecimens')
         this.$store.dispatch('fetchCouriers')
+        this.$store.dispatch('fetchMachines')
+        this.$store.dispatch('fetchReagents')
     }
 }
 </script>

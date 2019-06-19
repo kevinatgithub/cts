@@ -1,9 +1,15 @@
 <template>
-  <b-card header-bg-variant="dark" header-text-variant="white">
+  <b-card no-body header-bg-variant="light">
       <template slot="header">
-          <i class="fa fa-calendar"></i> Timeline
+          <div v-b-toggle.timeline role="tab" style="cursor:pointer;">
+            <i class="fa fa-calendar"></i> Timeline
+          </div>
       </template>
-     <light-timeline :items="items" />
+      <b-collapse id="timeline" role="tabpanel" accordion="referral-card">
+          <b-card-body>
+            <light-timeline :items="items" />  
+          </b-card-body>
+      </b-collapse>
   </b-card>
 </template>
 
@@ -40,7 +46,7 @@ export default {
             if(!courier){
                 return 
             }else{
-                return courier.name
+                return courier.name + " courier"
             }
         },
         step1(referral){
@@ -70,7 +76,7 @@ export default {
             let date = received_dt
             
             return {
-                tag : date,  htmlMode : true, color : referral.reject_reason ? 'red' : 'green',
+                tag : date,  htmlMode : true, color : 'yellow',
                 content : "Specimen was "+status+" by<br>" + 
                          received_by.name,
             }

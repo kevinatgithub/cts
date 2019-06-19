@@ -7,6 +7,8 @@ import {common} from './modules/administration/common'
 import {specimens} from './modules/administration/specimen'
 import {couriers} from './modules/administration/courier'
 import {refrigerator} from './modules/administration/refrigerator'
+import {machines} from './modules/administration/machine'
+import {reagents} from './modules/administration/reagent'
 import {donation} from './modules/donation'
 import {referral} from './modules/referral'
 
@@ -19,5 +21,7 @@ export default new Vuex.Store({
         donation,
         referral,
         user,
+        machines,
+        reagents,
     }
 })

@@ -1,11 +1,11 @@
 <template>
     <div>
         <comp-url>Request</comp-url>
-        <h3 class="text-primary">Confirmatory Request</h3>
-        <hr>
+        <!-- <h3 class="text-primary">Confirmatory Request</h3> -->
+        <!-- <hr> -->
         <b-breadcrumb :items="[
             {text: 'Confirmatory Request', href: '#'},
-            {text: 'Check for Confirmatory Test list', active :true}
+            {text: 'Send Confirmatory Request', active :true}
         ]"></b-breadcrumb>
 
         <b-row>

@@ -20,7 +20,7 @@ mix.js('resources/js/app.js', 'public/js')
 
 mix.options({
    hmrOptions: {
-         host: 'cts.local',  // site's host name
+         host: 'localhost',  // site's host name
    }
 });
 
@@ -29,7 +29,7 @@ mix.webpackConfig({
    // add any webpack dev server config here
    devServer: { 
          proxy: {
-            host: '192.168.56.1',  // host machine ip 
+            host: '10.100.100.12',  // host machine ip 
             port: 8080,
          },
          watchOptions:{

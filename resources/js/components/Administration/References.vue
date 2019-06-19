@@ -13,7 +13,7 @@
                 <b-list-group>
                     <b-list-group-item v-for="(link,i) in links" :key="i">
                         <router-link :to="link.url">
-                            {{link.text}} <i class="fa fa-angle-double-right" />
+                            {{link.text}} <i class="fa fa-caret-right" />
                         </router-link>
                     </b-list-group-item>
                 </b-list-group>
@@ -38,6 +38,8 @@ export default {
                 // {text : "Interpretation Formula" , url : "/references/interpretation"},
                 {text : "Cryoboxes" , url : "/references/cryobox"},
                 {text : "Refrigerators" , url : "/references/refrigerator"},
+                {text : "Machines" , url : "/references/machine"},
+                {text : "Assay Reagents" , url : "/references/reagent"},
             ]
         }
     }

@@ -22,10 +22,6 @@
         </b-input-group>
 
         <b-form-group class="mt-3" v-if="referral">
-            
-            <request-details-card :referral="referral" />
-
-            <blood-sample-details-card :referral="referral" />
 
             <b-input-group class="mb-3" size="sm">
                 <b-col sm="2">
@@ -33,6 +29,14 @@
                 </b-col>
                 <b-form-checkbox v-model="accept" :value="true" :unchecked-value="false">
                     In good condition
+                </b-form-checkbox>
+            </b-input-group>
+            <b-input-group class="mb-3" size="sm">
+                <b-col sm="2">
+                    &nbsp;
+                </b-col>
+                <b-form-checkbox v-model="contested" :value="true" :unchecked-value="false">
+                    Contested
                 </b-form-checkbox>
             </b-input-group>
 
@@ -88,7 +92,7 @@
             </template>
         </b-modal>
         
-        <b-modal id="confirmReceive" header-bg-variant="info" header-text-variant="light" title="Receive Referral" @ok="receive">
+        <b-modal id="confirmReceive" header-bg-variant="info" header-text-variant="light" title="Receive Referral" @ok="showVerifier">
             Confirm that this referral has been received?
         </b-modal>
 
@@ -104,17 +108,16 @@
                 The confirmatory referral has been rejected!
             </div>
         </b-modal>
+
+        <verifier @ok="receive" />
     </div>
 </template>
 
 <script>
-import BloodSampleDetailsCard from './DetailsForm/BloodSampleDetailsCard'
-import RequestDetailsCard from './DetailsForm/RequestDetailsCard'
+import Verifier from '../App/Verifier'
 
 export default {
-    components : {
-        BloodSampleDetailsCard, RequestDetailsCard,
-    },
+    components : {Verifier},
     data() {
         return{
             donation_id : null,
@@ -122,6 +125,7 @@ export default {
             donation_id_busy : false,
             referral : null,
             confirmatory_reference_number : null,
+            contested : false,
             accept : null,
             remarks : null,
             process_mode : null,
@@ -133,6 +137,8 @@ export default {
     methods: {
         fetchReferral : _.debounce(function(){
             this.donation_id_busy = true
+            this.referral = null
+            this.$emit('referralSet',null)
             this.$store.dispatch('fetchReferral',this.donation_id.toUpperCase()).then(response=>{
                 this.donation_id_busy = false
                 if(response){
@@ -144,6 +150,10 @@ export default {
                 }
             })
         },500),
+        showVerifier(){
+            this.$bvModal.hide('confirmReceive')
+            this.$bvModal.show('verifier')
+        },
         receive(){
             this.process_mode = 'RECEIVE'
             this.receive_busy = true
@@ -189,9 +199,10 @@ export default {
             if(!this.referral){
                 return
             }
-            let {referral,confirmatory_reference_number,remarks,reject_reason} = this
+            let {referral,confirmatory_reference_number,contested,remarks,reject_reason} = this
             _.extend(referral,{
                 confirmatory_reference_number,
+                contested,
                 remarks,
                 reject_reason,
                 received_by : this.$store.getters.user,

@@ -1,36 +1,42 @@
 <template>
-    <b-card header-text-variant="white" header-bg-variant="dark">
+    <b-card no-body header-bg-variant="light">
         <template slot="header">
-            <i class="fa fa-user"></i> Case Identification
+            <div v-b-toggle.referral-card-1 role="tab" style="cursor:pointer;">
+                <i class="fa fa-user"></i> Case Identification
+            </div>
         </template>
-        <b-row>
-            <b-col cols="4" class="text-right">Initials &nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></b-col>
-            <b-col>{{donor.initials}}</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols="4" class="text-right">Date of Birth &nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></b-col>
-            <b-col>{{donor.dob}}</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols='4' class='text-right'>Age &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
-            <b-col>{{age}}</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols='4' class='text-right'>Nationality &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
-            <b-col>{{donor.nationality}}</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols='4' class='text-right'>Civil Status &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
-            <b-col>{{donor.civil_status}}</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols='4' class='text-right'>Occupation &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
-            <b-col>{{donor.occupation}}</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols='4' class='text-right'>Home Address &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
-            <b-col>{{donor.home_address}}</b-col>
-        </b-row>
+        <b-collapse id="referral-card-1" visible accordion="referral-card" role="tabpanel">
+            <b-card-body>
+                <b-row>
+                    <b-col cols="4" class="text-right">Initials &nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></b-col>
+                    <b-col>{{donor.initials}}</b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols="4" class="text-right">Date of Birth &nbsp;&nbsp;&nbsp;<i class="fa fa-caret-right"></i></b-col>
+                    <b-col>{{donor.dob}}</b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols='4' class='text-right'>Age &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
+                    <b-col>{{age}}</b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols='4' class='text-right'>Nationality &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
+                    <b-col>{{donor.nationality}}</b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols='4' class='text-right'>Civil Status &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
+                    <b-col>{{donor.civil_status}}</b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols='4' class='text-right'>Occupation &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
+                    <b-col>{{donor.occupation}}</b-col>
+                </b-row>
+                <b-row>
+                    <b-col cols='4' class='text-right'>Home Address &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
+                    <b-col>{{donor.home_address}}</b-col>
+                </b-row>
+            </b-card-body>
+        </b-collapse>
     </b-card>
 </template>
 <script>

@@ -47,7 +47,7 @@
                 <b-input placeholder='Type of donor' v-model='donation.donation_type' disabled></b-input>
             </b-input-group>
 
-            <b-input-group class='mb-3' size="sm">
+            <b-input-group class='mb-3' size="sm" v-if="donation.donor">
                 <label class='input-group-text' slot='prepend'>
                     <i class='fa fa-user'></i>&nbsp;
                     Donation Frequency:
@@ -55,7 +55,7 @@
                 <b-input placeholder='Donation Frequency' v-model='donation.donor.frequency' disabled></b-input>
             </b-input-group>
 
-            <b-input-group class='mb-3' size="sm">
+            <b-input-group class='mb-3' size="sm" v-if="donation.donor">
                 <label class='input-group-text' slot='prepend'>
                     <i class='fa fa-tint'></i>&nbsp;
                     Last Donation:
@@ -232,6 +232,7 @@ export default {
     methods : {
         fetchDonation : _.debounce(function(){
             this.donation = false
+            this.$emit('donationSet', null)
             this.donationIDBusy = true
             this.donation_id_valid = null
             this.$store.dispatch('fetchDonation',{donation_id : this.donation_id}).then(response=>{

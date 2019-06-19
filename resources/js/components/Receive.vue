@@ -1,8 +1,8 @@
 <template>
     <div>
         <comp-url>Receive</comp-url>
-        <h3 class="text-primary">Receive Blood Sample</h3>
-        <hr>
+        <!-- <h3 class="text-primary">Receive Blood Sample</h3>
+        <hr> -->
         <b-breadcrumb :items="[
             {text: 'Receive Blood Sample', active: true},
         ]"></b-breadcrumb>
@@ -12,8 +12,8 @@
                 <details-form @referralSet="setReferral"></details-form>
             </b-col>
             <b-col>
-                <timeline v-if="referral" :referral="referral" class="mb-3"></timeline>
                 <referral-card v-if="referral" :referral="referral"></referral-card>
+                <timeline v-if="referral" :referral="referral" class="mb-3"></timeline>
             </b-col>
         </b-row>
         
