@@ -35,7 +35,7 @@
                     </b-nav-item-dropdown>
                     
                     <b-nav-item class="d-block d-sm-block d-md-block d-lg-block d-xl-none">
-                        <router-link class="nav-link text-nowrap" to="/logout" nowrap>Logout</router-link>
+                        <b-button variant="dark" size="sm" @click="performLogout">Logout</b-button>
                     </b-nav-item>
 
                 </b-navbar-nav>
@@ -70,7 +70,7 @@ export default {
                 if(this.user.facility_cd == 'RITM'){
                     return [
                         { to : '/receiving' , text : 'Receiving'},
-                        { to : '/testing' , text : 'Testing'},
+                        { to : '/entry' , text : 'Data Entry'},
                         { to : '/report' , text : 'Reports'},
                         { to : '/stockyard' , text : 'Stock yard'},
                     ];

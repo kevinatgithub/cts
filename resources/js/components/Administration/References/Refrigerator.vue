@@ -12,6 +12,9 @@
             <!-- Compartments -->
             <b-col v-if="refrigerator && !compartment">
                 <compartment-list :refrigerator="refrigerator" @compartmentSelected="selectCompartment" @backPressed="refrigerator=null"></compartment-list>
+                <!-- <b-card>
+                    <ref3d :compartments="refrigerator.compartments" />
+                </b-card> -->
             </b-col>
 
             <!-- Rows -->
@@ -33,8 +36,9 @@ import CompartmentList from './Refrigerator/CompartmentList'
 import RowList from './Refrigerator/RowList'
 import CryoboxSlotList from './Refrigerator/CryoboxSlotsList'
 
+import Ref3d from '../../App/Ref3D/Ref3d'
 export default {
-    components : {RefrigeratorList,CompartmentList,RowList,CryoboxSlotList},
+    components : {RefrigeratorList,CompartmentList,RowList,CryoboxSlotList,Ref3d},
     data(){
         return {
             mode : 'list',

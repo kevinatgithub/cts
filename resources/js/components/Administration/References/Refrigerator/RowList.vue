@@ -3,31 +3,26 @@
         <b-breadcrumb :items="[{text : 'Refrigerators'}, {text : 'Compartments'} , {text : 'Rows'}]"></b-breadcrumb>
         <b-button variant="info" size="sm" class="mb-1" @click="back"><i class="fa fa-arrow-up"></i> Back to Compartments</b-button>
         <h6 class="text-info float-right">{{compartment.compartment_name}} <i class="fa fa-angle-double-right"></i> Compartment Rows</h6>
-        <b-row>
-            <b-col>
-                <b-tabs class="mt-1">
-                    <b-tab title="Front Section" @click="selectSection(0)">
-                        <row-list 
-                        :items="compartment.sections[0].rows" 
-                        section="f" 
-                        @rowSelected="selectRowFront" 
-                        @savePressed="saveFront"
-                        @deletePressed="deleteRowFront"
-                        :busy="frontBusy" />
-                    </b-tab>
-                    <b-tab title="Back Section" @click="selectSection(1)">
-                        <row-list 
-                        :items="compartment.sections[1].rows" 
-                        section="b" 
-                        @rowSelected="selectRowBack" 
-                        @savePressed="saveBack"
-                        @deletePressed="deleteRowBack"
-                        :busy="backBusy" />
-                    </b-tab>
-                </b-tabs>
-
-            </b-col>
-        </b-row>
+        <b-tabs class="mt-1" cols="12">
+            <b-tab title="Front Section" @click="selectSection(0)">
+                <row-list 
+                :items="compartment.sections[0].rows" 
+                section="f" 
+                @rowSelected="selectRowFront" 
+                @savePressed="saveFront"
+                @deletePressed="deleteRowFront"
+                :busy="frontBusy" />
+            </b-tab>
+            <b-tab title="Back Section" @click="selectSection(1)">
+                <row-list 
+                :items="compartment.sections[1].rows" 
+                section="b" 
+                @rowSelected="selectRowBack" 
+                @savePressed="saveBack"
+                @deletePressed="deleteRowBack"
+                :busy="backBusy" />
+            </b-tab>
+        </b-tabs>
     </div>
 </template>
 <script>

@@ -13,13 +13,14 @@
                 <i class='fa fa-list'></i>&nbsp;
                 Compartment Name:
             </label>
-            <b-input placeholder='Enter name or label of the Compartment' v-model='compartment' @keypress.enter="save"></b-input>
+            <b-input placeholder='Enter name or label of the Compartment' v-model='compartment' @keypress.enter="save" style="min-width:200px;"></b-input>
             <b-button slot="append" variant="success" size="sm" @click="save">{{update ? "Update" : "Add"}} Compartment</b-button>
             <b-button slot="append" v-if="update" variant="dark" @click="cancel">Cancel</b-button>
         </b-input-group>
 
         <b-table
         class="mt-3" 
+        small
         selectable select-mode="single" 
         @row-selected="selectCompartment" 
         :fields="['compartment_name','options']" 
@@ -35,7 +36,6 @@
                 <b-img src="./img/loading.gif" width="30"></b-img> Please wait..
             </template>
         </b-table>
-        
 
         <b-modal id="compartment" header-bg-variant="danger" header-text-variant="light" title="Delete Compartment" @ok="deleteCompartment">
             Are you sure you wan't to delete this compartment?

@@ -17,7 +17,7 @@
                         <i class='fa fa-user'></i>&nbsp;
                         Username:
                     </label>
-                    <b-input placeholder='Username' v-model='username' type="password" :state="username_state"></b-input>
+                    <b-input placeholder='Username' ref="username" v-model='username' type="password" :state="username_state" @keypress.enter="ok"></b-input>
                     <b-form-invalid-feedback>
                         Please provide a valid verifier username
                     </b-form-invalid-feedback>
@@ -31,7 +31,7 @@
                         <i class='fa fa-lock'></i>&nbsp;
                         Password:
                     </label>
-                    <b-input placeholder='Password' v-model='password' type="password" :state="password_state"></b-input>
+                    <b-input placeholder='Password' v-model='password' type="password" :state="password_state" @keypress.enter="ok"></b-input>
                     <b-form-invalid-feedback>
                         Password of the second valid verifier username
                     </b-form-invalid-feedback>
@@ -68,6 +68,16 @@ export default {
             error : null, busy : false
         }
     },
+    mounted(){
+        let that = this
+        this.$root.$on('bv::modal::shown', (bvEvent, modalId) => {
+            if(modalId == 'verifier'){
+                if(that.$refs.username != undefined){
+                    that.$refs.username.focus()
+                }
+            }
+        })
+    },
     methods : {
         ok(){
             if(!this.validate()){
@@ -97,7 +107,7 @@ export default {
             this.password_state = null
             this.error = null
             this.busy = false
-            $bvModal.hide('verifier')
+            this.$bvModal.hide('verifier')
         },
         validate(){
             let {username,username_state,password,password_state,error} = this

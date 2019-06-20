@@ -16,6 +16,7 @@
         
         <b-table 
         class="mt-3" 
+        small
         selectable 
         select-mode="single" 
         @row-selected="selectCryoboxSlot" 

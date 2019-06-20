@@ -9,6 +9,7 @@
         
         <b-table 
         class="mt-3"
+        small
         selectable 
         @row-selected="selectRow" 
         :fields="['row_name','options']" 

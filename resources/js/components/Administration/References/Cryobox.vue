@@ -71,7 +71,7 @@ export default {
             this.isBusy = true
             let {rows,columns} = this
             this.$store.dispatch('setCryobox',{
-                rows, columns
+                rows : rows*1, columns : columns*1
             }).then(r=>{
                 this.isBusy = false
                 this.modify = false

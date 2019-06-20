@@ -18,7 +18,7 @@
             <label for="" class="input-group-text" slot="prepend">
                 <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
             </label>
-            <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number" :disabled="confirmatory_reference_number_disabled"></b-input>
+            <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number" :disabled="form_disabled"></b-input>
         </b-input-group>
 
         <b-form-group class="mt-3" v-if="referral">
@@ -27,7 +27,7 @@
                 <b-col sm="2">
                     &nbsp;
                 </b-col>
-                <b-form-checkbox v-model="accept" :value="true" :unchecked-value="false">
+                <b-form-checkbox v-model="accept" :value="true" :unchecked-value="false" :disabled="form_disabled">
                     In good condition
                 </b-form-checkbox>
             </b-input-group>
@@ -35,19 +35,19 @@
                 <b-col sm="2">
                     &nbsp;
                 </b-col>
-                <b-form-checkbox v-model="contested" :value="true" :unchecked-value="false">
+                <b-form-checkbox v-model="contested" :value="true" :unchecked-value="false" :disabled="form_disabled">
                     Contested
                 </b-form-checkbox>
             </b-input-group>
 
             <b-input-group class="mt-3" size="sm">
                 <label for="" class="col-sm-2"><strong>Remarks:</strong></label>
-                <b-form-textarea placeholder="Type-in some remarks" rows="6" v-model="remarks" required></b-form-textarea>
+                <b-form-textarea placeholder="Type-in some remarks" rows="6" v-model="remarks" required :disabled="form_disabled"></b-form-textarea>
             </b-input-group>
 
             <b-row class="mt-5">
                 <b-col>
-                    <b-button variant="danger" block :disabled="accept && (reject_busy || receive_busy)" v-b-modal.rejectModal>
+                    <b-button variant="danger" block :disabled=" form_disabled || (reject_busy || receive_busy)" v-b-modal.rejectModal>
                         <span v-if="reject_busy">
                             <i class="fa fa-spinner"></i>&nbsp;REJECTING..
                         </span>
@@ -57,7 +57,7 @@
                     </b-button>
                 </b-col>
                 <b-col>
-                    <b-button variant="success" block title="Accept the Blood sample" :disabled="!accept || !confirmatory_reference_number_valid || (reject_busy || receive_busy)" v-b-modal.confirmReceive>
+                    <b-button variant="success" block title="Accept the Blood sample" :disabled="form_disabled || !confirmatory_reference_number_valid || (reject_busy || receive_busy)" v-b-modal.confirmReceive>
                         <span v-if="receive_busy">
                             <i class="fa fa-spinner"></i>&nbsp;ACCEPTING..
                         </span>
@@ -125,6 +125,7 @@ export default {
             donation_id_busy : false,
             referral : null,
             confirmatory_reference_number : null,
+            form_disabled : false,
             contested : false,
             accept : null,
             remarks : null,
@@ -142,6 +143,9 @@ export default {
             this.$store.dispatch('fetchReferral',this.donation_id.toUpperCase()).then(response=>{
                 this.donation_id_busy = false
                 if(response){
+                    if(response.received_by){
+                        this.form_disabled = true
+                    }
                     this.referral = response
                     this.donation_id_state = true
                     this.$emit('referralSet',response)
@@ -189,19 +193,13 @@ export default {
         confirmatory_reference_number_valid(){
             return this.confirmatory_reference_number
         },
-        confirmatory_reference_number_disabled(){
-            if(this.referral){
-                return this.referral.confirmatory_reference_number != null
-            }
-            return false
-        },
         payload(){
             if(!this.referral){
                 return
             }
             let {referral,confirmatory_reference_number,contested,remarks,reject_reason} = this
             _.extend(referral,{
-                confirmatory_reference_number,
+                confirmatory_reference_number : confirmatory_reference_number.toUpperCase(),
                 contested,
                 remarks,
                 reject_reason,

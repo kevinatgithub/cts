@@ -7,12 +7,13 @@
                 <i class='fa fa-columns'></i>&nbsp;
                 Refrigerator Name:
             </label>
-            <b-input placeholder='Enter the name or label of the Refrigerator' v-model='refrigerator' @keypress.enter="save"></b-input>
+            <b-input placeholder='Enter the name or label of the Refrigerator' v-model='refrigerator' @keypress.enter="save" style="min-width:200px;"></b-input>
             <b-button variant="success" slot="append" @click="save">{{update ? "Update" : "Add"}} Refrigerator</b-button>
             <b-button v-if="update" variant="dark" slot="append" @click="cancel">Cancel</b-button>
         </b-input-group>
 
         <b-table 
+        small
         class="mt-3"
         selectable 
         select-mode="single" 

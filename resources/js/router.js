@@ -10,6 +10,7 @@ import Request from './components/Request'
 import Checklist from './components/Request/Checklist'
 
 import Receive from './components/Receive'
+import DataEntry from './components/DataEntry'
 import RegisterLoc from './components/Receive/RegisterLoc'
 
 import Testing from './components/Testing'
@@ -29,6 +30,7 @@ export default new VueRouter({
         { path: '/request', component: Request },
         { path: '/checklist', component: Checklist },
         { path: '/receiving', component: Receive },
+        { path: '/entry', component: DataEntry },
         { path: '/registerloc', component: RegisterLoc },
         { path: '/testing', component: Testing },
         { path: '/report', component: Report },
