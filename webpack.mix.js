@@ -34,7 +34,7 @@ mix.webpackConfig({
          },
          watchOptions:{
             aggregateTimeout:200,
-            poll:5000
+            poll:1000   //5000
          },
 
    }

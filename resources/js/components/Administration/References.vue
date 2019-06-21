@@ -33,6 +33,7 @@ export default {
     data(){
         return {
             links : [
+                {text : "Hospitals" , url : "/references/hospital"},
                 {text : "Specimen" , url : "/references/specimen"},
                 {text : "Courier Services" , url : "/references/courier"},
                 // {text : "Interpretation Formula" , url : "/references/interpretation"},

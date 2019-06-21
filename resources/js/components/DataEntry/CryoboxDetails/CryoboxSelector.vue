@@ -15,24 +15,7 @@
                 
                 <small class="text-info"><i class="fa fa-info-circle"></i> Select the location of the specimen in the cryobox</small>
                 <br>
-                <b-row v-for="(row,i) in specimenSlots" :key="i">
-                    <b-col v-if="box.slot">
-                        <b-button v-for="(s,i2) in row" :key="i2" 
-                            :variant="box.slot.x == i && box.slot.y == i2 ? 'warning' : 'outline-info'"
-                            class="cryobox"
-                            @click="box.slot={x:i,y:i2}">
-                            {{s.text}}
-                        </b-button>
-                    </b-col>
-                    <b-col v-if="!box.slot">
-                        <b-button v-for="(s,i2) in row" :key="i2" 
-                            variant="outline-info"
-                            class="cryobox"
-                            @click="box.slot={x:i,y:i2}">
-                            {{s.text}}
-                        </b-button>
-                    </b-col>
-                </b-row>
+                <cryobox-map @slotClicked="slotClicked" :box="box"></cryobox-map>
             </div>
             <div v-if="step == 2">
 
@@ -74,7 +57,14 @@
             <template slot="modal-footer" class="text-right">
                 <b-button variant="dark" @click="step--" :disabled="backDisabled"><i class="fa fa-arrow-left"> Back</i></b-button>
                 <b-button variant="primary" @click="step++" :disabled="nextDisabled" v-if="step != 2">Next <i class="fa fa-arrow-right"></i></b-button>
-                <b-button variant="success" v-if="step == 2">Save <i class="fa fa-check"></i></b-button>
+                <b-button variant="success" v-if="step == 2" @click="save" :disabled="save_busy">
+                    <span v-if="!save_busy">
+                        Save <i class="fa fa-check"></i>
+                    </span>
+                    <span v-if="save_busy">
+                        <i class="fa fa-spinner"></i> Saving..
+                    </span>
+                </b-button>
             </template>
         </b-modal>
 
@@ -84,22 +74,27 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import CryoboxMap from './CryoboxMap'
 import Settings from './Settings'
 export default {
-    components : {Settings},
-    props : ['referral'],
+    components : {CryoboxMap,Settings},
+    props : ['referral','pcryobox'],
     data(){
+        let {pcryobox} = this
+        let box = {
+            box_no : null,
+            slot : null,
+            refrigerator : null,
+            compartment : null,
+            row : null,
+            cryobox_slot : null,
+        }
+        _.extend(box,pcryobox)
         return {
-            box : {
-                box_no : null,
-                slot : null,
-                refrigerator : null,
-                compartment : null,
-                row : null,
-                cryobox_slot : null,
-            },
+            box,
             step :1,
             settings : 'cryobox',
+            save_busy : false,
         }
     },
     mounted(){
@@ -114,22 +109,6 @@ export default {
     },
     computed : {
         ...mapGetters(['cryobox','refrigerators']),
-        specimenSlots(){
-            let slots = []
-            let {cryobox : {rows,columns}} = this
-            for(let i = 0; i < rows; i++){
-                let row = []
-                for(let i2 = 0; i2 < rows; i2++){
-                    row.push({
-                        row : i,
-                        column : i2,
-                        text : (i*10) + i2 +1
-                    })
-                }
-                slots.push(row)
-            }
-            return slots
-        },
         nextDisabled(){
             if(this.step == 1){
                 if(!this.box.box_no || !this.box.slot){
@@ -212,18 +191,48 @@ export default {
             })
             return list
         }
+    },
+    methods : {
+        async save(){
+            this.save_busy = true
+            let referral = this.referral
+            referral.cryobox = this.box
+            referral.cryobox.stored_by = this.$session.get('user')
+            referral.cryobox.stored_dt = Date.now()
+            let response = await this.$store.dispatch('setReferralCryoboxAndRefrigeratorDetails',referral)
+            if(!response){
+                console.log('an error occured')
+                return
+            }
+            response = await this.$store.dispatch('newCryobox',this.box)
+            this.save_busy = false
+            this.$emit('savePressed',this.box)
+            this.$bvModal.hide('cryobox-selector')
+            this.resetForm()
+        },
+        resetForm(){
+            this.box = {
+                box_no : null,
+                slot : null,
+                refrigerator : null,
+                compartment : null,
+                row : null,
+                cryobox_slot : null,
+            };
+            this.step = 1;
+            this.settings = 'cryobox';
+        },
+        slotClicked(slot){
+            this.box.slot = slot
+        }
+    },
+    watch : {
+        pcryobox(){
+            this.box = _.extend(this.box,this.pcryobox)
+        }
     }
 }
 </script>
 
 
-<style scoped>
-.cryobox{
-    margin : 3px;
-    padding: 0px;
-    font-size: 12px;
-    min-width: 30px;
-    min-height: 28px;
-    border-radius: 2em;
-}
-</style>
+

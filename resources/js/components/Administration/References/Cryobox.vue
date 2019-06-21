@@ -40,12 +40,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <b-img width="400" src="https://assets.fishersci.com/TFS-Assets/LCD/product-images/F80681~p.eps-650.jpg"></b-img>
             </b-col>
         </b-row>
-        {{$store.state.cryobox}}
-        
-
         
     </div>
 </template>

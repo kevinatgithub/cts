@@ -18,24 +18,35 @@
             No records to display
         </div>
 
+
         <div v-if="referral">
+            
+            <b-card bg-variant="outline-danger" header-bg-variant="danger" header="Referral was Rejected" header-text-variant="white" class="mb-3" v-if="referral.reject_reason">
+                <b-card-text>
+                    <i class="fa fa-info-circle"></i>   This Referral was rejected
+                </b-card-text>
+            </b-card>
+
             <b-card bg-variant="dark" text-variant="white" title="Cryobox Details" v-if="!referral.cryobox">
                 <b-card-text>
                     <i class="fa fa-info-circle"></i> Cryobox Location not set
                 </b-card-text>
-                <b-button variant="primary" size="sm" v-b-modal.cryobox-selector>Set Cryobox Location</b-button>
+                <b-button variant="primary" size="sm" :disabled="referral.reject_reason" v-b-modal.cryobox-selector>Set Cryobox Location</b-button>
             </b-card>
 
-            <cryobox-selector />
+            <cryobox-card v-if="referral.cryobox" :cryobox="referral.cryobox" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
+
+            <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
         </div>
 
     </div>
 </template>
 
 <script>
-import CryoboxSelector from './CryoboxDetails/Form'
+import CryoboxSelector from './CryoboxDetails/CryoboxSelector'
+import CryoboxCard from './CryoboxDetails/CryoboxCard'
 export default {
-    components : {CryoboxSelector},
+    components : {CryoboxSelector,CryoboxCard},
     data(){
         return {
             confirmatory_reference_number : null,
@@ -69,7 +80,16 @@ export default {
                     this.confirmatory_reference_number_state = false
                 }
             })
-        },500)
+        },500),
+        setCryobox(box){
+            let referral = _.extend(this.referral,{cryobox : box})
+            this.referral = null
+            this.$emit('referralSet',null)
+            this.referral = referral
+            setTimeout(f=>{
+                this.$emit('referralSet',referral)
+            },1)
+        }
     }
 }
 </script>

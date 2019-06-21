@@ -20,6 +20,11 @@ export default {
     computed : {
         ...mapGetters(['couriers','specimens']),
         items(){
+            return this.preparItems()
+        }
+    },
+    methods : {
+        preparItems(){
             let timelines = [];
             if(!this.referral){
                 return timelines
@@ -33,14 +38,14 @@ export default {
                 timelines.push(this.step2(this.referral))
 
                 if(!this.referral.reject_reason){
-                    timelines.push(this.step3(this.referral))
+                    if(this.referral.cryobox){
+                        timelines.push(this.step3(this.referral))
+                    }
                 }
             }
 
             return timelines
-        }
-    },
-    methods : {
+        },
         getCourierName(courier_id){
             let courier =  _.find(this.couriers,{id:courier_id})
             if(!courier){
@@ -71,14 +76,13 @@ export default {
             }
         },
         step3(referral){
-            let {referral : {received_by,received_dt}} = this
-            let status = referral.reject_reason ? 'Rejected' : 'Accepted'
-            let date = received_dt
-            
+            let {referral : {cryobox}} = this
+            let date = cryobox.stored_dt
+            let status = cryobox.box_no
             return {
                 tag : date,  htmlMode : true, color : 'yellow',
-                content : "Specimen was "+status+" by<br>" + 
-                         received_by.name,
+                content : "Specimen was stored in "+status+" by<br>" + 
+                         cryobox.stored_by.name,
             }
         }
     }
