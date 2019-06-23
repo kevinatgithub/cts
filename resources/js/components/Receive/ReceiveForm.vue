@@ -14,14 +14,14 @@
             </b-form-invalid-feedback>
         </b-input-group>
 
-        <b-input-group class="mb-3" size="sm">
-            <label for="" class="input-group-text" slot="prepend">
-                <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
-            </label>
-            <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number" :disabled="form_disabled"></b-input>
-        </b-input-group>
 
         <b-form-group class="mt-3" v-if="referral">
+            <b-input-group class="mb-3" size="sm">
+                <label for="" class="input-group-text" slot="prepend">
+                    <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
+                </label>
+                <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number" :disabled="form_disabled"></b-input>
+            </b-input-group>
 
             <b-input-group class="mb-3" size="sm">
                 <b-col sm="2">
@@ -140,15 +140,15 @@ export default {
             this.donation_id_busy = true
             this.referral = null
             this.$emit('referralSet',null)
-            this.$store.dispatch('fetchReferral',this.donation_id.toUpperCase()).then(response=>{
+            this.$store.dispatch('fetchReferral',this.donation_id.toUpperCase()).then(({data})=>{
                 this.donation_id_busy = false
-                if(response){
-                    if(response.received_by){
+                if(data){
+                    if(data.received_by){
                         this.form_disabled = true
                     }
-                    this.referral = response
+                    this.referral = data
                     this.donation_id_state = true
-                    this.$emit('referralSet',response)
+                    this.$emit('referralSet',data)
                 }else{
                     this.donation_id_state = false
                 }
@@ -218,6 +218,9 @@ export default {
         referral(){
             if(this.referral){
                 this.confirmatory_reference_number = this.referral.confirmatory_reference_number
+                this.accept = !this.referral.reject_reason ? true : false
+                this.contested = this.referral.contested
+                this.remarks = this.referral.remarks
             }
         }
     }

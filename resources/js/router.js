@@ -18,6 +18,7 @@ import Report from './components/Report'
 import Stockyard from './components/Stockyard'
 import Privacy from './components/Privacy'
 
+import ManageUsers from './components/Administration/ManageUsers'
 import References from './components/Administration/References'
 
 Vue.use(VueRouter);
@@ -36,6 +37,7 @@ export default new VueRouter({
         { path: '/report', component: Report },
         { path: '/stockyard', component: Stockyard },
         { path: '/privacy', component: Privacy },
+        { path: '/users', component: ManageUsers },
         { path: '/references', component: References },
         { path: '/references/specimen', redirect: '/references' },
         { path: '/references/refrigerator', redirect: '/references' },

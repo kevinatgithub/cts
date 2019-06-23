@@ -22,6 +22,14 @@ Vue.use(VueSession)
 import LightTimeline from 'vue-light-timeline';
 Vue.use(LightTimeline);
 
+import axios from 'axios'
+const base = axios.create({
+    baseURL: 'http://cts'
+})
+import mock from './mock'
+window.$http = base
+  
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

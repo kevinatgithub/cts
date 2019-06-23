@@ -86,17 +86,17 @@ export default {
             this.busy = true
             this.username_state = null
             this.password_state = null
-            this.$store.dispatch('attemptLogin',{
+            this.$store.dispatch('verifierLogin',{
                 username : this.username, password : this.password,
-            }).then(response=> {
+            }).then(({data})=> {
                 this.busy = false
                 this.username = null
                 this.password = null
-                if(!response){
+                if(!data){
                     this.error = true
                 }else{
                     this.$bvModal.hide('verifier')
-                    this.$emit('ok',response)
+                    this.$emit('ok',data)
                 }
             })
         },

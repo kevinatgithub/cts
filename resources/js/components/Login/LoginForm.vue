@@ -54,16 +54,16 @@ export default {
                 this.$store.dispatch('attemptLogin',{
                     username : this.username,
                     password : this.password,
-                }).then(response=>{
+                }).then(({data})=>{
                     this.busy = false
                     this.username = null
                     this.password = null
-                    if(!response){
+                    if(!data){
                         this.username_error_type = 1
                         this.username_error = false
                     }else{
-                        this.$session.set('user',response)
-                        this.$store.dispatch('initUser',response)
+                        this.$session.set('user',data)
+                        this.$store.dispatch('initUser',data)
                         this.$router.push('/')
                     }
                 })

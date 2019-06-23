@@ -133,6 +133,17 @@
                 </b-col>
             </b-row>
 
+            <b-row>
+                <b-col>
+                    <b-input-group class="mb-3" size="sm">
+                        <label for="" class="input-group-text" slot="prepend">
+                            <i class="fa fa-truck"></i>&nbsp;Date Shipped:
+                        </label>
+                        <b-input placeholder="Date Shipped" v-model="shipped_dt" type="date"></b-input>
+                    </b-input-group>
+                </b-col>
+            </b-row>
+
             <!-- SUBMIT -->
             <b-row class="mt-3">
                 <b-col cols="8">
@@ -174,6 +185,7 @@ export default {
                 fname : null, mname : null, lname : null, contact_no : null,
                 provider : null, reference_no : null,
             },
+            shipped_dt : null,
             saving : false,
         }
     }, // end data
@@ -210,10 +222,14 @@ export default {
 
         formValid(){
             let {specimen , 
-                courier : {fname,mname,lname,contact_no,provider,reference_no}, 
+                courier : {fname,mname,lname,contact_no,provider,reference_no}, shipped_dt,
                 courierMode} = this
 
             if(specimen === null){
+                return false
+            }
+
+            if(!shipped_dt){
                 return false
             }
 
@@ -235,15 +251,15 @@ export default {
             this.$emit('donationSet', null)
             this.donationIDBusy = true
             this.donation_id_valid = null
-            this.$store.dispatch('fetchDonation',{donation_id : this.donation_id}).then(response=>{
+            this.$store.dispatch('fetchDonation',{donation_id : this.donation_id}).then(({data})=>{
                 this.donationIDBusy = false
-                if(!response){
+                if(!data){
                     this.donation_id_valid = false
                     return
                 }else{
                     this.donation_id_valid = true
-                    this.donation = response
-                    this.$emit('donationSet',response)
+                    this.donation = data
+                    this.$emit('donationSet',data)
                 }
             })
         },1000),
@@ -260,14 +276,15 @@ export default {
                 courier : this.courier,
                 courierMode : this.courierMode,
                 donation_id : this.donation.donation_id,
-                confirmatory_reference_no : null,
                 specimen : this.specimen,
                 request_by : user,
                 created_dt : Date.now(),
+                shipped_dt : this.shipped_dt,
             }).then(r=>{
                 this.saving = false
                 this.donation_id = null
                 this.donation = null
+                this.$emit('donationSet',null)
                 this.courier = {
                     fname : null, mname : null, lname : null, provider : null, reference_no : null,
                 }

@@ -12,12 +12,12 @@
             <b-form-invalid-feedback>
                 Referral not found
             </b-form-invalid-feedback>
+
         </b-input-group>
 
         <div class="form-group text-center" v-if="!referral">
             No records to display
         </div>
-
 
         <div v-if="referral">
             
@@ -37,6 +37,8 @@
             <cryobox-card v-if="referral.cryobox" :cryobox="referral.cryobox" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
 
             <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
+
+            <results-menu></results-menu>
         </div>
 
     </div>
@@ -45,8 +47,10 @@
 <script>
 import CryoboxSelector from './CryoboxDetails/CryoboxSelector'
 import CryoboxCard from './CryoboxDetails/CryoboxCard'
+import ResultsMenu from './Results/ResultsMenu'
+
 export default {
-    components : {CryoboxSelector,CryoboxCard},
+    components : {CryoboxSelector,CryoboxCard,ResultsMenu},
     data(){
         return {
             confirmatory_reference_number : null,
@@ -70,12 +74,12 @@ export default {
             this.confirmatory_reference_number_busy = true
             this.referral = null
             this.$emit('referralSet',null)
-            this.$store.dispatch('fetchReferralbyCR',this.confirmatory_reference_number.toUpperCase()).then(response=>{
+            this.$store.dispatch('fetchReferralbyCR',this.confirmatory_reference_number.toUpperCase()).then(({data})=>{
                 this.confirmatory_reference_number_busy = false
-                if(response){
-                    this.referral = response
+                if(data){
+                    this.referral = data
                     this.confirmatory_reference_number_state = true
-                    this.$emit('referralSet',response)
+                    this.$emit('referralSet',data)
                 }else{
                     this.confirmatory_reference_number_state = false
                 }

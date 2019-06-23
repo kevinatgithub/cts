@@ -19,6 +19,7 @@ import Footah from './components/App/Footer.vue'
 export default {
     components: {Navs, Footah},
     mounted(){
+        this.$store.dispatch('fetchUsers')
         this.$store.dispatch('fetchSpecimens')
         this.$store.dispatch('fetchCouriers')
         this.$store.dispatch('fetchMachines')

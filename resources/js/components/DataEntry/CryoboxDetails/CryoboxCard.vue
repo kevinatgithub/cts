@@ -18,7 +18,7 @@
                     <b-col>{{ref}}</b-col>
                 </b-row>
                 <b-row class="detail">
-                    <b-col cols='5' class='text-right'>Compartment &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
+                    <b-col cols='5' class='text-right' nowrap>Compartment&nbsp;<i class='fa fa-caret-right'></i></b-col>
                     <b-col>{{comp}}</b-col>
                 </b-row>
                 <b-row class="detail">

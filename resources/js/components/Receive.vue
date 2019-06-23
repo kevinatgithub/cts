@@ -9,7 +9,7 @@
         
         <b-row class="mt-3">
             <b-col sm="12" md="6" lg="6" xl="6">
-                <details-form @referralSet="setReferral"></details-form>
+                <receive-form @referralSet="setReferral"></receive-form>
             </b-col>
             <b-col sm="12" md="6" lg="6" xl="6">
                 <referral-card v-if="referral" :referral="referral"></referral-card>
@@ -24,10 +24,10 @@
 <script>
 import ReferralCard from './ReferralCard/ReferralCard'
 import Timeline from './Timeline'
-import DetailsForm from './Receive/DetailsForm'
+import ReceiveForm from './Receive/ReceiveForm'
 
 export default {
-    components: {ReferralCard,Timeline,DetailsForm},
+    components: {ReferralCard,Timeline,ReceiveForm},
     data(){
         return {
             referral : null

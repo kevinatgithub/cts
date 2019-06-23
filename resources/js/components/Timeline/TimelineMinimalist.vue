@@ -55,9 +55,9 @@ export default {
             }
         },
         step1(referral){
-            let {referral : {donation,courier,courierMode,created_dt}} = this
-            let courier_name = courierMode == 'Hand Carry' ? courier.name : this.getCourierName(courier.provider)
-            let date = created_dt
+            let {referral : {donation,courier,courierMode,shipped_dt}} = this
+            let courier_name = courierMode == 'Hand Carry' ? courier.fname + ' ' + courier.lname : this.getCourierName(courier.provider)
+            let date = shipped_dt
             return {
                 tag : date,  htmlMode : true, 
                 content : "Specimen was shipped From<br>" + 

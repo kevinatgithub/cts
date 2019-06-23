@@ -2,16 +2,7 @@ import Axios from "axios";
 
 const user = {
     state : {
-        users : [
-            {
-                username : 'ritm', facility_cd : 'RITM', 
-                name : 'Juan Karlos', position : 'RMT'
-            },
-            {
-                username : 'bsf', facility_cd : 'BSF', 
-                name : 'Rico Blanko', position : 'RMT',
-            },
-        ],
+        users : [],
         user : null,
     },
     getters : {
@@ -26,18 +17,39 @@ const user = {
         initUser(state,payload){
             state.user = payload
         },
+        initUsers(state,payload){
+            state.users = payload
+        }
     },
     actions : {
+        async fetchUsers(context,payload){
+            let users = await window.$http.get('users')
+            context.commit('initUsers',users.data)
+        },
         initUser(context,payload){
             context.commit('initUser',payload)
         },
         attemptLogin(context,payload){
-            return new Promise((resolve,reject) => {
-                setTimeout(i=>{
-                    let user  = _.find(context.getters.users,{username : payload.username})
-                    resolve(user)
-                },500)
-            })
+            return window.$http.post('login',payload)
+        },
+        verifierLogin(context,payload){
+            let user = context.getters.user
+            if(user.username == payload.username){
+                return new Promise((resolve,reject)=>{
+                    resolve(false)
+                })
+            }else{
+                return window.$http.post('verifierLogin',payload)
+            }
+        },
+        newUser(context,payload){
+            return window.$http.post('newUser',payload)
+        },
+        updateUser(context,payload){
+            return window.$http.post('updateUser',payload)
+        },
+        deleteUser(context,payload){
+            return window.$http.post('deleteUser',payload)
         },
     }
 }

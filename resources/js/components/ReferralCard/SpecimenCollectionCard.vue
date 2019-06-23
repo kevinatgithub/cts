@@ -34,7 +34,7 @@
 
                 <b-row>
                     <b-col cols='4' class='text-right'>Date Shipped &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
-                    <b-col>{{referral.shipping_dt}}</b-col>
+                    <b-col>{{referral.shipped_dt}}</b-col>
                 </b-row>
 
                 <b-row>
