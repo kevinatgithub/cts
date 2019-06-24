@@ -56,17 +56,18 @@ export default {
         },
         step1(referral){
             let {referral : {donation,courier,courierMode,shipped_dt}} = this
+            let facility_name = donation.facility ? donation.facility.facility_name : "Not Set"
             let courier_name = courierMode == 'Hand Carry' ? courier.fname + ' ' + courier.lname : this.getCourierName(courier.provider)
             let date = shipped_dt
             return {
                 tag : date,  htmlMode : true, 
                 content : "Specimen was shipped From<br>" + 
-                         donation.facility.facility_name + " throught " + courier_name,
+                         facility_name + " through " + courier_name,
             }
         },
         step2(referral){
             let {referral : {received_by,received_dt}} = this
-            let status = referral.reject_reason ? 'Rejected' : 'Accepted'
+            let status = referral.reject_reason ? 'rejected' : 'accepted'
             let date = received_dt
             
             return {
@@ -78,7 +79,7 @@ export default {
         step3(referral){
             let {referral : {cryobox}} = this
             let date = cryobox.stored_dt
-            let status = cryobox.box_no
+            let status = "Cryobox # " +cryobox.box_no
             return {
                 tag : date,  htmlMode : true, color : 'yellow',
                 content : "Specimen was stored in "+status+" by<br>" + 

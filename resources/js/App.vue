@@ -2,7 +2,7 @@
     <div>
         <navs></navs>
 
-        <div class="container mt-3 mb-5"> 
+        <div class="container mt-5 mb-5"> 
             <!--  style="height: 820px" -->
             <router-view></router-view>
         </div>

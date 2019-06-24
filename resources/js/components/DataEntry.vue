@@ -22,7 +22,7 @@
 <script>
 import ReferralCard from './ReferralCard/ReferralCard'
 import Timeline from './Timeline'
-import DataEntry from './DataEntry/Main'
+import DataEntry from './DataEntry/DataEntryDashboard'
 
 export default {
     components: {ReferralCard,Timeline,DataEntry},

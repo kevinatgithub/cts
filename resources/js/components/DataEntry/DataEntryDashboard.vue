@@ -27,18 +27,11 @@
                 </b-card-text>
             </b-card>
 
-            <b-card bg-variant="dark" text-variant="white" title="Cryobox Details" v-if="!referral.cryobox">
-                <b-card-text>
-                    <i class="fa fa-info-circle"></i> Cryobox Location not set
-                </b-card-text>
-                <b-button variant="primary" size="sm" :disabled="referral.reject_reason" v-b-modal.cryobox-selector>Set Cryobox Location</b-button>
-            </b-card>
-
-            <cryobox-card v-if="referral.cryobox" :cryobox="referral.cryobox" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
+            <cryobox-card :cryobox="referral.cryobox" v-if="!referral.reject_reason" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
 
             <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
 
-            <results-menu></results-menu>
+            <results-menu v-if="!referral.reject_reason"></results-menu>
         </div>
 
     </div>
@@ -48,6 +41,7 @@
 import CryoboxSelector from './CryoboxDetails/CryoboxSelector'
 import CryoboxCard from './CryoboxDetails/CryoboxCard'
 import ResultsMenu from './Results/ResultsMenu'
+import {mapGetters} from 'vuex'
 
 export default {
     components : {CryoboxSelector,CryoboxCard,ResultsMenu},
@@ -61,6 +55,9 @@ export default {
     },
     mounted(){
         this.$refs.confirmatory_reference_number.focus()
+        if(this.on_watch){
+            this.confirmatory_reference_number = this.on_watch.confirmatory_reference_number
+        }
     },
     watch : {
         confirmatory_reference_number(){
@@ -78,6 +75,7 @@ export default {
                 this.confirmatory_reference_number_busy = false
                 if(data){
                     this.referral = data
+                    this.$store.dispatch('setReferralOnWatch',data)
                     this.confirmatory_reference_number_state = true
                     this.$emit('referralSet',data)
                 }else{
@@ -94,6 +92,9 @@ export default {
                 this.$emit('referralSet',referral)
             },1)
         }
+    },
+    computed : {
+        ...mapGetters(['on_watch'])
     }
 }
 </script>

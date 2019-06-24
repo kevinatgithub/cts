@@ -1,11 +1,15 @@
 const referral = {
     state: {
-        referrals: []
+        referrals: [],
+        on_watch : null,
     },
     getters: {
         referrals(state) {
             return state.referrals
-        }
+        },
+        on_watch(state){
+            return state.on_watch
+        },
     },
     mutations: {
         newReferral(state, payload) {
@@ -26,6 +30,9 @@ const referral = {
                 return r.donation_id.toUpperCase() == payload.donation_id.toUpperCase()
             })
             _.extend(referral, payload)
+        },
+        setReferralOnWatch(state,payload){
+            state.on_watch = payload
         },
     },
     actions: {
@@ -52,6 +59,9 @@ const referral = {
                 },500)
             })
         },
+        setReferralOnWatch(context,payload){
+            context.commit('setReferralOnWatch',payload)
+        }
     },
 }
 
