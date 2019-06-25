@@ -13,6 +13,9 @@ import {machines} from './modules/administration/machine'
 import {reagents} from './modules/administration/reagent'
 import {donation} from './modules/donation'
 import {referral} from './modules/referral'
+import {kit_method} from './modules/administration/kit_method'
+import {result_option} from './modules/administration/result_option'
+import {fujirebio} from './modules/administration/test_protocols/fujirebio'
 
 export default new Vuex.Store({
     modules : {
@@ -27,5 +30,8 @@ export default new Vuex.Store({
         machines,
         reagents,
         cryobox,
+        kit_method,
+        result_option,
+        fujirebio,
     }
 })

@@ -101,5 +101,113 @@ mock.onPost('/setReferralCryoboxAndRefrigeratorDetails').reply(({data})=>{
     return [200,referral]
 })
 
+mock.onGet('/kitmethods').reply(200,session.kit_methods)
+
+mock.onPost('/kitmethods/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.kit_methods.push({
+        id : session.kit_methods.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/kitmethods/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let method = _.find(session.kit_methods,{id : data.id})
+    _.extend(method,data)
+    return [200,data]
+})
+
+mock.onDelete('/kitmethods').reply(({data})=>{
+    data = JSON.parse(data)
+    session.kit_methods = _.filter(session.kit_methods,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+mock.onGet('/resultoptions').reply(200,session.result_options)
+
+mock.onPost('/resultoptions/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.result_options.push({
+        id : session.result_options.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/resultoptions/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let result_option = _.find(session.result_options,{id : data.id})
+    _.extend(result_option,data)
+    return [200,data]
+})
+
+mock.onDelete('/resultoptions').reply(({data})=>{
+    data = JSON.parse(data)
+    session.result_options = _.filter(session.result_options,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// =========================START serodia_hiv ==============================================
+
+mock.onGet('/serodia/options/nonfinal').reply(200,session.serodia_hiv)
+
+mock.onPost('/serodia/options/nonfinal/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.serodia_hiv.push({
+        id : session.serodia_hiv.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/serodia/options/nonfinal/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.serodia_hiv,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/serodia/options/nonfinal').reply(({data})=>{
+    data = JSON.parse(data)
+    session.serodia_hiv = _.filter(session.serodia_hiv,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// =========================START serodia_hiv_final ==========================================
+
+mock.onGet('/serodia/options/final').reply(200,session.serodia_hiv_final_status_results)
+
+mock.onPost('/serodia/options/final/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.serodia_hiv_final_status_results.push({
+        id : session.serodia_hiv_final_status_results.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/serodia/options/final/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.serodia_hiv_final_status_results,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/serodia/options/final').reply(({data})=>{
+    data = JSON.parse(data)
+    session.serodia_hiv_final_status_results = _.filter(session.serodia_hiv_final_status_results,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
 export {mock}
 

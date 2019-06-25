@@ -60,7 +60,6 @@
                 </span>
             </b-button>
         </template>
-        {{record}}
     </b-modal>
 </template>
 <script>

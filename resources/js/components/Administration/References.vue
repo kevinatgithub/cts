@@ -11,7 +11,7 @@
         <b-row>
             <b-col xs="12" sm="12" md="3" lg="3">
                 <b-list-group>
-                    <b-list-group-item v-for="(link,i) in links" :key="i">
+                    <b-list-group-item v-for="(link,i) in links" :key="i" :active="link.active">
                         <router-link :to="link.url">
                             {{link.text}} <i class="fa fa-caret-right" />
                         </router-link>
@@ -33,14 +33,17 @@ export default {
     data(){
         return {
             links : [
-                {text : "Hospitals" , url : "/references/hospital"},
-                {text : "Specimen" , url : "/references/specimen"},
-                {text : "Courier Services" , url : "/references/courier"},
+                {text : "Hospitals" , url : "/references/hospital", active : false},
+                {text : "Specimen" , url : "/references/specimen", active : false},
+                {text : "Courier Services" , url : "/references/courier", active : false},
                 // {text : "Interpretation Formula" , url : "/references/interpretation"},
-                {text : "Cryoboxes" , url : "/references/cryobox"},
-                {text : "Refrigerators" , url : "/references/refrigerator"},
-                {text : "Machines" , url : "/references/machine"},
-                {text : "Assay Reagents" , url : "/references/reagent"},
+                {text : "Cryoboxes" , url : "/references/cryobox", active : false},
+                {text : "Refrigerators" , url : "/references/refrigerator", active : false},
+                {text : "Machines" , url : "/references/machine", active : false},
+                {text : "Assay Reagents" , url : "/references/reagent", active : false},
+                {text : "Kit Methods" , url : "/references/kitmethods", active : false},
+                {text : "RITM Final Status Options" , url : "/references/resultoptions", active : false},
+                {text : "Fujirebio References" , url : "/references/protocols/hiv/fujirebio", active : false},
             ]
         }
     }

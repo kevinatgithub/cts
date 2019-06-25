@@ -16,6 +16,7 @@
         </b-form-group>
         <b-button variant="danger" v-if="update" size="sm" v-b-modal.confirm>Delete Selected Specimen</b-button>
         <b-table 
+        small
         class="mt-3" 
         selectable 
         :items="specimens" 

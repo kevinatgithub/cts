@@ -13,6 +13,7 @@
             <b-button v-if="courier" variant="dark" slot="append" @click="courier=null;selected=null;"><i class="fa fa-remove"></i></b-button>
         </b-input-group>
         <b-table 
+            small
             class="mt-3" 
             :items="couriers" 
             selectable 

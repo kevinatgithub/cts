@@ -14,9 +14,9 @@ mix.disableNotifications();
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
 
-// mix.webpackConfig({
-//    devServer: { contentBase: [ path.resolve(__dirname, 'public') ], },
-// })
+mix.webpackConfig({
+   devServer: { contentBase: [ path.resolve(__dirname, 'public') ], },
+})
 
 mix.options({
    hmrOptions: {
