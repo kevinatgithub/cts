@@ -1,56 +1,52 @@
 const fujirebio = {
     state : {
-        serodia_hiv : null,
-        serodia_hiv_final_status_results : null,
+        particle_agglutination : null,
+        serodia_hiv_interpretation : null,
     },
     getters : {
-        serodia_hiv(state){
-            return state.serodia_hiv
+        particle_agglutination(state){
+            return state.particle_agglutination
         },
-        serodia_hiv_final_status_results(state){
-            return state.serodia_hiv_final_status_results
+        serodia_hiv_interpretation(state){
+            return state.serodia_hiv_interpretation
         },
     },
     mutations : {
-        initSerodia(state,payload){
-            state.serodia_hiv = payload
+        initParticleAgglutination(state,payload){
+            state.particle_agglutination = payload
         },
-        initSerodiaFinalOptions(state,payload){
-            state.serodia_hiv_final_status_results = payload
+        initSerodiaFinalInterpretation(state,payload){
+            state.serodia_hiv_interpretation = payload
         },
     },
     actions : {
-        // ============================ serodia_hiv=====================================
-        initSerodia(context,payload){
-            context.commit('initSerodia',payload)
+        // ============================ particle_agglutination=====================================
+        async fetchParticleAgglutination(context,payload){
+            let request = await window.$http.get('/particle_agglutination')
+            context.commit('initParticleAgglutination',request.data)
         },
-        fetchSerodia(context,payload){
-            return window.$http.get('/serodia/options/nonfinal')
+        newParticleAgglutination(context,payload){
+            return window.$http.post('/particle_agglutination/new',payload)
         },
-        newSerodia(context,payload){
-            return window.$http.post('/serodia/options/nonfinal/new',payload)
+        updateParticleAgglutination(context,payload){
+            return window.$http.post('/particle_agglutination/update',payload)
         },
-        updateSerod(context,payload){
-            return window.$http.post('/serodia/options/nonfinal/update',payload)
-        },
-        deleteSerodia(context,payload){
-            return window.$http.delete('/serodia/options/nonfinal',payload)
+        deleteParticleAgglutination(context,payload){
+            return window.$http.delete('/particle_agglutination',payload)
         },
         // ============================= serodia_hiv_final_status_options==============================
-        initSerodiaFinalOptions(context,payload){
-            context.commit('initSerodiaFinalOptions',payload)
+        async fetchSerodiaFinalInterpretation(context,payload){
+            let request = await window.$http.get('/serodia_hiv_interpretation')
+            context.commit('initSerodiaFinalInterpretation',request.data)
         },
-        fetchSerodiaFinalOptions(context,payload){
-            return window.$http.get('/serodia/options/final')
+        newSerodiaFinalInterpretation(context,payload){
+            return window.$http.post('/serodia_hiv_interpretation/new',payload)
         },
-        newSerodiaFinalOption(context,payload){
-            return window.$http.post('/serodia/options/final/new',payload)
+        updateSerodiaFinalInterpretation(context,payload){
+            return window.$http.post('/serodia_hiv_interpretation/update',payload)
         },
-        updateSerodiaFinalOption(context,payload){
-            return window.$http.post('/serodia/options/final/update',payload)
-        },
-        deleteSerodiaFinalOption(context,payload){
-            return window.$http.delete('/serodia/options/final',payload)
+        deleteSerodiaFinalInterpretation(context,payload){
+            return window.$http.delete('/serodia_hiv_interpretation',payload)
         },
     }
 }

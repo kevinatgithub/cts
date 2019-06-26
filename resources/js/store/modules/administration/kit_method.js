@@ -16,8 +16,9 @@ const kit_method = {
         initKitMethods(context,payload){
             context.commit('initKitMethods',payload)
         },
-        fetchKitMethods(context,payload){
-            return window.$http.get('/kitmethods')
+        async fetchKitMethods(context,payload){
+            let request = await window.$http.get('/kitmethods')
+            context.commit('initKitMethods',request.data)
         },
         newKitMethod(context,payload){
             return window.$http.post('/kitmethods/new',payload)

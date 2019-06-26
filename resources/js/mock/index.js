@@ -5,6 +5,9 @@ import data from './data'
 let session = _.clone(data)
 
 // mock.onGet('/users').reply(200,_.filter(users,{facility_cd : 'RITM'}))
+
+//==============================User==========================================
+
 mock.onGet('/users').reply(200,session.users)
 
 mock.onPost('/newUser').reply(({data}) => {
@@ -47,6 +50,9 @@ mock.onPost('/login').reply(({data})=>{
     ]
 })
 
+
+//=============================Donation========================================
+
 mock.onPost('/donation').reply(({data})=>{
     data = JSON.parse(data)
     return [200,
@@ -56,6 +62,8 @@ mock.onPost('/donation').reply(({data})=>{
     ]
 })
 
+
+// =============================Referral=========================================
 mock.onGet('/referrals').reply(200,session.referrals)
 
 mock.onPost('/referral').reply(({data})=>{
@@ -101,6 +109,116 @@ mock.onPost('/setReferralCryoboxAndRefrigeratorDetails').reply(({data})=>{
     return [200,referral]
 })
 
+// =============================Specimen===========================================
+mock.onGet('/specimens').reply(200,session.specimens)
+
+mock.onPost('/specimens/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.specimens.push({
+        id : session.specimens.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/specimens/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let record = _.find(session.specimens,{id : data.id})
+    _.extend(record,data)
+    return [200,data]
+})
+
+mock.onDelete('/specimens').reply(({data})=>{
+    data = JSON.parse(data)
+    session.specimens = _.filter(session.specimens,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// =============================Couriers===========================================
+mock.onGet('/couriers').reply(200,session.couriers)
+
+mock.onPost('/couriers/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.couriers.push({
+        id : session.couriers.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/couriers/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let record = _.find(session.couriers,{id : data.id})
+    _.extend(record,data)
+    return [200,data]
+})
+
+mock.onDelete('/couriers').reply(({data})=>{
+    data = JSON.parse(data)
+    session.couriers = _.filter(session.couriers,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// =============================Reagents===========================================
+mock.onGet('/machines').reply(200,session.machines)
+
+mock.onPost('/machines/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.machines.push({
+        id : session.machines.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/machines/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let record = _.find(session.machines,{id : data.id})
+    _.extend(record,data)
+    return [200,data]
+})
+
+mock.onDelete('/machines').reply(({data})=>{
+    data = JSON.parse(data)
+    session.machines = _.filter(session.machines,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// =============================Reagents===========================================
+mock.onGet('/reagents').reply(200,session.reagents)
+
+mock.onPost('/reagents/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.reagents.push({
+        id : session.reagents.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/reagents/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let record = _.find(session.reagents,{id : data.id})
+    _.extend(record,data)
+    return [200,data]
+})
+
+mock.onDelete('/reagents').reply(({data})=>{
+    data = JSON.parse(data)
+    session.reagents = _.filter(session.reagents,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// =============================Kit Methods========================================
+
 mock.onGet('/kitmethods').reply(200,session.kit_methods)
 
 mock.onPost('/kitmethods/new').reply(({data})=>{
@@ -126,6 +244,8 @@ mock.onDelete('/kitmethods').reply(({data})=>{
     })
     return [200,data]
 })
+
+// ===========================RITM Final Results======================================
 
 mock.onGet('/resultoptions').reply(200,session.result_options)
 
@@ -153,57 +273,141 @@ mock.onDelete('/resultoptions').reply(({data})=>{
     return [200,data]
 })
 
-// =========================START serodia_hiv ==============================================
+// ========================= particle_agglutination ==============================================
 
-mock.onGet('/serodia/options/nonfinal').reply(200,session.serodia_hiv)
+mock.onGet('/particle_agglutination').reply(200,session.particle_agglutination)
 
-mock.onPost('/serodia/options/nonfinal/new').reply(({data})=>{
+mock.onPost('/particle_agglutination/new').reply(({data})=>{
     data = JSON.parse(data)
-    session.serodia_hiv.push({
-        id : session.serodia_hiv.length,
+    session.particle_agglutination.push({
+        id : session.particle_agglutination.length,
         name : data.name
     })
     return [200,data]
 })
 
-mock.onPost('/serodia/options/nonfinal/update').reply(({data})=>{
+mock.onPost('/particle_agglutination/update').reply(({data})=>{
     data = JSON.parse(data)
-    let option = _.find(session.serodia_hiv,{id : data.id})
+    let option = _.find(session.particle_agglutination,{id : data.id})
     _.extend(option,data)
     return [200,data]
 })
 
-mock.onDelete('/serodia/options/nonfinal').reply(({data})=>{
+mock.onDelete('/particle_agglutination').reply(({data})=>{
     data = JSON.parse(data)
-    session.serodia_hiv = _.filter(session.serodia_hiv,k=>{
+    session.particle_agglutination = _.filter(session.particle_agglutination,k=>{
         return k.id != data.id
     })
     return [200,data]
 })
 
-// =========================START serodia_hiv_final ==========================================
+// ========================= serodia_hiv_interpretation ==========================================
 
-mock.onGet('/serodia/options/final').reply(200,session.serodia_hiv_final_status_results)
+mock.onGet('/serodia_hiv_interpretation').reply(200,session.serodia_hiv_interpretation)
 
-mock.onPost('/serodia/options/final/new').reply(({data})=>{
+mock.onPost('/serodia_hiv_interpretation/new').reply(({data})=>{
     data = JSON.parse(data)
-    session.serodia_hiv_final_status_results.push({
-        id : session.serodia_hiv_final_status_results.length,
+    session.serodia_hiv_interpretation.push({
+        id : session.serodia_hiv_interpretation.length,
         name : data.name
     })
     return [200,data]
 })
 
-mock.onPost('/serodia/options/final/update').reply(({data})=>{
+mock.onPost('/serodia_hiv_interpretation/update').reply(({data})=>{
     data = JSON.parse(data)
-    let option = _.find(session.serodia_hiv_final_status_results,{id : data.id})
+    let option = _.find(session.serodia_hiv_interpretation,{id : data.id})
     _.extend(option,data)
     return [200,data]
 })
 
-mock.onDelete('/serodia/options/final').reply(({data})=>{
+mock.onDelete('/serodia_hiv_interpretation').reply(({data})=>{
     data = JSON.parse(data)
-    session.serodia_hiv_final_status_results = _.filter(session.serodia_hiv_final_status_results,k=>{
+    session.serodia_hiv_interpretation = _.filter(session.serodia_hiv_interpretation,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// ========================= eia_results ==========================================
+
+mock.onGet('/eia_results').reply(200,session.eia_results)
+
+mock.onPost('/eia_results/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.eia_results.push({
+        id : session.eia_results.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/eia_results/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.eia_results,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/eia_results').reply(({data})=>{
+    data = JSON.parse(data)
+    session.eia_results = _.filter(session.eia_results,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// ========================= westernblot_hiv ==========================================
+
+mock.onGet('/westernblot_hiv').reply(200,session.westernblot_hiv)
+
+mock.onPost('/westernblot_hiv/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.westernblot_hiv.push({
+        id : session.westernblot_hiv.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/westernblot_hiv/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.westernblot_hiv,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/westernblot_hiv').reply(({data})=>{
+    data = JSON.parse(data)
+    session.westernblot_hiv = _.filter(session.westernblot_hiv,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// ========================= pcr_results ==========================================
+
+mock.onGet('/pcr_results').reply(200,session.pcr_results)
+
+mock.onPost('/pcr_results/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.pcr_results.push({
+        id : session.pcr_results.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/pcr_results/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.pcr_results,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/pcr_results').reply(({data})=>{
+    data = JSON.parse(data)
+    session.pcr_results = _.filter(session.pcr_results,k=>{
         return k.id != data.id
     })
     return [200,data]

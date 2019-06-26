@@ -40,13 +40,13 @@ export default {
         }
     },
     computed : {
-        ...mapGetters(['serodia_hiv_final_status_results']),
+        ...mapGetters(['serodia_hiv_interpretation']),
         serodia_hiv_final_status_results_options(){
-            if(!this.serodia_hiv_final_status_results){
+            if(!this.serodia_hiv_interpretation){
                 return []
             }
             let options = []
-            this.serodia_hiv_final_status_results.forEach(r=>{
+            this.serodia_hiv_interpretation.forEach(r=>{
                 options.push(r.name)
             })
             return options

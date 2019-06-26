@@ -51,17 +51,17 @@ export default {
         }
     },
     computed : {
-        ...mapGetters(['serodia_hiv','serodia_hiv_final_status_results']),
+        ...mapGetters(['particle_agglutination','serodia_hiv_interpretation']),
         serodia_hiv_options(){
             let options = []
-            this.serodia_hiv.forEach(s=>{
+            this.particle_agglutination.forEach(s=>{
                 options.push(s.name)
             })
             return options
         },
         serodia_hiv_interpretaion_options(){
             let options = []
-            this.serodia_hiv_final_status_results.forEach(s=>{
+            this.serodia_hiv_interpretation.forEach(s=>{
                 options.push(s.name)
             })
             return options

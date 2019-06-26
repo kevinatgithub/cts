@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h5>Kit Methods</h5>
+        <h5>EIA Results</h5>
         <hr>
-        <crud :storeData="kit_methods" saveAction="newKitMethod" updateAction="updateKitMethod" deleteAction="deleteKitMethod" />
+        <crud :storeData="eia_results" saveAction="addEiaResult" updateAction="updateEiaResult" deleteAction="deleteEiaResult" />
     </div>
 </template>
 <script>
@@ -11,7 +11,9 @@ import { mapGetters } from 'vuex';
 export default {
     components : {Crud},
     computed : {
-        ...mapGetters(['kit_methods'])
+        ...mapGetters(['eia_results'])
     }
 }
 </script>
+
+

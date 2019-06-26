@@ -1,19 +1,19 @@
 <template>
     <div>
-        <b-tabs card pills small>
-            <b-tab title="Serodia Results">
-                <serodia-options />
+        <b-tabs card small>
+            <b-tab title="Particle Agglutination">
+                <particle-agglutination />
             </b-tab>
             <b-tab title="Serodia Final Results">
-                <serodia-final-options />
+                <serodia-hiv-interpretation />
             </b-tab>
         </b-tabs>
     </div>
 </template>
 <script>
-import SerodiaOptions from './FujirebioReferences/SerodiaOptions'
-import SerodiaFinalOptions from './FujirebioReferences/SerodiaFinalOptions'
+import ParticleAgglutination from './FujirebioReferences/ParticleAgglutination'
+import SerodiaHivInterpretation from './FujirebioReferences/SerodiaHivInterpretation'
 export default {
-    components : {SerodiaOptions,SerodiaFinalOptions}
+    components : {ParticleAgglutination,SerodiaHivInterpretation}
 }
 </script>

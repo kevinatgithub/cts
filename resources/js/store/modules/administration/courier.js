@@ -23,46 +23,18 @@ const couriers = {
         }
     },
     actions : {
-        fetchCouriers(context,payload){
-            return new Promise((resolve,reject) => {
-                setTimeout(i=>{
-                    context.commit("initCouriers",[
-                        {id : 0, name : 'FedEx'},
-                        {id : 1, name : 'LBC'},
-                        {id : 2, name : 'Lalamove'},
-                        {id : 3, name : 'GrabExpress'},
-                    ])
-                    resolve(true)
-                },500)
-            })
+        async fetchCouriers(context,payload){
+            let request = await window.$http.get('couriers')
+            context.commit('initCouriers',request.data)
         },
         addCourier(context,payload){
-            return new Promise((resolve,reject) => {
-                setTimeout(i=>{
-                    let courier = {
-                        id : context.getters.couriers.length,
-                        name : payload
-                    }
-                    context.commit("addCourier",courier)
-                    resolve(true)
-                },500)
-            })
+            return window.$http.post('couriers/new',payload)
         },
         updateCourier(context,payload){
-            return new Promise((resolve,reject) => {
-                setTimeout(i=>{
-                    context.commit('updateCourier',payload)
-                    resolve(true)
-                },500)
-            })
+            return window.$http.post('couriers/update',payload)
         },
         deleteCourier(context,payload){
-            return new Promise((resolve,reject) => {
-                setTimeout(i=>{
-                    context.commit('deleteCourier',payload)
-                    resolve(true)
-                },500)
-            })
+            return window.$http.delete('couriers',payload)
         }
     }
 }

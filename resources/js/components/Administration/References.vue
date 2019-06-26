@@ -39,10 +39,12 @@ export default {
                 // {text : "Interpretation Formula" , url : "/references/interpretation"},
                 {text : "Cryoboxes" , url : "/references/cryobox", active : false},
                 {text : "Refrigerators" , url : "/references/refrigerator", active : false},
-                {text : "Machines" , url : "/references/machine", active : false},
-                {text : "Assay Reagents" , url : "/references/reagent", active : false},
                 {text : "Kit Methods" , url : "/references/kitmethods", active : false},
                 {text : "RITM Final Status Options" , url : "/references/resultoptions", active : false},
+                {text : "EIA Results" , url : "/references/eia_results", active : false},
+                {text : "Westernblot HIV Results" , url : "/references/westernblot_hiv", active : false},
+                {text : "PCR Results" , url : "/references/pcr_results", active : false},
+                {text : "BSF Test Protocol References" , url : "/references/protocols/hiv/bsf", active : false},
                 {text : "Fujirebio References" , url : "/references/protocols/hiv/fujirebio", active : false},
             ]
         }

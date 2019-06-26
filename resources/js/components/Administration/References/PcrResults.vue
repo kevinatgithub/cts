@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h5>Kit Methods</h5>
+        <h5>PCR Results</h5>
         <hr>
-        <crud :storeData="kit_methods" saveAction="newKitMethod" updateAction="updateKitMethod" deleteAction="deleteKitMethod" />
+        <crud :storeData="pcr_results" saveAction="addPCR" updateAction="updatePCR" deleteAction="deletePCR" />
     </div>
 </template>
 <script>
@@ -11,7 +11,8 @@ import { mapGetters } from 'vuex';
 export default {
     components : {Crud},
     computed : {
-        ...mapGetters(['kit_methods'])
+        ...mapGetters(['pcr_results']),
     }
 }
 </script>
+

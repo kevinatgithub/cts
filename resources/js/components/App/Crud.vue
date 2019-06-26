@@ -1,19 +1,18 @@
 <template>
     <div>
-
-        <b-input-group class='mt-3 mb-3' size="sm">
+        <b-input-group class='mb-3' size="sm">
             <label class='input-group-text' slot='prepend'>
                 <i class='fa fa-book'></i>&nbsp;
-                Result:
+                {{placeholder_text}}:
             </label>
-            <b-input placeholder='Result' v-model='test_result'></b-input>
-            <b-button slot="append" variant="success" :disabled="!test_result || isBusy" @click="save"><i class="fa fa-check"></i></b-button>
-            <b-button slot="append" variant="dark" @click="test_result=null;update=null;"><i class="fa fa-remove"></i></b-button>
+            <b-input :placeholder='placeholder_text' v-model='new_value'></b-input>
+            <b-button slot="append" variant="success" :disabled="!new_value || isBusy" @click="save"><i class="fa fa-check"></i></b-button>
+            <b-button slot="append" variant="dark" @click="new_value=null;update=null;"><i class="fa fa-remove"></i></b-button>
         </b-input-group>
 
         <b-table
             class="mt-3" 
-            :items="result_options" 
+            :items="records" 
             selectable 
             @row-selected="select" 
             selected-variant="success" 
@@ -35,59 +34,63 @@
         <b-pagination
             v-model="currentPage"
             :per-page="10"
-            :total-rows="result_options.length"
+            :total-rows="records.length"
             >
         </b-pagination>
 
-        <b-modal id="confirm-delete" header-bg-variant="danger" header-text-variant="white" title="Delete Result Option" @ok="confirmDelete">
-            Are you sure you wan't to delete this Result Option?
+        <b-modal id="confirm-delete" header-bg-variant="danger" header-text-variant="white" title="Delete Record" @ok="confirmDelete">
+            Are you sure you wan't to delete this record?
         </b-modal>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 export default {
+    props : ['storeData','saveAction','updateAction','deleteAction'],
     data(){
         return {
-            test_result : null,
+            new_value : null,
             update : null,
             isBusy : false,
             currentPage : 1,
         }
     },
     computed : {
-        ...mapGetters(['serodia_hiv']),
-        result_options(){
-            if(!this.serodia_hiv){
+        records(){
+            if(!this.storeData){
                 return []
             }
-            return this.serodia_hiv
+
+            return this.storeData
         },
+        placeholder_text(){
+            return !this.update ? "New Value" : "Update Value"
+        }
     },
     methods : {
         select(items){
             this.update = items[0]
-            this.test_result = items[0].name
+            this.new_value = items[0].name
         },
         async save(){
             this.isBusy = true
             let request = null
             if(this.update){
-                this.update.name = this.test_result
-                request = await this.$store.dispatch('updateSerodia',this.update)
+                this.update.name = this.new_value
+                request = await this.$store.dispatch(this.updateAction,this.update)
             }else{
-                request = await this.$store.dispatch('newSerodia',{name : this.test_result})
+                request = await this.$store.dispatch(this.saveAction,{name : this.new_value})
             }
             
             this.update = null
-            this.test_result = null
+            this.new_value = null
             this.isBusy = false
         },
         async confirmDelete(){
             this.isBusy = true
-            let request = await this.$store.dispatch('deleteSerodia',this.update)
+            let request = await this.$store.dispatch(this.deleteAction,this.update)
             this.update = null
-            this.test_result = null
+            this.new_value = null
             this.isBusy = false
         }
     }

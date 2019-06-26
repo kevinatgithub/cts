@@ -7,11 +7,13 @@ import Courier from './References/Courier'
 import Specimen from './References/Specimen'
 import Cryobox from './References/Cryobox'
 import Refrigerator from './References/Refrigerator'
-import Machine from './References/Machine'
-import Reagent from './References/Reagent'
 import KitMethod from './References/KitMethod'
 import ResultOption from './References/ResultOptions'
+import BsfTestReferences from './References/TestProtocolReferences/BsfTestReferences'
 import FujirebioReferences from './References/TestProtocolReferences/FujirebioReferences'
+import EiaResults from './References/EiaResults'
+import WesternblotHiv from './References/WesternblotHiv'
+import PcrResults from './References/PcrResults'
 
 export default new VueRouter({
     routes : [
@@ -20,10 +22,12 @@ export default new VueRouter({
         { component : Specimen , path : '/references/specimen' },
         { component : Cryobox , path : '/references/cryobox' },
         { component : Refrigerator , path : '/references/refrigerator' },
-        { component : Machine , path : '/references/machine' },
-        { component : Reagent , path : '/references/reagent' },
         { component : KitMethod , path : '/references/kitmethods' },
         { component : ResultOption , path : '/references/resultoptions' },
+        { component : BsfTestReferences , path : '/references/protocols/hiv/bsf' },
         { component : FujirebioReferences , path : '/references/protocols/hiv/fujirebio' },
+        { component : EiaResults , path : '/references/eia_results'},
+        { component : WesternblotHiv , path : '/references/westernblot_hiv'},
+        { component : PcrResults , path : '/references/pcr_results'},
     ]
 })

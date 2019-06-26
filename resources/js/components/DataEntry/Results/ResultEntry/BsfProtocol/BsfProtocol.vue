@@ -31,10 +31,6 @@
             </b-col>
         </b-row>
 
-        <b-modal id="reagent-settings" header-bg-variant="primary" header-text-variant="white" title="Assay Reagents">
-            <reagent />
-        </b-modal>
-
         <b-row class="mt-3">
             <b-col cols="6">
                 <b-input-group class='mb-3' size="sm">
@@ -57,18 +53,21 @@
             </b-col>
         </b-row>
 
-        <b-modal id="machines-settings" header-bg-variant="primary" header-text-variant="white" title="Machine List">
-            <machines />
+        <b-modal id="machines-settings" header-bg-variant="primary" header-text-variant="white" title="Machine List" hide-footer>
+            <bsf-test-references />
+        </b-modal>
+
+        <b-modal id="reagent-settings" header-bg-variant="primary" header-text-variant="white" title="Assay Reagents" hide-footer>
+            <bsf-test-references />
         </b-modal>
     </div>
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import Machines from '../../../../Administration/References/Machine'
-import Reagent from '../../../../Administration/References/Reagent'
+import BsfTestReferences from '../../../../Administration/References/TestProtocolReferences/BsfTestReferences'
 import BsfProtocolKit from './BsfProtocolKit'
 export default {
-    components : {Reagent,Machines,BsfProtocolKit},
+    components : {BsfTestReferences,BsfProtocolKit},
     data(){
         return {
             test : {

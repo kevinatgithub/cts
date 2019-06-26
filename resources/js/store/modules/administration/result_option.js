@@ -16,8 +16,9 @@ const result_option = {
         initResultOptions(context,payload){
             context.commit('initResultOptions',payload)
         },
-        fetchResultOptions(context,payload){
-            return window.$http.get('/resultoptions')
+        async fetchResultOptions(context,payload){
+            let request = await window.$http.get('/resultoptions')
+            context.commit('initResultOptions',request.data)
         },
         newResultOption(context,payload){
             return window.$http.post('/resultoptions/new',payload)

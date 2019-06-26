@@ -2,9 +2,10 @@
     <div>
         <navs></navs>
 
-        <div class="container mt-5 mb-5"> 
+        <div class="container mt-5"> 
             <!--  style="height: 820px" -->
-            <router-view></router-view>
+            <br>
+            <router-view class="mt-1"></router-view>
         </div>
 
         <footah></footah>
@@ -25,17 +26,13 @@ export default {
         this.$store.dispatch('fetchMachines')
         this.$store.dispatch('fetchReagents')
         
-        let kit_methods_request = await this.$store.dispatch('fetchKitMethods')
-        this.$store.dispatch('initKitMethods',kit_methods_request.data)
-
-        let result_options_request = await this.$store.dispatch('fetchResultOptions')
-        this.$store.dispatch('initResultOptions',result_options_request.data)
-        
-        let serodia_hiv_request = await this.$store.dispatch('fetchSerodia')
-        this.$store.dispatch('initSerodia',serodia_hiv_request.data)
-
-        let serodia_hiv_final_status_results_request = await this.$store.dispatch('fetchSerodiaFinalOptions')
-        this.$store.dispatch('initSerodiaFinalOptions',serodia_hiv_final_status_results_request.data)
+        this.$store.dispatch('fetchKitMethods')
+        this.$store.dispatch('fetchResultOptions')
+        this.$store.dispatch('fetchParticleAgglutination')
+        this.$store.dispatch('fetchSerodiaFinalInterpretation')
+        this.$store.dispatch('fetchEiaResults')
+        this.$store.dispatch('fetchWesternblotHiv')
+        this.$store.dispatch('fetchPCR')
     }
 }
 </script>
