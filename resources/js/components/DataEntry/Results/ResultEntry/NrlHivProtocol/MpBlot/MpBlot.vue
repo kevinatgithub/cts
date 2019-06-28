@@ -7,7 +7,7 @@
                 INTERPRETATION:
             </label>
             <b-form-select :options="options"></b-form-select>
-            <b-button v-b-modal.westernblot-hiv-settings><i class="fa fa-cog"></i></b-button>
+            <b-button slot="append" v-b-modal.westernblot-hiv-settings><i class="fa fa-cog"></i></b-button>
         </b-input-group>
 
         <b-input-group class="mb-3" size="sm">

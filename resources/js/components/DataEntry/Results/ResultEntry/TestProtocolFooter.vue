@@ -47,6 +47,13 @@
                     </label>
                     <b-input placeholder='' v-model='user.name' readonly></b-input>
                 </b-input-group>
+                <b-input-group class='mb-3' size="sm">
+                    <label class='input-group-text' slot='prepend'>
+                        <i class='fa fa-folder-open'></i>&nbsp;
+                        Report Type:
+                    </label>
+                    <b-form-select v-model="form.report_type" :options="report_types"></b-form-select>
+                </b-input-group>
             </b-col>
         </b-row>
 
@@ -70,7 +77,10 @@ export default {
             form : {
                 methods : [],
                 encoded_dt : new Date().toDateString()
-            }
+            },
+            report_types : [
+                'Initial', 'Donor Follow-up', 'Others'
+            ]
         }
     },
     computed : {
