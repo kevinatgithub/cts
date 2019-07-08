@@ -1,36 +1,35 @@
 <template>
     <b-card no-body>
         <b-tabs>
-            <b-tab title="GENSCREEN 1">
-                <genscreen-form class="mt-3" kit="1" />
+            <b-tab title="MONOLISA 1">
+                <test-card class="mt-3" kit="1"></test-card>
             </b-tab>
-            <b-tab title="GENSCREEN 2">
-                <genscreen-form class="mt-3" kit="2" />
+            <b-tab title="MONOLISA 2">
+                <test-card class="mt-3" kit="2"></test-card>
+            </b-tab>
+            <b-tab title="MONOLISA 3">
+                <test-card class="mt-3" kit="3"></test-card>
             </b-tab>
         </b-tabs>
 
         <b-input-group size="sm">
             <label class='input-group-text' slot='prepend' style="min-width:170px;">
                 <i class='fa fa-book'></i>&nbsp;
-                GENSCREEN FINAL STATUS:
+                MONOLISA FINAL INTERPRETATION:
             </label>
-            <b-form-select :options="genscreen_results"></b-form-select>
+            <b-form-select :options="interpretation_options"></b-form-select>
             <b-button slot="append" v-b-modal.eia-settings><i class="fa fa-cog"></i></b-button>
-        </b-input-group>
-
+        </b-input-group> 
     </b-card>
 </template>
 <script>
-import GenscreenForm from './Genscreen/GenscreenForm'
+import TestCard from '../TestCard'
 import { mapGetters } from 'vuex';
 export default {
-    components : {GenscreenForm},
+    components : {TestCard},
     computed : {
         ...mapGetters(['eia_results']),
-        genscreen_results(){
-            if(!this.eia_results){
-                return []
-            }
+        interpretation_options(){
             let options = []
             this.eia_results.forEach(o=>{
                 options.push(o.name)

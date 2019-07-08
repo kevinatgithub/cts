@@ -9,7 +9,7 @@
             <b-list-group class="text-center">
                 <b-list-group-item href="#" v-b-modal.bsf-protocol @click="$bvModal.hide('test-protocol')">BSF Test Protocol</b-list-group-item>
                 <b-list-group-item href="#" v-b-modal.nrl-hiv-protocol @click="$bvModal.hide('test-protocol')">NRL HIV Protocol</b-list-group-item>
-                <b-list-group-item href="#">NRL HBV Protocol</b-list-group-item>
+                <b-list-group-item href="#" v-b-modal.nrl-hbv-protocol @click="$bvModal.hide('test-protocol')">NRL HBV Protocol</b-list-group-item>
                 <b-list-group-item href="#">NRL HCV Protocol</b-list-group-item>
                 <b-list-group-item href="#">NRL MAL Protocol</b-list-group-item>
                 <b-list-group-item href="#">NRL SYP Protocol</b-list-group-item>
@@ -35,6 +35,16 @@
             </template>
         </b-modal>
 
+        <b-modal id="nrl-hbv-protocol" size="xl" header-bg-variant="dark" header-text-variant="white" title="NRL HBV Protocol">
+            
+            <nrl-hbv-protocol></nrl-hbv-protocol>
+
+            <template slot="modal-footer">
+                <b-button variant="dark">Cancel</b-button>
+                <b-button variant="primary" v-b-modal.verifier>Save Results</b-button>
+            </template>
+        </b-modal>
+
         <verifier />
 
         
@@ -44,8 +54,9 @@
 import Verifier from '../../App/Verifier'
 import BsfProtocol from './ResultEntry/BsfProtocol/BsfProtocol'
 import NrlHivProtocol from './ResultEntry/NrlHivProtocol/NrlHivProtocol'
+import NrlHbvProtocol from './ResultEntry/NrlHbvProtocol/NrlHbvProtocol'
 export default {
-    components : {Verifier,BsfProtocol,NrlHivProtocol},
+    components : {Verifier,BsfProtocol,NrlHivProtocol,NrlHbvProtocol},
     props : ['referral']
 }
 </script>

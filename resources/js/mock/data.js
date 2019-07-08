@@ -315,4 +315,9 @@ let pcr_results = [
     {id:9,name:"HCV-RNA NOT DETECTED"},
 ]
 
-export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results }
+let geenius_hiv_interpretation = [
+    {id : 0, name : 'POSITIVE (HIV-1)'},
+    {id : 1, name : 'NEGATIVE'},
+]
+
+export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation }

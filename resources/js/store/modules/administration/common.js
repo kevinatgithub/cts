@@ -7,6 +7,7 @@ const common = {
         eia_results : [],
         westernblot_hiv : [],
         pcr_results : [],
+        geenius_hiv_interpretation : [],
     },
     getters : {
         cryobox : state => {
@@ -20,6 +21,9 @@ const common = {
         },
         pcr_results(state){
             return state.pcr_results
+        },
+        geenius_hiv_interpretation(state){
+            return state.geenius_hiv_interpretation
         },
     },
     mutations : {
@@ -35,6 +39,9 @@ const common = {
         },
         initPCR(state,payload){
             state.pcr_results = payload
+        },
+        initGeeniusHivInterpretation(state,payload){
+            state.geenius_hiv_interpretation = payload
         },
     },
     actions : {
@@ -84,6 +91,19 @@ const common = {
         },
         deletePCR(context,payload){
             return window.$http.delete('pcr_results',payload)
+        },
+        async fetchGeeniusHivInterpretation(context,payload){
+            let request = await window.$http.get('geenius_hiv_interpretation')
+            context.commit('initGeeniusHivInterpretation',request.data)
+        },
+        addGeeniusHivInterpretation(context,payload){
+            return window.$http.post('geenius_hiv_interpretation/new',payload)
+        },
+        updateGeeniusHivInterpretation(context,payload){
+            return window.$http.post('geenius_hiv_interpretation/update',payload)
+        },
+        deleteGeeniusHivInterpretation(context,payload){
+            return window.$http.delete('geenius_hiv_interpretation',payload)
         },
     }
 }

@@ -33,6 +33,7 @@ export default {
         this.$store.dispatch('fetchEiaResults')
         this.$store.dispatch('fetchWesternblotHiv')
         this.$store.dispatch('fetchPCR')
+        this.$store.dispatch('fetchGeeniusHivInterpretation')
     }
 }
 </script>

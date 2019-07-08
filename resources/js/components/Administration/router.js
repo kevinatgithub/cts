@@ -14,6 +14,7 @@ import FujirebioReferences from './References/TestProtocolReferences/FujirebioRe
 import EiaResults from './References/EiaResults'
 import WesternblotHiv from './References/WesternblotHiv'
 import PcrResults from './References/PcrResults'
+import GeeniusHivInterpretations from './References/GeeniusHivInterpretations'
 
 export default new VueRouter({
     routes : [
@@ -29,5 +30,6 @@ export default new VueRouter({
         { component : EiaResults , path : '/references/eia_results'},
         { component : WesternblotHiv , path : '/references/westernblot_hiv'},
         { component : PcrResults , path : '/references/pcr_results'},
+        { component : GeeniusHivInterpretations , path : '/references/geenius_hiv_interpretations'},
     ]
 })

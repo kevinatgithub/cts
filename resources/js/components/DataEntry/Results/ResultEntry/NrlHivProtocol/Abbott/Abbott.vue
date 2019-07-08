@@ -20,18 +20,13 @@
             <b-form-select :options="architect_results"></b-form-select>
             <b-button slot="append" v-b-modal.eia-settings><i class="fa fa-cog"></i></b-button>
         </b-input-group> 
-
-        <b-modal id="eia-settings" header-bg-variant="dark" header-text-variant="white" title="EIA Results Settings" hide-footer>
-            <eia-results />
-        </b-modal>
     </b-card>
 </template>
 <script>
 import Architect from './Architect'
-import EiaResults from '../../../../../Administration/References/EiaResults'
 import { mapGetters } from 'vuex';
 export default {
-    components : {Architect,EiaResults},
+    components : {Architect},
     computed : {
         ...mapGetters(['eia_results']),
         architect_results(){

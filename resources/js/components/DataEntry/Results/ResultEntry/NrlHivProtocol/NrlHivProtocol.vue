@@ -26,6 +26,12 @@
             </b-tabs>
         </b-card>
         <test-protocol-footer class="mt-3"></test-protocol-footer>
+        <b-modal id="eia-settings" header-bg-variant="dark" header-text-variant="white" title="EIA Results" hide-footer>
+            <eia-results />
+        </b-modal>
+        <b-modal id="pcr-settings" header-bg-variant="dark" header-text-variant="white" title="PCR Results" hide-footer>
+            <pcr-results />
+        </b-modal>
     </div>
 </template>
 
@@ -38,7 +44,9 @@ import RocheTaqscreen from './Roche/RocheTaqscreen'
 import MpBlot from './MpBlot/MpBlot'
 import QiagenArtus from './Qiagen/QiagenArtus'
 import TestProtocolFooter from '../TestProtocolFooter'
+import EiaResults from '../../../../Administration/References/EiaResults'
+import PcrResults from '../../../../Administration/References/PcrResults'
 export default {
-    components : {Fujirebio,Abbott,Genscreen,Geenius,RocheTaqscreen,MpBlot,QiagenArtus,TestProtocolFooter},
+    components : {Fujirebio,Abbott,Genscreen,Geenius,RocheTaqscreen,MpBlot,QiagenArtus,TestProtocolFooter,EiaResults,PcrResults},
 }
 </script>

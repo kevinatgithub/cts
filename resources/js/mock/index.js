@@ -413,5 +413,33 @@ mock.onDelete('/pcr_results').reply(({data})=>{
     return [200,data]
 })
 
+// ========================= geenius_hiv_interpretation ==========================================
+
+mock.onGet('/geenius_hiv_interpretation').reply(200,session.geenius_hiv_interpretation)
+
+mock.onPost('/geenius_hiv_interpretation/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.geenius_hiv_interpretation.push({
+        id : session.pcr_results.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPost('/geenius_hiv_interpretation/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.geenius_hiv_interpretation,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/geenius_hiv_interpretation').reply(({data})=>{
+    data = JSON.parse(data)
+    session.geenius_hiv_interpretation = _.filter(session.geenius_hiv_interpretation,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
 export {mock}
 

@@ -46,6 +46,7 @@ export default {
                 {text : "PCR Results" , url : "/references/pcr_results", active : false},
                 {text : "BSF Test Protocol References" , url : "/references/protocols/hiv/bsf", active : false},
                 {text : "Fujirebio References" , url : "/references/protocols/hiv/fujirebio", active : false},
+                {text : "Geenius HIV Interpretations" , url : "/references/geenius_hiv_interpretations", active : false},
             ]
         }
     }
