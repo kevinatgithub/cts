@@ -41,12 +41,13 @@ export default {
                 {text : "Refrigerators" , url : "/references/refrigerator", active : false},
                 {text : "Kit Methods" , url : "/references/kitmethods", active : false},
                 {text : "RITM Final Status Options" , url : "/references/resultoptions", active : false},
-                {text : "EIA Results" , url : "/references/eia_results", active : false},
-                {text : "Westernblot HIV Results" , url : "/references/westernblot_hiv", active : false},
-                {text : "PCR Results" , url : "/references/pcr_results", active : false},
+                // {text : "EIA Results" , url : "/references/eia_results", active : false},
+                // {text : "Westernblot HIV Results" , url : "/references/westernblot_hiv", active : false},
+                // {text : "PCR Results" , url : "/references/pcr_results", active : false},
                 {text : "BSF Test Protocol References" , url : "/references/protocols/hiv/bsf", active : false},
-                {text : "Fujirebio References" , url : "/references/protocols/hiv/fujirebio", active : false},
-                {text : "Geenius HIV Interpretations" , url : "/references/geenius_hiv_interpretations", active : false},
+                // {text : "Fujirebio References" , url : "/references/protocols/hiv/fujirebio", active : false},
+                // {text : "Geenius HIV Interpretations" , url : "/references/geenius_hiv_interpretations", active : false},
+                {text : "Options Registry" , url : "/references/options", active : false},
             ]
         }
     }

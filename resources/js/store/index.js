@@ -16,6 +16,8 @@ import {referral} from './modules/referral'
 import {kit_method} from './modules/administration/kit_method'
 import {result_option} from './modules/administration/result_option'
 import {fujirebio} from './modules/administration/test_protocols/fujirebio'
+import {options} from './modules/administration/options'
+import {test_protocol} from './modules/administration/test_protocol'
 
 export default new Vuex.Store({
     modules : {
@@ -33,5 +35,7 @@ export default new Vuex.Store({
         kit_method,
         result_option,
         fujirebio,
+        options,
+        test_protocol,
     }
 })

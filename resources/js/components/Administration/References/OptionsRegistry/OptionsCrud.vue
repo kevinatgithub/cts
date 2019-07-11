@@ -5,7 +5,7 @@
                 <i class='fa fa-book'></i>&nbsp;
                 {{placeholder_text}}:
             </label>
-            <b-input :placeholder='placeholder_text' v-model='new_value' @keypress.enter="save"></b-input>
+            <b-input :placeholder='placeholder_text' v-model='new_value' autocomplete="off" @keypress.enter="save"></b-input>
             <b-button slot="append" variant="success" :disabled="!new_value || isBusy" @click="save"><i class="fa fa-check"></i></b-button>
             <b-button slot="append" variant="dark" @click="new_value=null;update=null;"><i class="fa fa-remove"></i></b-button>
         </b-input-group>
@@ -22,12 +22,13 @@
             striped
             small
             per-page="10"
-            :current-page="currentPage">
+            :current-page="currentPage"
+            head-variant="dark">
             <template slot="table-busy">
                 <b-img width="30" src="./img/loading.gif"></b-img> Please wait..
             </template>
             <template slot="options" slot-scope="data">
-                <b-button variant="danger" size="sm" @click="update = data.item" v-b-modal.confirm-delete><i class="fa fa-remove"></i></b-button>
+                <b-button variant="danger" size="sm" @click="update = data.item; $bvModal.show('confirm-delete-' + category)"><i class="fa fa-remove"></i></b-button>
             </template>
         </b-table>
 
@@ -38,7 +39,7 @@
             >
         </b-pagination>
 
-        <b-modal id="confirm-delete" header-bg-variant="danger" header-text-variant="white" title="Delete Record" @ok="confirmDelete">
+        <b-modal :id="'confirm-delete-'+category" header-bg-variant="danger" header-text-variant="white" title="Delete Record" @ok="confirmDelete">
             Are you sure you wan't to delete this record?
         </b-modal>
     </div>
@@ -46,7 +47,7 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
-    props : ['storeData','saveAction','updateAction','deleteAction'],
+    props : ['storeData','category'],
     data(){
         return {
             new_value : null,
@@ -77,21 +78,25 @@ export default {
             let request = null
             if(this.update){
                 this.update.name = this.new_value
-                request = await this.$store.dispatch(this.updateAction,this.update)
+                this.update.category = this.category
+                request = await this.$store.dispatch('options_update',this.update)
             }else{
-                request = await this.$store.dispatch(this.saveAction,{name : this.new_value})
+                request = await this.$store.dispatch('options_new',{name : this.new_value, category : this.category})
             }
             
             this.update = null
             this.new_value = null
             this.isBusy = false
+            this.$emit('hasChange',true)
         },
         async confirmDelete(){
             this.isBusy = true
-            let request = await this.$store.dispatch(this.deleteAction,this.update)
+            this.update.category = this.category
+            let request = await this.$store.dispatch('options_delete',this.update)
             this.update = null
             this.new_value = null
             this.isBusy = false
+            this.$emit('hasChange',true)
         }
     }
 }

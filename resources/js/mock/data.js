@@ -320,4 +320,178 @@ let geenius_hiv_interpretation = [
     {id : 1, name : 'NEGATIVE'},
 ]
 
-export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation }
+let options_registry = [
+    {id : 0, category : 'PCR RESULTS' , name:"HIV-RNA DETECTED"},
+    {id : 1, category : 'PCR RESULTS' , name:"HBV-DNA DETECTED"},
+    {id : 2, category : 'PCR RESULTS' , name:"HCV-RNA DETECTED"},
+    {id : 3, category : 'PCR RESULTS' , name:"HIV-RNA HBV-RNA HCV-RNA DETECTED"},
+    {id : 4, category : 'PCR RESULTS' , name:"HIV-RNA HBV-RNA DETECTED"},
+    {id : 5, category : 'PCR RESULTS' , name:"HIV-RNA HCV-RNA DETECTED"},
+    {id : 6, category : 'PCR RESULTS' , name:"HBV-DNA HCV-RNA DETECTED"},
+    {id : 7, category : 'PCR RESULTS' , name:"HIV-RNA NOT DETECTED"},
+    {id : 8, category : 'PCR RESULTS' , name:"HBV-DNA NOT DETECTED"},
+    {id : 9, category : 'PCR RESULTS' , name:"HCV-RNA NOT DETECTED"},
+    {id : 0, category : 'GEENIUS HIV INTERPRETATION', name : 'POSITIVE (HIV-1)'},
+    {id : 1, category : 'GEENIUS HIV INTERPRETATION', name : 'NEGATIVE'},
+    {id : 0, category : 'WESTERNBLOT HIV', name:"POSITIVE (HIV-1)"},
+    {id : 1, category : 'WESTERNBLOT HIV', name:"POSITIVE (HIV-1) with cross-reaction to (HIV-2)"},
+    {id : 2, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp120, p24)"},
+    {id : 3, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p24)"},
+    {id : 4, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p17)"},
+    {id : 5, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p24, p17)"},
+    {id : 6, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p66, p24)"},
+    {id : 7, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160)"},
+    {id : 8, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p51)"},
+    {id : 9, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p66, p51)"},
+    {id : 10, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p66)"},
+    {id : 11, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p24)"},
+    {id : 12, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p55)"},
+    {id : 13, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p17)"},
+    {id : 14, category : 'WESTERNBLOT HIV', name:"NEGATIVE"},
+    {id : 0, category : 'EIA RESULTS', name : "Non-Reactive"},
+    {id : 1, category : 'EIA RESULTS', name : "Reactive"},
+    {id : 2, category : 'EIA RESULTS', name : "Non-Reactive Grayzone"},
+    {id : 3, category : 'EIA RESULTS', name : "Reactive Grayzone"},
+    { id: 0, category : 'SERODIA HIV INTERPRETATION', name: "Non-Reactive" },
+    { id: 1, category : 'SERODIA HIV INTERPRETATION', name: "Non-Reactive (after Absorption)" },
+    { id: 2, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1)" },
+    { id: 3, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-2)" },
+    { id: 4, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1 and HIV-2)" },
+    { id: 5, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1) after Absorption" },
+    { id: 6, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-2) after Absorption" },
+    { id: 7, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1 and HIV-2) after Absorption" },
+    { id: 8, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1) and Reactive (HIV-2)" },
+    { id: 9, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1)" },
+    { id: 10, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-2)" },
+    { id: 11, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1 and HIV-2)" },
+    { id: 12, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1) and Inconclusive (HIV-2)" },
+    { id: 13, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1) after Absorption" },
+    { id: 14, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-2) after Absorption" },
+    { id: 15, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1 and HIV-2) after Absorption" },
+    { id: 0, category : 'PARTICLE AGGLUTINATION' , name: "Non-Reactive" },
+    { id: 1, category : 'PARTICLE AGGLUTINATION' , name: "Inconclusive" },
+    { id: 2, category : 'PARTICLE AGGLUTINATION' , name: "+" },
+    { id: 3, category : 'PARTICLE AGGLUTINATION' , name: "++" },
+    { id: 4, category : 'PARTICLE AGGLUTINATION' , name: "+++" },
+    { id: 5, category : 'PARTICLE AGGLUTINATION' , name: "++++" },
+    { id: 6, category : 'PARTICLE AGGLUTINATION' , name: "Non-Reactive (after Absorption)" },
+    { id: 7, category : 'PARTICLE AGGLUTINATION' , name: "Inconclusive (after Absorption)" },
+    { id: 8, category : 'PARTICLE AGGLUTINATION' , name: "+ (after Absorption)" },
+    { id: 9, category : 'PARTICLE AGGLUTINATION' , name: "++ (after Absorption)" },
+    { id: 10, category : 'PARTICLE AGGLUTINATION' ,name: "+++ (after Absorption)" },
+    { id: 11, category : 'PARTICLE AGGLUTINATION' ,name: "++++ (after Absorption)" },
+]
+
+let test_protocols = [
+    {
+        tti : 'HIV', name : 'FUJIREBIO DIAGNOSTICS, INC. SERODIA HIV 1/2',
+        fields : [
+            {
+                name : 'PA FINAL STATUS',
+                type : 'select',
+                source : 'SERODIA HIV INTERPRETATION',
+            }
+        ],
+        forms : [
+            {
+                name : 'SERODIA HIV 1',
+                fields : [
+                    {
+                        name : 'SERODIA HIV 1 - 1',
+                        type : 'select',
+                        source : 'PARTICLE AGGLUTINATION',
+                    },
+                    {
+                        name : 'SERODIA HIV 1 - 2',
+                        type : 'select',
+                        source : 'PARTICLE AGGLUTINATION',
+                    },
+                    {
+                        name : 'SERODIA HIV 1/2 INT 1',
+                        type : 'select',
+                        source : 'SERODIA HIV INTERPRETATION',
+                    },
+                    {
+                        name : 'DATE TESTED 1',
+                        type : 'date',
+                    },
+                    {
+                        name : 'SERODIA HIV REMARKS 1',
+                        type : 'text',
+                    },
+                ]
+            },
+            {
+                name : 'SERODIA HIV 2',
+                fields : [
+                    {
+                        name : 'SERODIA HIV 2 - 1',
+                        type : 'select',
+                        source : 'PARTICLE AGGLUTINATION',
+                    },
+                    {
+                        name : 'SERODIA HIV 2 - 2',
+                        type : 'select',
+                        source : 'PARTICLE AGGLUTINATION',
+                    },
+                    {
+                        name : 'SERODIA HIV 1/2 INT 2',
+                        type : 'select',
+                        source : 'SERODIA HIV INTERPRETATION',
+                    },
+                    {
+                        name : 'DATE TESTED 2',
+                        type : 'date',
+                    },
+                    {
+                        name : 'SERODIA HIV REMARKS 2',
+                        type : 'text',
+                    },
+                ]
+            },
+            {
+                name : 'ABSORPTION',
+                fields : [
+                    {
+                        name : 'SERODIA HIV 1 - ABS',
+                        type : 'select',
+                        source : 'PARTICLE AGGLUTINATION',
+                    },
+                    {
+                        name : 'SERODIA HIV 2 - ABS',
+                        type : 'select',
+                        source : 'PARTICLE AGGLUTINATION',
+                    },
+                    {
+                        name : 'SERODIA HIV 1/2 INT ABS',
+                        type : 'select',
+                        source : 'SERODIA HIV INTERPRETATION',
+                    },
+                    {
+                        name : 'DATE TESTED ABS',
+                        type : 'date',
+                    },
+                    {
+                        name : 'SERODIA HIV REMARKS ABS',
+                        type : 'text',
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        tti : 'HIV', name : 'DIASORIN MUREX HBSAG QUALI',
+        forms : [
+            {
+                name : 'MUREX 1',
+                fields : [
+                    {type : 'text', name : 'OPTICAL DENSITY 1'},
+                    {type : 'text', name : 'CUT-OFF VALUE 1'},
+                    {type : 'select', name : 'INTERPRETATION 1', source : 'EIA RESULTS'},
+                ]
+            }
+        ]
+    }
+]
+
+export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols }

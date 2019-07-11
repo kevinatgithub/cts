@@ -12,10 +12,10 @@
                     <architect />
                 </b-tab>
                 <b-tab title="ROCHE TAQSCREEN">
-
+                    <roche-taqscreen />
                 </b-tab>
                 <b-tab title="QIAGEN ARTUS HBV">
-
+                    <artus />
                 </b-tab>
                 <b-tab title="BIORAD MONOLISA HBSAG NT">
                     
@@ -32,8 +32,10 @@ import EiaResults from '../../../../Administration/References/EiaResults'
 import Monolisa from './Biorad/Monolisa'
 import Murex from './Diasorin/Murex'
 import Architect from './Abbott/Architect'
+import RocheTaqscreen from './Roche/RocheTaqscreen'
+import Artus from './Qiagen/Artus'
 export default {
-    components : {EiaResults,Monolisa,Murex,Architect}
+    components : {EiaResults,Monolisa,Murex,Architect,RocheTaqscreen,Artus}
 }
 </script>
 

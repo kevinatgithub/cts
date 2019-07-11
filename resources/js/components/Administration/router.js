@@ -15,6 +15,7 @@ import EiaResults from './References/EiaResults'
 import WesternblotHiv from './References/WesternblotHiv'
 import PcrResults from './References/PcrResults'
 import GeeniusHivInterpretations from './References/GeeniusHivInterpretations'
+import OptionsRegistry from './References/OptionsRegistry'
 
 export default new VueRouter({
     routes : [
@@ -31,5 +32,6 @@ export default new VueRouter({
         { component : WesternblotHiv , path : '/references/westernblot_hiv'},
         { component : PcrResults , path : '/references/pcr_results'},
         { component : GeeniusHivInterpretations , path : '/references/geenius_hiv_interpretations'},
+        { component : OptionsRegistry , path : '/references/options'},
     ]
 })

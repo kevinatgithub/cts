@@ -420,7 +420,7 @@ mock.onGet('/geenius_hiv_interpretation').reply(200,session.geenius_hiv_interpre
 mock.onPost('/geenius_hiv_interpretation/new').reply(({data})=>{
     data = JSON.parse(data)
     session.geenius_hiv_interpretation.push({
-        id : session.pcr_results.length,
+        id : session.geenius_hiv_interpretation.length,
         name : data.name
     })
     return [200,data]
@@ -439,6 +439,50 @@ mock.onDelete('/geenius_hiv_interpretation').reply(({data})=>{
         return k.id != data.id
     })
     return [200,data]
+})
+
+// ========================= options_registry ==========================================
+
+mock.onGet('options/categories').reply(function(config){
+    let response = _.chain(session.options_registry).flatten().map('category').uniq().value()
+    return [200,response]
+})
+
+mock.onGet('/options').reply(function(config){
+    let response = _.filter(session.options_registry,{category : config.category})
+    return [200,response]
+})
+
+mock.onPost('/options/new').reply(({data})=>{
+    data = JSON.parse(data)
+    session.options_registry.push({
+        id : session.options_registry.length,
+        category : data.category,
+        name : data.name,
+    })
+    return [200,data]
+})
+
+mock.onPost('/options/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.options_registry,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/options').reply(({data})=>{
+    data = JSON.parse(data)
+    session.options_registry = _.filter(session.options_registry,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+// ========================= options_registry ==========================================
+
+mock.onGet('test_protocols').reply(function(config){
+    let response = _.filter(session.test_protocols,{tti : config.tti})
+    return [200,response]
 })
 
 export {mock}
