@@ -34,6 +34,8 @@ export default {
         this.$store.dispatch('fetchWesternblotHiv')
         this.$store.dispatch('fetchPCR')
         this.$store.dispatch('fetchGeeniusHivInterpretation')
+        this.$store.dispatch('fetchAllTestProtocols')
+        this.$store.dispatch('options_fetch_categories')
     }
 }
 </script>

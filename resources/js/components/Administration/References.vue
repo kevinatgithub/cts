@@ -48,6 +48,7 @@ export default {
                 // {text : "Fujirebio References" , url : "/references/protocols/hiv/fujirebio", active : false},
                 // {text : "Geenius HIV Interpretations" , url : "/references/geenius_hiv_interpretations", active : false},
                 {text : "Options Registry" , url : "/references/options", active : false},
+                {text : "Test Protocols" , url : "/references/test_protocols", active : false},
             ]
         }
     }

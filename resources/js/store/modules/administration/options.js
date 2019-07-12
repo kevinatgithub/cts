@@ -1,6 +1,23 @@
 let options = {
+    state : {
+        option_categories : [],
+    },
+    getters : {
+        option_categories(state){
+            return state.option_categories
+        },
+    },
+    mutations : {
+        initOptionsCategories(state,payload){
+            state.option_categories = payload
+        },
+    },
     actions : {
-        options_get_categories(){
+        async options_fetch_categories(context,payload){
+            let request = await window.$http.get('options/categories')
+            context.commit('initOptionsCategories',request.data)
+        },
+        options_get_categories(context,payload){
             return window.$http.get('options/categories')
         },
         options_get(context,payload){

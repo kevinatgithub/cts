@@ -27,7 +27,9 @@
 
         <b-modal id="nrl-hiv-protocol" size="xl" header-bg-variant="dark" header-text-variant="white" title="NRL HIV Protocol">
 
-            <nrl-hiv-protocol></nrl-hiv-protocol>
+            <result-entry tti="HIV" />
+
+            <test-protocol-footer class="mt-3" />
 
             <template slot="modal-footer">
                 <b-button variant="dark">Cancel</b-button>
@@ -37,7 +39,9 @@
 
         <b-modal id="nrl-hbv-protocol" size="xl" header-bg-variant="dark" header-text-variant="white" title="NRL HBV Protocol">
             
-            <nrl-hbv-protocol></nrl-hbv-protocol>
+            <result-entry tti="HBV" />
+
+            <test-protocol-footer class="mt-3" />
 
             <template slot="modal-footer">
                 <b-button variant="dark">Cancel</b-button>
@@ -46,7 +50,10 @@
         </b-modal>
 
         <b-modal id="nrl-hcv-protocol" size="xl" header-bg-variant="dark" header-text-variant="white" title="NRL HCV Protocol">
-            <result-entry tti="HIV" />
+
+            <result-entry tti="HCV" />
+
+            <test-protocol-footer class="mt-3" />
 
             <template slot="modal-footer">
                 <b-button variant="dark">Cancel</b-button>
@@ -65,9 +72,10 @@ import BsfProtocol from './ResultEntry/BsfProtocol/BsfProtocol'
 import NrlHivProtocol from './ResultEntry/NrlHivProtocol/NrlHivProtocol'
 import NrlHbvProtocol from './ResultEntry/NrlHbvProtocol/NrlHbvProtocol'
 import ResultEntry from './ResultEntry/ResultEntry'
+import TestProtocolFooter from './ResultEntry/TestProtocolFooter'
 
 export default {
-    components : {Verifier,BsfProtocol,NrlHivProtocol,NrlHbvProtocol,ResultEntry},
+    components : {Verifier,BsfProtocol,NrlHivProtocol,NrlHbvProtocol,ResultEntry,TestProtocolFooter},
     props : ['referral']
 }
 </script>

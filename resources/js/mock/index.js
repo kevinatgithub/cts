@@ -478,11 +478,147 @@ mock.onDelete('/options').reply(({data})=>{
     return [200,data]
 })
 
-// ========================= options_registry ==========================================
+// ========================= test_protocols ==========================================
 
 mock.onGet('test_protocols').reply(function(config){
     let response = _.filter(session.test_protocols,{tti : config.tti})
     return [200,response]
+})
+
+mock.onGet('test_protocols/all').reply(200,session.test_protocols)
+
+mock.onPost('test_protocols/new').reply(({data})=>{
+    data = JSON.parse(data)
+    let {tti,name} = data
+    session.test_protocols.push({
+        id : session.test_protocols.length,
+        tti, name, fields : [], forms : [],
+    })
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/update').reply(({data})=>{
+    data = JSON.parse(data)
+    let protocol = _.find(session.test_protocols,{id : data.id})
+    _.extend(protocol,data)
+    return [200,{status : 'ok'}]
+})
+
+mock.onDelete('test_protocols').reply(function(config){
+    session.test_protocols = _.filter(session.test_protocols,p=>{
+        return p.id != config.id
+    })
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/form_new').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id,name} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(!protocol.forms){
+        protocol.forms = []
+    }
+    protocol.forms.push({
+        id : protocol.forms.length,
+        name : name,
+        fields : []
+    })
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/field_update').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id , upd} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(protocol){
+        let field = _.find(protocol.fields,{id : upd.id})
+        if(field){
+            _.extend(field,upd)
+        }
+    }
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/form_field_update').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id, form_id , upd} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(protocol){
+        let form = _.find(protocol.forms,{id : form_id})
+        if(form){
+            let field = _.find(form.fields,{id : upd.id})
+            if(field){
+                _.extend(field,upd)
+            }
+        }
+    }
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/field_new').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id , upd} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(protocol){
+        if(!protocol.fields){
+            protocol.fields = []
+        }
+        let field = {id : protocol.fields.length}
+        _.extend(field,upd)
+        protocol.fields.push(field)
+    }
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/form_field_new').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id , form_id , upd} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(protocol){
+        let form = _.find(protocol.forms,{id : form_id})
+        if(form){
+            if(!form.fields){
+                form.fields = []
+            }
+            let field = {id : form.fields.length}
+            _.extend(field,upd)
+            form.fields.push(field)
+        }
+    }
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/field_delete').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id , del} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(protocol){
+        if(!protocol.fields){
+            protocol.fields = []
+        }
+        protocol.fields = _.filter(protocol.fields,f=>{
+            return f.id != del.id
+        })
+    }
+    return [200,{status : 'ok'}]
+})
+
+mock.onPost('test_protocols/form_field_delete').reply(({data})=>{
+    data = JSON.parse(data)
+    let {protocol_id , form_id , del} = data
+    let protocol = _.find(session.test_protocols,{id : protocol_id})
+    if(protocol){
+        let form = _.find(protocol.forms,{id : form_id})
+        if(form){
+            if(!form.fields){
+                form.fields = []
+            }
+            form.fields = _.filter(form.fields,f=>{
+                return f.id != del.id
+            })
+        }
+    }
+    return [200,{status : 'ok'}]
 })
 
 export {mock}

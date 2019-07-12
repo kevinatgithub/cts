@@ -1,6 +1,6 @@
 <template>
     <b-card bg-variant="white">
-        <b-tabs>
+        <b-tabs small v-if="proto.forms">
             <b-tab v-for="(form,i) in proto.forms" :key="i" :title="form.name">
                 <field v-for="(field,i) in form.fields" :key="i" :pkey="i" :field="field" class="mt-3" />
             </b-tab>

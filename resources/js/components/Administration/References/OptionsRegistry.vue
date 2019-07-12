@@ -13,7 +13,7 @@
         </b-col>
         <b-tabs card small vertical pills>
             <b-tab v-for="(c,i) in categories" :key="i" :title="c">
-                <options-manager :category="c" />
+                <options-manager :category="c" @hasChange="$emit('hasChange',true)" />
             </b-tab>
         </b-tabs>
         

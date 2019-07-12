@@ -26,6 +26,7 @@ export default {
             let {category} = this
             let response = await this.$store.dispatch('options_get',{category})
             this.records = response.data
+            this.$emit('hasChange',true)
         },
         changed(){
             this.reloadOptions()
