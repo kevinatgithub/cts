@@ -18,6 +18,7 @@ import {result_option} from './modules/administration/result_option'
 import {fujirebio} from './modules/administration/test_protocols/fujirebio'
 import {options} from './modules/administration/options'
 import {test_protocol} from './modules/administration/test_protocol'
+import {report_template} from './modules/administration/report_template'
 
 export default new Vuex.Store({
     modules : {
@@ -37,5 +38,6 @@ export default new Vuex.Store({
         fujirebio,
         options,
         test_protocol,
+        report_template,
     }
 })

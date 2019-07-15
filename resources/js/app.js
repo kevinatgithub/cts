@@ -28,7 +28,10 @@ const base = axios.create({
 })
 import mock from './mock'
 window.$http = base
-  
+
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
+Vue.use( CKEditor );
 
 /**
  * The following block of code may be used to automatically register your

@@ -16,7 +16,7 @@
                     <label class='input-group-text' slot='prepend'>
                         Machine Name:
                     </label>
-                    <b-input placeholder='Machine Name' v-model='form.name' :disabled="loading"></b-input>
+                    <b-input placeholder='Machine Name' v-model='form.name' :disabled="loading" @keypress.enter="save"></b-input>
                 </b-input-group>
             </b-col>
             <b-col cols="3">

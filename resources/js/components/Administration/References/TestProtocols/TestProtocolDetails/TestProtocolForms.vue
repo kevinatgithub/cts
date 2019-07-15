@@ -4,7 +4,7 @@
             <label class='input-group-text' slot='prepend'>
                 New Name:
             </label>
-            <b-input placeholder='Form Name' v-model='form.name' :disabled="loading"></b-input>
+            <b-input placeholder='Form Name' v-model='form.name' :disabled="loading" @keypress.enter="save"></b-input>
             <b-button slot="append" variant="success" @click="save">
                 <span v-if="!loading"><i class="fa fa-check"></i> Create Form</span>
                 <span v-if="loading"><i class="fa fa-spinner"></i> Saving, please wait..</span>

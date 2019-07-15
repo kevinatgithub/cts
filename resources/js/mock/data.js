@@ -50,8 +50,23 @@ let donations = [
         reactiveResults: [
             'MALA',
         ],
-        facility: null,
-        donor: null,
+        facility: {
+            facility_name: 'Philippine Blood Center',
+            address: 'PBC Building, Lungcenter Comp, Quezon Ave. Q.C.',
+            facilty_cd: '13006',
+            region: '13',
+            pathologist: 'Andress Bonifacio',
+        },
+        donor: {
+            initials: 'R.A.T.',
+            dob: "1989-03-17",
+            nationality: 'Filipino',
+            civil_status: 'Single',
+            occupation: 'I.T/Software Development',
+            home_address: 'Bulacan',
+            frequency: 'Repeat',
+            prev_donation: '2018-01-30',
+        },
         donation_type: 'Voluntary'
     },
     {
@@ -61,7 +76,13 @@ let donations = [
         reactiveResults: [
             'MALA',
         ],
-        facility: null,
+        facility: {
+            facility_name: 'Philippine Blood Center',
+            address: 'PBC Building, Lungcenter Comp, Quezon Ave. Q.C.',
+            facilty_cd: '13006',
+            region: '13',
+            pathologist: 'Andress Bonifacio',
+        },
         donor: {
             initials: 'R.A.T.',
             dob: "1989-03-17",
@@ -69,14 +90,112 @@ let donations = [
             civil_status: 'Single',
             occupation: 'I.T/Software Development',
             home_address: 'Bulacan',
-            frequency: 'First Time',
+            frequency: 'Repeat',
+            prev_donation: '2018-01-30',
+        },
+        donation_type: 'Voluntary'
+	},
+	{
+        donation_id: 'N4',
+        blood_type: 'O POS',
+        donation_dt: '2019-01-23',
+        reactiveResults: [
+            'MALA',
+        ],
+        facility: {
+            facility_name: 'Philippine Blood Center',
+            address: 'PBC Building, Lungcenter Comp, Quezon Ave. Q.C.',
+            facilty_cd: '13006',
+            region: '13',
+            pathologist: 'Andress Bonifacio',
         },
         donation_type: 'Voluntary'
     }
 ];
 
 let referrals = [
-    { "donation": { "donation_id": "N1", "blood_type": "A POS", "donation_dt": "2018-11-05", "reactiveResults": ["HIV"], "facility": { "facility_name": "Philippine Blood Center", "address": "PBC Building, Lungcenter Comp, Quezon Ave. Q.C.", "facilty_cd": "13006", "region": "13", "pathologist": "Andress Bonifacio" }, "donor": { "initials": "R.A.T.", "dob": "1989-03-17", "nationality": "Filipino", "civil_status": "Single", "occupation": "I.T/Software Development", "home_address": "Bulacan", "frequency": "Repeat", "prev_donation": "2018-01-30" }, "donation_type": "Voluntary" }, "courier": { "fname": null, "mname": null, "lname": null, "contact_no": null, "provider": 0, "reference_no": "123" }, "courierMode": "Courier", "donation_id": "N1", "specimen": [0], "request_by": { "username": "bsf", "facility_cd": "BSF", "name": "Rico Blanko", "position": "RMT", "password": "1" }, "created_dt": 1561269281732, "shipped_dt": "2019-06-16", "confirmatory_reference_number": "C1", "contested": false, "remarks": null, "reject_reason": null, "received_by": { "username": "r2", "facility_cd": "RITM", "name": "Lucifer Morning Star", "position": "RMT", "password": "1" }, "received_dt": "Sun Jun 23 2019", "cryobox": { "box_no": "123", "slot": { "x": 0, "y": 0 }, "refrigerator": 0, "compartment": 0, "row": [0, 0], "cryobox_slot": 0, "stored_by": { "username": "r2", "facility_cd": "RITM", "name": "Lucifer Morning Star", "position": "RMT", "password": "1" }, "stored_dt": 1561270287436 } }
+	{
+		"donation": {
+			"donation_id": "N1",
+			"blood_type": "A POS",
+			"donation_dt": "2018-11-05",
+			"reactiveResults": [
+				"HIV"
+			],
+			"facility": {
+				"facility_name": "Philippine Blood Center",
+				"address": "PBC Building, Lungcenter Comp, Quezon Ave. Q.C.",
+				"facilty_cd": "13006",
+				"region": "13",
+				"pathologist": "Andress Bonifacio"
+			},
+			"donor": {
+				"initials": "R.A.T.",
+				"dob": "1989-03-17",
+				"nationality": "Filipino",
+				"civil_status": "Single",
+				"occupation": "I.T/Software Development",
+				"home_address": "Bulacan",
+				"frequency": "Repeat",
+				"prev_donation": "2018-01-30"
+			},
+			"donation_type": "Voluntary"
+		},
+		"courier": {
+			"fname": null,
+			"mname": null,
+			"lname": null,
+			"contact_no": null,
+			"provider": 0,
+			"reference_no": "123"
+		},
+		"courierMode": "Courier",
+		"donation_id": "N1",
+		"specimen": [
+			4
+		],
+		"request_by": {
+			"username": "bsf",
+			"facility_cd": "BSF",
+			"name": "Rico Blanko",
+			"position": "RMT",
+			"password": "1"
+		},
+		"created_dt": 1563162182952,
+		"shipped_dt": "2019-07-15",
+		"cryobox": {
+			"box_no": "1",
+			"slot": {
+				"x": 0,
+				"y": 8
+			},
+			"refrigerator": 0,
+			"compartment": 0,
+			"row": [
+				0,
+				0
+			],
+			"cryobox_slot": 0,
+			"stored_by": {
+				"username": "ritm",
+				"facility_cd": "RITM",
+				"name": "Juan Karlos",
+				"position": "RMT",
+				"password": "1"
+			},
+			"stored_dt": 1563162217049
+		},
+		"confirmatory_reference_number": "C1",
+		"reject_reason": null,
+		"received_by": {
+			"username": "ritm",
+			"facility_cd": "RITM",
+			"name": "Juan Karlos",
+			"position": "RMT",
+			"password": "1"
+		},
+		"received_dt": "Mon Jul 15 2019"
+	}
 ];
 
 let specimens = [
@@ -321,68 +440,436 @@ let geenius_hiv_interpretation = [
 ]
 
 let options_registry = [
-    {id : 0, category : 'PCR RESULTS' , name:"HIV-RNA DETECTED"},
-    {id : 1, category : 'PCR RESULTS' , name:"HBV-DNA DETECTED"},
-    {id : 2, category : 'PCR RESULTS' , name:"HCV-RNA DETECTED"},
-    {id : 3, category : 'PCR RESULTS' , name:"HIV-RNA HBV-RNA HCV-RNA DETECTED"},
-    {id : 4, category : 'PCR RESULTS' , name:"HIV-RNA HBV-RNA DETECTED"},
-    {id : 5, category : 'PCR RESULTS' , name:"HIV-RNA HCV-RNA DETECTED"},
-    {id : 6, category : 'PCR RESULTS' , name:"HBV-DNA HCV-RNA DETECTED"},
-    {id : 7, category : 'PCR RESULTS' , name:"HIV-RNA NOT DETECTED"},
-    {id : 8, category : 'PCR RESULTS' , name:"HBV-DNA NOT DETECTED"},
-    {id : 9, category : 'PCR RESULTS' , name:"HCV-RNA NOT DETECTED"},
-    {id : 0, category : 'GEENIUS HIV INTERPRETATION', name : 'POSITIVE (HIV-1)'},
-    {id : 1, category : 'GEENIUS HIV INTERPRETATION', name : 'NEGATIVE'},
-    {id : 0, category : 'WESTERNBLOT HIV', name:"POSITIVE (HIV-1)"},
-    {id : 1, category : 'WESTERNBLOT HIV', name:"POSITIVE (HIV-1) with cross-reaction to (HIV-2)"},
-    {id : 2, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp120, p24)"},
-    {id : 3, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p24)"},
-    {id : 4, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p17)"},
-    {id : 5, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p24, p17)"},
-    {id : 6, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160, p66, p24)"},
-    {id : 7, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (gp160)"},
-    {id : 8, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p51)"},
-    {id : 9, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p66, p51)"},
-    {id : 10, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p66)"},
-    {id : 11, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p24)"},
-    {id : 12, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p55)"},
-    {id : 13, category : 'WESTERNBLOT HIV', name:"INDETERMINATE (p17)"},
-    {id : 14, category : 'WESTERNBLOT HIV', name:"NEGATIVE"},
-    {id : 0, category : 'EIA RESULTS', name : "Non-Reactive"},
-    {id : 1, category : 'EIA RESULTS', name : "Reactive"},
-    {id : 2, category : 'EIA RESULTS', name : "Non-Reactive Grayzone"},
-    {id : 3, category : 'EIA RESULTS', name : "Reactive Grayzone"},
-    { id: 0, category : 'SERODIA HIV INTERPRETATION', name: "Non-Reactive" },
-    { id: 1, category : 'SERODIA HIV INTERPRETATION', name: "Non-Reactive (after Absorption)" },
-    { id: 2, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1)" },
-    { id: 3, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-2)" },
-    { id: 4, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1 and HIV-2)" },
-    { id: 5, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1) after Absorption" },
-    { id: 6, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-2) after Absorption" },
-    { id: 7, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1 and HIV-2) after Absorption" },
-    { id: 8, category : 'SERODIA HIV INTERPRETATION', name: "Inconclusive (HIV-1) and Reactive (HIV-2)" },
-    { id: 9, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1)" },
-    { id: 10, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-2)" },
-    { id: 11, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1 and HIV-2)" },
-    { id: 12, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1) and Inconclusive (HIV-2)" },
-    { id: 13, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1) after Absorption" },
-    { id: 14, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-2) after Absorption" },
-    { id: 15, category : 'SERODIA HIV INTERPRETATION', name: "Reactive (HIV-1 and HIV-2) after Absorption" },
-    { id: 0, category : 'PARTICLE AGGLUTINATION' , name: "Non-Reactive" },
-    { id: 1, category : 'PARTICLE AGGLUTINATION' , name: "Inconclusive" },
-    { id: 2, category : 'PARTICLE AGGLUTINATION' , name: "+" },
-    { id: 3, category : 'PARTICLE AGGLUTINATION' , name: "++" },
-    { id: 4, category : 'PARTICLE AGGLUTINATION' , name: "+++" },
-    { id: 5, category : 'PARTICLE AGGLUTINATION' , name: "++++" },
-    { id: 6, category : 'PARTICLE AGGLUTINATION' , name: "Non-Reactive (after Absorption)" },
-    { id: 7, category : 'PARTICLE AGGLUTINATION' , name: "Inconclusive (after Absorption)" },
-    { id: 8, category : 'PARTICLE AGGLUTINATION' , name: "+ (after Absorption)" },
-    { id: 9, category : 'PARTICLE AGGLUTINATION' , name: "++ (after Absorption)" },
-    { id: 10, category : 'PARTICLE AGGLUTINATION' ,name: "+++ (after Absorption)" },
-    { id: 11, category : 'PARTICLE AGGLUTINATION' ,name: "++++ (after Absorption)" },
-    { id: 0, category : 'EIA NT RESULTS' ,name: "To Be Diluted" },
-    { id: 0, category : 'EIA NT RESULTS' ,name: "Negative" },
-    { id: 0, category : 'EIA NT RESULTS' ,name: "Positive" },
+	{
+		"id": 0,
+		"category": "PCR RESULTS",
+		"name": "HIV-RNA DETECTED"
+	},
+	{
+		"id": 1,
+		"category": "PCR RESULTS",
+		"name": "HBV-DNA DETECTED"
+	},
+	{
+		"id": 2,
+		"category": "PCR RESULTS",
+		"name": "HCV-RNA DETECTED"
+	},
+	{
+		"id": 3,
+		"category": "PCR RESULTS",
+		"name": "HIV-RNA HBV-RNA HCV-RNA DETECTED"
+	},
+	{
+		"id": 4,
+		"category": "PCR RESULTS",
+		"name": "HIV-RNA HBV-RNA DETECTED"
+	},
+	{
+		"id": 5,
+		"category": "PCR RESULTS",
+		"name": "HIV-RNA HCV-RNA DETECTED"
+	},
+	{
+		"id": 6,
+		"category": "PCR RESULTS",
+		"name": "HBV-DNA HCV-RNA DETECTED"
+	},
+	{
+		"id": 7,
+		"category": "PCR RESULTS",
+		"name": "HIV-RNA NOT DETECTED"
+	},
+	{
+		"id": 8,
+		"category": "PCR RESULTS",
+		"name": "HBV-DNA NOT DETECTED"
+	},
+	{
+		"id": 9,
+		"category": "PCR RESULTS",
+		"name": "HCV-RNA NOT DETECTED"
+	},
+	{
+		"id": 10,
+		"category": "GEENIUS HIV INTERPRETATION",
+		"name": "POSITIVE (HIV-1)"
+	},
+	{
+		"id": 11,
+		"category": "GEENIUS HIV INTERPRETATION",
+		"name": "NEGATIVE"
+	},
+	{
+		"id": 12,
+		"category": "WESTERNBLOT HIV",
+		"name": "POSITIVE (HIV-1)"
+	},
+	{
+		"id": 13,
+		"category": "WESTERNBLOT HIV",
+		"name": "POSITIVE (HIV-1) with cross-reaction to (HIV-2)"
+	},
+	{
+		"id": 14,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (gp120, p24)"
+	},
+	{
+		"id": 15,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (gp160, p24)"
+	},
+	{
+		"id": 16,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (gp160, p17)"
+	},
+	{
+		"id": 17,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (gp160, p24, p17)"
+	},
+	{
+		"id": 18,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (gp160, p66, p24)"
+	},
+	{
+		"id": 19,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (gp160)"
+	},
+	{
+		"id": 20,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (p51)"
+	},
+	{
+		"id": 21,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (p66, p51)"
+	},
+	{
+		"id": 22,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (p66)"
+	},
+	{
+		"id": 23,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (p24)"
+	},
+	{
+		"id": 24,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (p55)"
+	},
+	{
+		"id": 25,
+		"category": "WESTERNBLOT HIV",
+		"name": "INDETERMINATE (p17)"
+	},
+	{
+		"id": 26,
+		"category": "WESTERNBLOT HIV",
+		"name": "NEGATIVE"
+	},
+	{
+		"id": 27,
+		"category": "EIA RESULTS",
+		"name": "Non-Reactive"
+	},
+	{
+		"id": 28,
+		"category": "EIA RESULTS",
+		"name": "Reactive"
+	},
+	{
+		"id": 29,
+		"category": "EIA RESULTS",
+		"name": "Non-Reactive Grayzone"
+	},
+	{
+		"id": 30,
+		"category": "EIA RESULTS",
+		"name": "Reactive Grayzone"
+	},
+	{
+		"id": 31,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Non-Reactive"
+	},
+	{
+		"id": 32,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Non-Reactive (after Absorption)"
+	},
+	{
+		"id": 33,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-1)"
+	},
+	{
+		"id": 34,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-2)"
+	},
+	{
+		"id": 35,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-1 and HIV-2)"
+	},
+	{
+		"id": 36,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-1) after Absorption"
+	},
+	{
+		"id": 37,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-2) after Absorption"
+	},
+	{
+		"id": 38,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-1 and HIV-2) after Absorption"
+	},
+	{
+		"id": 39,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Inconclusive (HIV-1) and Reactive (HIV-2)"
+	},
+	{
+		"id": 40,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-1)"
+	},
+	{
+		"id": 41,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-2)"
+	},
+	{
+		"id": 42,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-1 and HIV-2)"
+	},
+	{
+		"id": 43,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-1) and Inconclusive (HIV-2)"
+	},
+	{
+		"id": 44,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-1) after Absorption"
+	},
+	{
+		"id": 45,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-2) after Absorption"
+	},
+	{
+		"id": 46,
+		"category": "SERODIA HIV INTERPRETATION",
+		"name": "Reactive (HIV-1 and HIV-2) after Absorption"
+	},
+	{
+		"id": 47,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "Non-Reactive"
+	},
+	{
+		"id": 48,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "Inconclusive"
+	},
+	{
+		"id": 49,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "+"
+	},
+	{
+		"id": 50,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "++"
+	},
+	{
+		"id": 51,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "+++"
+	},
+	{
+		"id": 52,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "++++"
+	},
+	{
+		"id": 53,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "Non-Reactive (after Absorption)"
+	},
+	{
+		"id": 54,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "Inconclusive (after Absorption)"
+	},
+	{
+		"id": 55,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "+ (after Absorption)"
+	},
+	{
+		"id": 56,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "++ (after Absorption)"
+	},
+	{
+		"id": 57,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "+++ (after Absorption)"
+	},
+	{
+		"id": 58,
+		"category": "PARTICLE AGGLUTINATION",
+		"name": "++++ (after Absorption)"
+	},
+	{
+		"id": 59,
+		"category": "EIA NT RESULTS",
+		"name": "To Be Diluted"
+	},
+	{
+		"id": 60,
+		"category": "EIA NT RESULTS",
+		"name": "Negative"
+	},
+	{
+		"id": 61,
+		"category": "EIA NT RESULTS",
+		"name": "Positive"
+	},
+	{
+		"id": 62,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "Positive"
+	},
+	{
+		"id": 63,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "INDETERMINATE (NS3-1)"
+	},
+	{
+		"id": 64,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "INDETERMINATE (NS3-2)"
+	},
+	{
+		"id": 65,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "INDETERMINATE (NS4)"
+	},
+	{
+		"id": 66,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "INDETERMINATE (NS5)"
+	},
+	{
+		"id": 67,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "INDETERMINATE (GST)"
+	},
+	{
+		"id": 68,
+		"category": "HCV BLOT INTERPRETATIONS",
+		"name": "INDETERMINATE (CORE)"
+	},
+	{
+		"id": 69,
+		"category": "MALARIA RESULTS",
+		"name": "NO MALARIAL PARASITE SEEN"
+	},
+	{
+		"id": 70,
+		"category": "MALARIA RESULTS",
+		"name": "Positive (P. falciparum)"
+	},
+	{
+		"id": 71,
+		"category": "MALARIA RESULTS",
+		"name": "Positive (Plasmodium sp.)"
+	},
+	{
+		"id": 72,
+		"category": "MALARIA RESULTS",
+		"name": "Positive (P. ovale)"
+	},
+	{
+		"id": 73,
+		"category": "MALARIA RESULTS",
+		"name": "Positive (P. knowlesi)"
+	},
+	{
+		"id": 74,
+		"category": "MALARIA RESULTS",
+		"name": "Positive (P. malariae)"
+	},
+	{
+		"id": 75,
+		"category": "MALARIA RESULTS",
+		"name": "UNSUITABLE FOR TESTING"
+	},
+	{
+		"id": 75,
+		"category": "MALARIA RESULTS",
+		"name": "Negative for all Plasmodium spp."
+	},
+	{
+		"id": 76,
+		"category": "STERLING RPR RESULTS",
+		"name": "NON-REACTIVE"
+	},
+	{
+		"id": 78,
+		"category": "STERLING RPR RESULTS",
+		"name": "INCONCLUSIVE"
+	},
+	{
+		"id": 79,
+		"category": "STERLING RPR RESULTS",
+		"name": "+"
+	},
+	{
+		"id": 80,
+		"category": "STERLING RPR RESULTS",
+		"name": "++"
+	},
+	{
+		"id": 81,
+		"category": "STERLING RPR RESULTS",
+		"name": "+++"
+	},
+	{
+		"id": 82,
+		"category": "STERLING RPR RESULTS",
+		"name": "++++"
+	},
+	{
+		"id": 83,
+		"category": "SYPHILIS RESULTS",
+		"name": "NON-REACTIVE"
+	},
+	{
+		"id": 84,
+		"category": "SYPHILIS RESULTS",
+		"name": "INCONCLUSIVE"
+	},
+	{
+		"id": 85,
+		"category": "SYPHILIS RESULTS",
+		"name": "REACTIVE"
+	}
 ]
 
 let test_protocols = [
@@ -1434,17 +1921,433 @@ let test_protocols = [
 					}
 				]
 			}
-		],
-		"_showDetails": false
+		]
 	},
 	{
 		"id": 15,
 		"tti": "HCV",
 		"name": "MP BIOMEDICALS HCV BLOT 3.0",
-		"fields": [],
+		"fields": [
+			{
+				"id": 0,
+				"name": "INTERPRETATION",
+				"type": "select",
+				"source": "HCV BLOT INTERPRETATIONS"
+			},
+			{
+				"id": 1,
+				"name": "REMARKS",
+				"type": "text",
+				"source": null
+			},
+			{
+				"id": 2,
+				"name": "DATE TESTED",
+				"type": "date",
+				"source": null
+			}
+		],
+		"forms": [],
+		"_showDetails": false
+	},
+	{
+		"id": 16,
+		"tti": "HCV",
+		"name": "ROCHE TAQSCREEN",
+		"fields": [
+			{
+				"id": 0,
+				"name": "INTERPRETATION",
+				"type": "select",
+				"source": "PCR RESULTS"
+			},
+			{
+				"id": 1,
+				"name": "DATE TESTED",
+				"type": "date",
+				"source": null
+			},
+			{
+				"id": 2,
+				"name": "REMARKS",
+				"type": "text",
+				"source": null
+			}
+		],
+		"forms": [],
+		"_showDetails": false
+	},
+	{
+		"id": 17,
+		"tti": "HCV",
+		"name": "QIAGEN ARTUS HCV",
+		"fields": [
+			{
+				"id": 0,
+				"name": "INTERPRETATION",
+				"type": "select",
+				"source": "PCR RESULTS"
+			},
+			{
+				"id": 1,
+				"name": "DATE TESTED",
+				"type": "date",
+				"source": null
+			},
+			{
+				"id": 2,
+				"name": "REMARKS",
+				"type": "text",
+				"source": null
+			}
+		],
+		"forms": [],
+		"_showDetails": false
+	},
+	{
+		"id": 18,
+		"tti": "MAL",
+		"name": "MALARIA MICROSCOPY RESULT",
+		"fields": [
+			{
+				"id": 0,
+				"name": "RESULT",
+				"type": "select",
+				"source": "MALARIA RESULTS"
+			},
+			{
+				"id": 1,
+				"name": "DATE REPORTED",
+				"type": "date",
+				"source": null
+			}
+		],
+		"forms": [],
+		"_showDetails": false
+	},
+	{
+		"id": 19,
+		"tti": "MAL",
+		"name": "MALARIA PCR RESULT",
+		"fields": [
+			{
+				"id": 0,
+				"name": "RESULT",
+				"type": "select",
+				"source": "MALARIA RESULTS"
+			},
+			{
+				"id": 1,
+				"name": "DATE REPORTED",
+				"type": "date",
+				"source": null
+			}
+		],
 		"forms": [],
 		"_showDetails": true
+	},
+	{
+		"id": 20,
+		"tti": "SYP",
+		"name": "STERLING DIAGNOSTICS INC. RPR CARD TEST",
+		"fields": [
+			{
+				"id": 0,
+				"name": "FINAL INTERPRETATION",
+				"type": "select",
+				"source": "SYPHILIS RESULTS"
+			},
+			{
+				"id": 1,
+				"name": "REMARKS",
+				"type": "text",
+				"source": null
+			}
+		],
+		"forms": [
+			{
+				"id": 0,
+				"name": "RESULT 1",
+				"fields": [
+					{
+						"id": 0,
+						"name": "RESULT 1",
+						"type": "select",
+						"source": "STERLING RPR RESULTS"
+					},
+					{
+						"id": 1,
+						"name": "INTERPRETATION 1",
+						"type": "select",
+						"source": "SYPHILIS RESULTS"
+					},
+					{
+						"id": 2,
+						"name": "DATE TESTED 1",
+						"type": "date",
+						"source": null
+					}
+				]
+			},
+			{
+				"id": 1,
+				"name": "RESULT 2",
+				"fields": [
+					{
+						"id": 0,
+						"name": "RESULT 2",
+						"type": "select",
+						"source": "STERLING RPR RESULTS"
+					},
+					{
+						"id": 1,
+						"name": "INTERPRETATION 2",
+						"type": "select",
+						"source": "SYPHILIS RESULTS"
+					},
+					{
+						"id": 2,
+						"name": "DATE TESTED 2",
+						"type": "date",
+						"source": null
+					}
+				]
+			},
+			{
+				"id": 2,
+				"name": "RESULT 3",
+				"fields": [
+					{
+						"id": 0,
+						"name": "RESULT 3",
+						"type": "select",
+						"source": "STERLING RPR RESULTS"
+					},
+					{
+						"id": 1,
+						"name": "INTERPRETATION 3",
+						"type": "select",
+						"source": "SYPHILIS RESULTS"
+					},
+					{
+						"id": 2,
+						"name": "DATE TESTED 3",
+						"type": "date",
+						"source": null
+					}
+				]
+			}
+		],
+		"_showDetails": false
+	},
+	{
+		"id": 21,
+		"tti": "SYP",
+		"name": "PHOENIX BIOTECH TREP-SURE",
+		"fields": [
+			{
+				"id": 0,
+				"name": "FINAL EIA INTERPRETATION",
+				"type": "select",
+				"source": "SYPHILIS RESULT"
+			},
+			{
+				"id": 1,
+				"name": "REMARKS",
+				"type": "text",
+				"source": null
+			}
+		],
+		"forms": [
+			{
+				"id": 0,
+				"name": "EIA 1",
+				"fields": [
+					{
+						"id": 0,
+						"name": "CUT-OFF VALUE 1",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 1,
+						"name": "OPTICAL DENSITY 1",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 2,
+						"name": "INTERPRETATION 1",
+						"type": "select",
+						"source": "EIA RESULTS"
+					},
+					{
+						"id": 3,
+						"name": "DATE TESTED 1",
+						"type": "date",
+						"source": null
+					}
+				]
+			},
+			{
+				"id": 1,
+				"name": "EIA 2",
+				"fields": [
+					{
+						"id": 0,
+						"name": "OPTICAL DENSITY 2",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 1,
+						"name": "CUT-OFF VALUE 2",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 2,
+						"name": "INTERPRETATION 2",
+						"type": "select",
+						"source": "EIA RESULTS"
+					},
+					{
+						"id": 3,
+						"name": "DATE TESTED 2",
+						"type": "date",
+						"source": null
+					}
+				]
+			},
+			{
+				"id": 2,
+				"name": "EIA 3",
+				"fields": [
+					{
+						"id": 0,
+						"name": "OPTICAL DENSITY 3",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 1,
+						"name": "CUT-OFF VALUE 3",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 2,
+						"name": "INTERPERTATION 3",
+						"type": "select",
+						"source": "EIA RESULTS"
+					},
+					{
+						"id": 3,
+						"name": "DATE TESTED 3",
+						"type": "date",
+						"source": null
+					}
+				]
+			}
+		],
+		"_showDetails": false
+	},
+	{
+		"id": 22,
+		"tti": "SYP",
+		"name": "ABBOTT ARCHITECT SYPHILIS TP",
+		"fields": [
+			{
+				"id": 0,
+				"name": "FINAL SYPHILIS TP INTERPRETATION",
+				"type": "select",
+				"source": "EIA RESULTS"
+			},
+			{
+				"id": 1,
+				"name": "SYPHILIS TP REMARKS",
+				"type": "text",
+				"source": null
+			}
+		],
+		"forms": [
+			{
+				"id": 0,
+				"name": "SYPHILIS TP 1",
+				"fields": [
+					{
+						"id": 0,
+						"name": "S/CO 1",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 1,
+						"name": "INTERPRETATION 1",
+						"type": "select",
+						"source": "EIA RESULTS"
+					},
+					{
+						"id": 2,
+						"name": "DATE TESTED 1",
+						"type": "date",
+						"source": null
+					}
+				]
+			},
+			{
+				"id": 1,
+				"name": "SYPHILIS TP 2",
+				"fields": [
+					{
+						"id": 0,
+						"name": "S/CO 2",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 1,
+						"name": "INTERPRETATION 2",
+						"type": "select",
+						"source": "EIA RESULTS"
+					},
+					{
+						"id": 2,
+						"name": "DATE TESTED 2",
+						"type": "date",
+						"source": null
+					}
+				]
+			},
+			{
+				"id": 2,
+				"name": "SYPHILIS TP 3",
+				"fields": [
+					{
+						"id": 0,
+						"name": "S/CO 3",
+						"type": "text",
+						"source": null
+					},
+					{
+						"id": 1,
+						"name": "INTERPRETATION 3",
+						"type": "select",
+						"source": "EIA RESULTS"
+					},
+					{
+						"id": 2,
+						"name": "DATE TESTED 3",
+						"type": "date",
+						"source": null
+					}
+				]
+			}
+		],
+		"_showDetails": false
 	}
 ]
 
-export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols }
+let report_templates = []
+
+export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols, report_templates }

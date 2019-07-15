@@ -40,6 +40,10 @@
                 </b-form-checkbox>
             </b-input-group>
 
+            <cryobox-card class="mt-3" :cryobox="referral.cryobox" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
+
+            <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
+
             <b-input-group class="mt-3" size="sm">
                 <label for="" class="col-sm-2"><strong>Remarks:</strong></label>
                 <b-form-textarea placeholder="Type-in some remarks" rows="6" v-model="remarks" required :disabled="form_disabled"></b-form-textarea>
@@ -115,9 +119,11 @@
 
 <script>
 import Verifier from '../App/Verifier'
+import CryoboxCard from './CryoboxDetails/CryoboxCard'
+import CryoboxSelector from './CryoboxDetails/CryoboxSelector'
 
 export default {
-    components : {Verifier},
+    components : {Verifier, CryoboxCard, CryoboxSelector},
     data() {
         return{
             donation_id : null,
@@ -154,6 +160,15 @@ export default {
                 }
             })
         },500),
+        setCryobox(box){
+            let referral = _.extend(this.referral,{cryobox : box})
+            this.referral = null
+            this.$emit('referralSet',null)
+            this.referral = referral
+            setTimeout(f=>{
+                this.$emit('referralSet',referral)
+            },1)
+        },
         showVerifier(){
             this.$bvModal.hide('confirmReceive')
             this.$bvModal.show('verifier')

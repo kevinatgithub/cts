@@ -453,6 +453,8 @@ mock.onGet('/options').reply(function(config){
     return [200,response]
 })
 
+mock.onGet('/options/all').reply(200,session.options_registry)
+
 mock.onPost('/options/new').reply(({data})=>{
     data = JSON.parse(data)
     session.options_registry.push({
@@ -620,6 +622,10 @@ mock.onPost('test_protocols/form_field_delete').reply(({data})=>{
     }
     return [200,{status : 'ok'}]
 })
+
+// ========================= report_templates ==========================================
+
+mock.onGet('report_templates').reply(200,session.report_templates)
 
 export {mock}
 

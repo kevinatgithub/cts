@@ -17,6 +17,7 @@ import PcrResults from './References/PcrResults'
 import GeeniusHivInterpretations from './References/GeeniusHivInterpretations'
 import OptionsRegistry from './References/OptionsRegistry'
 import TestProtocols from './References/TestProtocols'
+import ReportTemplates from './References/ReportTemplates'
 
 export default new VueRouter({
     routes : [
@@ -35,5 +36,6 @@ export default new VueRouter({
         { component : GeeniusHivInterpretations , path : '/references/geenius_hiv_interpretations'},
         { component : OptionsRegistry , path : '/references/options'},
         { component : TestProtocols , path : '/references/test_protocols'},
+        { component : ReportTemplates , path : '/references/report_templates'},
     ]
 })
