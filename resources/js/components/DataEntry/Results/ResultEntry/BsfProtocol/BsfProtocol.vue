@@ -38,7 +38,7 @@
                         <i class='fa fa-user'></i>&nbsp;
                         BSF MT:
                     </label>
-                    <b-input placeholder='BSF MT' v-model='test.bsf_mt'></b-input>
+                    <b-input placeholder='BSF MT' v-model='referral.result.bsf.bsf_mt'></b-input>
                 </b-input-group>
 
             </b-col>
@@ -67,7 +67,19 @@ import {mapGetters} from 'vuex'
 import BsfTestReferences from '../../../../Administration/References/TestProtocolReferences/BsfTestReferences'
 import BsfProtocolKit from './BsfProtocolKit'
 export default {
+    props : ['referral'],
     components : {BsfTestReferences,BsfProtocolKit},
+    mounted(){
+        let bsf = {
+            bsf_mt : null,
+            hiv_license : null,
+        }
+        if(!this.referral.result){
+            this.referral.result = {bsf, machines : []}
+        }else if(!this.referral.result.bsf){
+            this.referral.result.bsf = bsf
+        }
+    },
     data(){
         return {
             test : {

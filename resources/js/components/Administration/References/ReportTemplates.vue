@@ -1,7 +1,7 @@
 <template>
     <div>
         <h5>Report Templates</h5>
-
+        <b-button variant="dark" class="float-right" size="sm" v-b-modal.report-template-form>Create REport</b-button>
         <b-table
             class="mt-3" 
             :items="report_templates" 
@@ -26,7 +26,10 @@
             >
         </b-pagination>
 
-        <report-template-form></report-template-form>
+        <b-modal id="report-template-form" size="xl" header-bg-variant="dark" header-text-variant="white" title="Create/Update Report">
+            <report-template-form></report-template-form>
+        </b-modal>
+
     </div>
 </template>
 <script>
