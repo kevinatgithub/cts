@@ -109,6 +109,13 @@ mock.onPost('/setReferralCryoboxAndRefrigeratorDetails').reply(({data})=>{
     return [200,referral]
 })
 
+mock.onPost('/setReferralResultBSF').reply(({data})=>{
+    data = JSON.parse(data)
+    let referral = _.find(session.referrals, {confirmatory_reference_number : data.confirmatory_reference_number})
+    referral.results.bsf = data.bsf
+    return [200,referral]
+})
+
 // =============================Specimen===========================================
 mock.onGet('/specimens').reply(200,session.specimens)
 

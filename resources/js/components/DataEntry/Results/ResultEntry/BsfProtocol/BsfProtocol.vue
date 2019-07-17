@@ -7,7 +7,7 @@
                         <i class='fa fa-sliders'></i>&nbsp;
                         Machine:
                     </label>
-                    <b-form-select v-model="test.machine" :options="machine_list"></b-form-select>
+                    <b-form-select v-model="form.machine" :options="machine_list"></b-form-select>
                     <b-button slot="append" v-b-modal.machines-settings><i class="fa fa-cog"></i></b-button>
                 </b-input-group>
             </b-col>
@@ -18,13 +18,13 @@
                 <b-card no-body border-variant="dark">
                     <b-tabs pills card vertical>
                         <b-tab title="Kit #1">
-                            <bsf-protocol-kit kit="1"></bsf-protocol-kit>
+                            <bsf-protocol-kit :kit="form.kits[0]"></bsf-protocol-kit>
                         </b-tab>
                         <b-tab title="Kit #2">
-                            <bsf-protocol-kit kit="2"></bsf-protocol-kit>
+                            <bsf-protocol-kit :kit="form.kits[1]"></bsf-protocol-kit>
                         </b-tab>
                         <b-tab title="Kit #3">
-                            <bsf-protocol-kit kit="3"></bsf-protocol-kit>
+                            <bsf-protocol-kit :kit="form.kits[2]"></bsf-protocol-kit>
                         </b-tab>
                     </b-tabs>
                 </b-card>
@@ -38,7 +38,7 @@
                         <i class='fa fa-user'></i>&nbsp;
                         BSF MT:
                     </label>
-                    <b-input placeholder='BSF MT' v-model='referral.result.bsf.bsf_mt'></b-input>
+                    <b-input placeholder='BSF MT' v-model='form.bsf_mt'></b-input>
                 </b-input-group>
 
             </b-col>
@@ -48,7 +48,7 @@
                         <i class='fa fa-id-card'></i>&nbsp;
                         HIV License:
                     </label>
-                    <b-input placeholder='HIV License' v-model='test.hiv_license'></b-input>
+                    <b-input placeholder='HIV License' v-model='form.hiv_license'></b-input>
                 </b-input-group>
             </b-col>
         </b-row>
@@ -69,22 +69,9 @@ import BsfProtocolKit from './BsfProtocolKit'
 export default {
     props : ['referral'],
     components : {BsfTestReferences,BsfProtocolKit},
-    mounted(){
-        let bsf = {
-            bsf_mt : null,
-            hiv_license : null,
-        }
-        if(!this.referral.result){
-            this.referral.result = {bsf, machines : []}
-        }else if(!this.referral.result.bsf){
-            this.referral.result.bsf = bsf
-        }
-    },
     data(){
         return {
-            test : {
-                machine : null
-            }
+            form : this.referral.results.bsf
         }
     },
     computed : {

@@ -8,14 +8,14 @@
                         <i class='fa fa-sliders'></i>&nbsp;
                         Assay Reagent Used kit:
                     </label>
-                    <b-form-select v-model="form.reagent" :options="reagent_list"></b-form-select>
+                    <b-form-select v-model="kit.reagent" :options="reagent_list"></b-form-select>
                     <b-button slot="append" v-b-modal.reagent-settings><i class="fa fa-cog"></i></b-button>
                 </b-input-group>
 
                 <b-card border-variant="dark" no-body>
                     <b-tabs card >
-                        <b-tab v-for="kit in form.kits" :key="kit.no" :title="'BB KIT LOT # ' + kit.no">
-                            <bsf-protocol-kit-form></bsf-protocol-kit-form>
+                        <b-tab v-for="lot in kit.lots" :key="lot.id+Math.random()" :title="'BB KIT LOT # ' + (lot.id + 1)">
+                            <bsf-protocol-kit-form :lot="lot"></bsf-protocol-kit-form>
                         </b-tab>
                     </b-tabs>
                 </b-card>
@@ -36,12 +36,7 @@ export default {
     data(){
         return {
             form : {
-                reagent : null,
-                kits : [
-                    {no : '1'},
-                    {no : '2'},
-                    {no : '3'},
-                ]
+                
             },
             interpretation_options : ['REACTIVE','NON-REACTIVE','EQUIVOCAL','GRAYZONE']
         }
@@ -59,7 +54,7 @@ export default {
                 return list
             }
             return []
-        }
+        },
     }
 }
 </script>

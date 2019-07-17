@@ -18,19 +18,22 @@
 
         <b-modal id="test-protocol-form" size="xl" header-bg-variant="dark" header-text-variant="white" :title="testProtocolTitle">
 
-            <bsf-protocol v-if="protocol == 'BSF'" :referral="referral"></bsf-protocol>
+            <bsf-protocol v-if="protocol == 'BSF' && referral" :referral="referral"></bsf-protocol>
 
             <result-entry v-if="protocol != 'BSF'" :tti="protocol" />
 
             <test-protocol-footer v-if="protocol != 'BSF'" />
 
             <template slot="modal-footer">
-                <b-button variant="dark">Cancel</b-button>
-                <b-button variant="primary" v-b-modal.verifier>Save Results</b-button>
+                <b-button variant="dark" @click="$bvModal.hide('test-protocol-form')">Cancel</b-button>
+                <b-button variant="primary" v-b-modal.verifier :disabled="!resultAcceptable || isBusy">
+                    <span v-if="!isBusy">Save Results</span>
+                    <span v-if="isBusy"><i class="fa fa-spinner"></i> Saving..</span>
+                </b-button>
             </template>
         </b-modal>
 
-        <verifier />
+        <verifier @ok="processForm" />
 
         
     </div>
@@ -49,6 +52,7 @@ export default {
     data(){
         return {
             protocol : null,
+            isBusy : false,
         }
     },
     computed : {
@@ -62,6 +66,41 @@ export default {
                 default:
                     return "NRL "+this.protocol.toUpperCase()+" Protocol";
             }
+        },
+        resultAcceptable(){
+            if(!this.referral){
+                return false
+            }
+
+            if(this.protocol == 'BSF'){
+                let {bsf : {machine, bsf_mt, hiv_license, kits}} = this.referral.results
+                if(!machine || !bsf_mt || !hiv_license){
+                    return false
+                }else{
+                    return true
+                }
+            }
+
+            return true
+        }
+    },
+    methods : {
+        processForm(){
+            switch(this.protocol){
+                case 'BSF':
+                    this.processBSF()
+                    break;
+            }
+        },
+        async processBSF(){
+            this.isBusy = true
+            let {confirmatory_reference_number} = this.referral
+            let {bsf} = this.referral.results
+            let request = await this.$store.dispatch("setReferralResultBSF",{bsf,confirmatory_reference_number})
+            this.isBusy = false
+            this.$bvModal.hide("test-protocol-form")
+            this.$emit("resultSent")
+
         }
     }
 }

@@ -271,6 +271,17 @@ export default {
         save(){
             this.saving = true
             let user = this.$store.getters.user
+            let lot = {
+                lot_no: null,   optical_density : null, cutoff_value : null, interpretation : null, date_tested: null
+            }
+            let bsf_test_kit = {
+                reagent : null, 
+                lots : [
+                    _.extend(_.clone(lot),{id : 0}),
+                    _.extend(_.clone(lot),{id : 1}),
+                    _.extend(_.clone(lot),{id : 2}),
+                ]
+            }
             this.$store.dispatch('newReferral',{
                 donation : this.donation,
                 courier : this.courier,
@@ -280,6 +291,25 @@ export default {
                 request_by : user,
                 created_dt : Date.now(),
                 shipped_dt : this.shipped_dt,
+                results : {
+                    bsf : {
+                        machine : null,
+                        bsf_mt : null,
+                        hiv_license : null,
+                        kits : [
+                            _.extend(_.clone(bsf_test_kit),{id : 0}),
+                            _.extend(_.clone(bsf_test_kit),{id : 1}),
+                            _.extend(_.clone(bsf_test_kit),{id : 2}),
+                        ]
+                    },
+                    nrl : {
+                        hiv : [],
+                        hbv : [],
+                        hcv : [],
+                        mal : [],
+                        syp : [],
+                    },
+                }
             }).then(r=>{
                 this.saving = false
                 this.donation_id = null

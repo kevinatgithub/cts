@@ -61,6 +61,9 @@ const referral = {
         },
         setReferralOnWatch(context,payload){
             context.commit('setReferralOnWatch',payload)
+        },
+        setReferralResultBSF(context,payload){
+            return window.$http.post("setReferralResultBSF",payload)
         }
     },
 }

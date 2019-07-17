@@ -61,7 +61,7 @@
                     </b-button>
                 </b-col>
                 <b-col>
-                    <b-button variant="success" block title="Accept the Blood sample" :disabled="form_disabled || !confirmatory_reference_number_valid || (reject_busy || receive_busy)" v-b-modal.confirmReceive>
+                    <b-button variant="success" block title="Accept the Blood sample" :disabled="form_disabled || !confirmatory_reference_number_valid || !referral.cryobox || (reject_busy || receive_busy)" v-b-modal.confirmReceive>
                         <span v-if="receive_busy">
                             <i class="fa fa-spinner"></i>&nbsp;ACCEPTING..
                         </span>
@@ -161,7 +161,7 @@ export default {
             })
         },500),
         setCryobox(box){
-            let referral = _.extend(this.referral,{cryobox : box})
+            let referral = _.extend(this.referral,{confirmatory_reference_number : this.confirmatory_reference_number ,cryobox : box})
             this.referral = null
             this.$emit('referralSet',null)
             this.referral = referral
