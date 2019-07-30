@@ -41,3 +41,29 @@ export default {
 }
 </script>
 
+<style>
+.report-preview-content {
+    width : 595px;
+    height: 842px;
+    border: 1px solid #000;
+    margin-left:auto;
+    margin-right:auto;
+}
+.report-preview-content table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+    width:100%;
+}
+.report-preview-content table.bordered td{
+    border:1px solid #000;
+}
+/* .footer-logo{
+    position:absolute;
+    margin-bottom: 5px;
+} */
+/* .report-preview-content td {
+    border:1px solid #000;
+} */
+</style>

@@ -1,33 +1,45 @@
 <template>
     <div>
         <b-row>
-            <b-col cols="12" class="mt-3">
-                <b-input-group size="sm">
-                    <label class='input-group-text' style="width:150px;" slot='prepend'>
-                        Report Title:
-                    </label>
-                    <b-input placeholder='Report Title' v-model='form.name'></b-input>
-                </b-input-group>
-            </b-col>
-            <b-col cols="12" class="mt-3">
-                <b-input-group size="sm">
-                    <label class='input-group-text' style="width:150px;" slot='prepend'>
-                        Report Type:
-                    </label>
-                    <b-form-select v-model="form.report_type" :options="report_types"></b-form-select>
-                </b-input-group>
-            </b-col>
-            <b-col cols="12" class="mt-3">
-                <b-input-group size="sm">
-                    <label class='input-group-text' style="width:150px;" slot='prepend'>
-                        Source:
-                    </label>
-                    <b-form-select :options="report_sources"></b-form-select>
-                </b-input-group>
+            <b-col cols="8">
+                <b-row>
+                    <b-col cols="12" class="mt-1">
+                        <b-input-group size="sm">
+                            <label class='input-group-text' style="width:150px;" slot='prepend'>
+                                Report Title:
+                            </label>
+                            <b-input placeholder='Report Title' v-model='form.name'></b-input>
+                        </b-input-group>
+                    </b-col>
+                    <b-col cols="12" class="mt-1">
+                        <b-input-group size="sm">
+                            <label class='input-group-text' style="width:150px;" slot='prepend'>
+                                Report Type:
+                            </label>
+                            <b-form-select v-model="form.report_type" :options="report_types"></b-form-select>
+                        </b-input-group>
+                    </b-col>
+                    <b-col cols="12" class="mt-1">
+                        <b-input-group size="sm">
+                            <label class='input-group-text' style="width:150px;" slot='prepend'>
+                                Source:
+                            </label>
+                            <b-form-select v-model="form.source" :options="report_sources"></b-form-select>
+                        </b-input-group>
+                    </b-col>
+                </b-row> 
             </b-col>
         </b-row>
 
         <html-editor class="mt-1" :report="form"></html-editor>
+
+        <b-row>
+            <b-col class="mt-3">
+            <b-button variant="success" @click="performSave">Save Changes</b-button>
+            <router-link to="/references/report_templates"><b-button variant="dark"><i class="fa fa-arrow-left"></i> Back to List</b-button> </router-link>
+            </b-col>
+        </b-row>
+
     </div>
 </template>
 <script>
@@ -39,7 +51,7 @@ export default {
     data(){
         return {
             form : {
-                html : content, name : null, report_type : null,
+                html : content, name : null, report_type : null, source : null,
             },
             report_types : [
                 // 'Result', 'Machine Report', 'Logbook', 'List',
@@ -63,6 +75,13 @@ export default {
             }else{
                 return []
             }
+        }
+    },
+    methods : {
+        async performSave(){
+            let {form} = this
+            let response = await this.$store.dispatch("newReport",form)
+            this.$router.push("/references/report_templates")
         }
     }
 }

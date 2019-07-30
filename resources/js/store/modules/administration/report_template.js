@@ -16,6 +16,9 @@ let report_template = {
         async fetchReportTemplates(context,payload){
             let request = await window.$http.get("report_templates")
             context.commit("initReportTemplates",request.data)
+        },
+        async newReport(context,payload){
+            return window.$http.post("report_templates",payload)
         }
     },
 }

@@ -1,8 +1,8 @@
 <template>
-    <div class="html-editor">
+    <div class="html-editor" style="background:#fff;">
+        <span class="float-right p-2 text-info">{{position}}</span>
         <editor-menu-card :editor="editor" :position="position" />
         <editor-content :editor="editor" style="border:1px solid #000;" />
-        {{position}}
     </div>
 </template>
 

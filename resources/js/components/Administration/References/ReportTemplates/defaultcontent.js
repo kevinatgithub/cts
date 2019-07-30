@@ -1,8 +1,8 @@
 let content = "\
-<table>\
+<table class=\"bordered\">\
     <tbody>\
         <tr>\
-            <td data-colwidth=\"207\"><p style=\"text-align: center\"><img src=\"./img/ritm_logo2.png\" alt=\"logo\" /></p></td>\
+            <td data-colwidth=\"207\"><p style=\"text-align: center\"><img src=\"./img/ritm_logo2.png\" width=\"130\" alt=\"logo\" /></p></td>\
             <td data-colwidth=\"422\">\
                 <p style=\"text-align: center\">\
                     <strong>\
@@ -18,6 +18,33 @@ let content = "\
     </tbody>\
 </table>\
 <br>\
-<p style=\"text-align: center\"><img src=\"./img/report-footer.jpg\" style=\"width: 50px\" /></p>"
+<p style=\"text-align: center\">\
+    <table>\
+        <tbody>\
+            <tr>\
+                <td data-colwidth=\"100\"></td>\
+                <td>\
+                    <table class=\"bordered\" style=\"margin:auto\">\
+                        <tbody>\
+                            <tr>\
+                                <td data-colwidth=\"200\"><p style=\"text-align: center\"><strong>Reference No.</strong></p></td>\
+                                <td data-colwidth=\"200\"><p style=\"text-align: center\"><strong>Date Tested</strong></p></td>\
+                                <td data-colwidth=\"200\"><p style=\"text-align: center\"><strong>Result</strong></p></td>\
+                            </tr>\
+                            <tr>\
+                                <td data-colwidth=\"200\"></td>\
+                                <td data-colwidth=\"200\"></td>\
+                                <td data-colwidth=\"200\"></td>\
+                            </tr>\
+                        </tbody>\
+                    </table>\
+                </td>\
+                <td data-colwidth=\"100\"></td>\
+            </tr>\
+        </tbody>\
+    </table>\
+</p>\
+<br>\
+<p style=\"text-align: center\"><img class=\"footer-logo\" src=\"./img/report-footer.jpg\" style=\"width: 200px\" /></p>"
 
 export {content}

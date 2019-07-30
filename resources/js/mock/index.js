@@ -634,5 +634,15 @@ mock.onPost('test_protocols/form_field_delete').reply(({data})=>{
 
 mock.onGet('report_templates').reply(200,session.report_templates)
 
+mock.onPost('report_templates').reply(({data})=>{
+    data = JSON.parse(data)
+    let {name,report_type,source,html} = data
+    session.report_templates.push({
+        id : session.report_templates.length,
+        name, report_type, source, html
+    })
+    return [200,{status : 'ok'}]
+})
+
 export {mock}
 

@@ -15,6 +15,7 @@
                 <b-img width="30" src="./img/loading.gif"></b-img> Please wait..
             </template>
             <template slot="options" slot-scope="data">
+                <b-button variant="info" size="sm" @click="selected = data.item" v-b-modal.report-preview><i class="fa fa-search"></i></b-button>
                 <b-button variant="danger" size="sm" @click="update = data.item" v-b-modal.confirm-delete><i class="fa fa-remove"></i></b-button>
             </template>
         </b-table>
@@ -26,6 +27,11 @@
             >
         </b-pagination>
 
+        <b-modal id="report-preview" title="Report Preview" header-bg-variant="dark" header-text-variant="white" size="lg" hide-footer>
+            <div v-html="selected.html" class="report-preview-content" v-if="selected">
+            </div>
+        </b-modal>
+
     </div>
 </template>
 <script>
@@ -36,6 +42,7 @@ export default {
             isBusy : false,
             currentPage : 1,
             update : null,
+            selected : null,
         }
     },
     computed : {
