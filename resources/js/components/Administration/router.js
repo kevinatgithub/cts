@@ -18,6 +18,7 @@ import GeeniusHivInterpretations from './References/GeeniusHivInterpretations'
 import OptionsRegistry from './References/OptionsRegistry'
 import TestProtocols from './References/TestProtocols'
 import ReportTemplates from './References/ReportTemplates'
+import ReportTemplateForm from './References/ReportTemplates/ReportTemplateForm'
 
 export default new VueRouter({
     routes : [
@@ -37,5 +38,6 @@ export default new VueRouter({
         { component : OptionsRegistry , path : '/references/options'},
         { component : TestProtocols , path : '/references/test_protocols'},
         { component : ReportTemplates , path : '/references/report_templates'},
+        { component : ReportTemplateForm , path : '/references/report_templates/create'},
     ]
 })

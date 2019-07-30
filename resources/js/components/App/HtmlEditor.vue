@@ -1,7 +1,8 @@
 <template>
     <div class="html-editor">
-        <editor-menu-card :editor="editor" />
+        <editor-menu-card :editor="editor" :position="position" />
         <editor-content :editor="editor" style="border:1px solid #000;" />
+        {{position}}
     </div>
 </template>
 
@@ -32,6 +33,7 @@ import {
   TableHeader,
   TableCell,
   TableRow,
+  Image,
 } from 'tiptap-extensions'
 
 export default {
@@ -43,10 +45,14 @@ export default {
   data() {
     return {
       editor: null,
+      position : null,
     }
   },
   mounted() {
     this.editor = new Editor({
+        onTransaction: ({ state }) => {
+          this.position = state.selection.anchor
+        },
         extensions: [
             new Blockquote(),
             new BulletList(),
@@ -72,6 +78,7 @@ export default {
             new TableCell(),
             new TableRow(),
             new Paragraph(),
+            new Image(),
         ],
         content: this.report.html + "&nbsp;",
     })
@@ -91,6 +98,12 @@ export default {
     width:100%;
 }
 .html-editor td {
-    border:1px solid grey;
+    border:1px dashed grey;
+}
+.bordered td {
+  border:1px solid black !important;
+}
+.resize-cursor {
+    cursor: col-resize;
 }
 </style>

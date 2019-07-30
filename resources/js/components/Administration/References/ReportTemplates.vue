@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h5>Report Templates</h5>
-        <b-button variant="dark" class="float-right" size="sm" v-b-modal.report-template-form>Create REport</b-button>
+        <h5>Report Templates <router-link to="/references/report_templates/create"><b-button class="float-right" variant="dark" size="sm">Create Report</b-button></router-link></h5>
+        
         <b-table
             class="mt-3" 
             :items="report_templates" 
@@ -26,17 +26,11 @@
             >
         </b-pagination>
 
-        <b-modal id="report-template-form" size="xl" header-bg-variant="dark" header-text-variant="white" title="Create/Update Report">
-            <report-template-form></report-template-form>
-        </b-modal>
-
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import ReportTemplateForm from './ReportTemplates/ReportTemplateForm'
 export default {
-    components : {ReportTemplateForm},
     data(){
         return {
             isBusy : false,
