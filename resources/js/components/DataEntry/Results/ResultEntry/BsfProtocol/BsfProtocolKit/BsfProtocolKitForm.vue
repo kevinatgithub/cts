@@ -13,7 +13,7 @@
                 <i class='fa fa-tint'></i>&nbsp;
                 Optical Density:
             </label>
-            <b-input placeholder='Optical Density' v-model='lot.optical_density'></b-input>
+            <b-input type="number" placeholder='Optical Density' v-model='lot.optical_density'></b-input>
         </b-input-group>
 
         <b-input-group class='mb-1' size="sm">
@@ -21,7 +21,7 @@
                 <i class='fa fa-bar-chart'></i>&nbsp;
                 Cut-off Value:
             </label>
-            <b-input placeholder='Cut-off Value' v-model='lot.cutoff_value'></b-input>
+            <b-input type="number" placeholder='Cut-off Value' v-model='lot.cutoff_value'></b-input>
         </b-input-group>
 
         <b-input-group class='mb-1' size="sm">
@@ -47,6 +47,18 @@ export default {
     data(){
         return {
             interpretation_options : ['REACTIVE','NON-REACTIVE','EQUIVOCAL','GRAYZONE'],
+        }
+    },
+    watch : {
+        lot : {
+            handler : function(newValue){
+                if(newValue.optical_density && newValue.cutoff_value){
+                    if(newValue.optical_density > newValue.cutoff_value){
+                        this.lot.interpretation = 'REACTIVE';
+                    }
+                }
+            },
+            deep : true
         }
     }
 }

@@ -12,7 +12,7 @@
                     <b-button slot="append" v-b-modal.reagent-settings><i class="fa fa-cog"></i></b-button>
                 </b-input-group>
 
-                <b-card border-variant="dark" no-body>
+                <b-card no-body>
                     <b-tabs card >
                         <b-tab v-for="lot in kit.lots" :key="lot.id+Math.random()" :title="'BB KIT LOT # ' + (lot.id + 1)">
                             <bsf-protocol-kit-form :lot="lot"></bsf-protocol-kit-form>

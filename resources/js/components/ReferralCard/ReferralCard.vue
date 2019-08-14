@@ -2,7 +2,7 @@
     <div role="tablist">
         
         <div v-if="referral.donation.donor">
-            <case-identification :donor="referral.donation.donor" />
+            <case-identification :donor="referral.donation.donor" :referral="referral" />
         </div>
         <div v-if="!referral.donation.donor">
             <b-card text-variant="danger"><i class="fa fa-info-circle"></i> Donor Information not provided</b-card>

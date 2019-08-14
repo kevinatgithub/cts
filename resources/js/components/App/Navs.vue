@@ -34,8 +34,8 @@
                         <b-dropdown-item><router-link to="/references" class="nav-dropdown-link">Manage References</router-link></b-dropdown-item>
                     </b-nav-item-dropdown>
                     
-                    <b-nav-item class="d-block d-sm-block d-md-block d-lg-block d-xl-none">
-                        <b-button variant="dark" size="sm" @click="performLogout">Logout</b-button>
+                    <b-nav-item class="d-block d-sm-block d-md-block d-lg-block d-xl-none" style="margin-top:1.1em;">
+                        <span style="cursor:pointer;" @click="performLogout">Logout</span>
                     </b-nav-item>
 
                 </b-navbar-nav>
@@ -44,7 +44,7 @@
                         <ul class="text-white text-nowrap">
                             <li style="list-style-type: none; !important" class="text-right"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;{{user.name}}</li>
                             <li style="list-style-type: none; !important" class="text-right">
-                                <span class="small">{{user.position}} | <b-button variant="dark" size="sm" @click="performLogout">Logout</b-button></span>
+                                <span class="small">{{user.position}} | <span style="cursor:pointer;" @click="performLogout">Logout</span></span>
                             </li>
                         </ul>
                     </b-nav-form>

@@ -1,6 +1,7 @@
 <template>
     <div>
         <comp-url>Request / RequestForm</comp-url>
+
         <b-input-group class="mb-3" size="sm">
             <label for="" class="input-group-text" slot="prepend">
                  <i class="fa fa-search"></i>&nbsp;
@@ -15,15 +16,13 @@
             </b-form-invalid-feedback>
         </b-input-group>
 
-
-
-        <h5 class="text-info">Specimen Details</h5>
+        <h5 class="text-info mt-3">Specimen Details</h5>
 
         <b-form-group class="mt-3" v-if="donation">
 
             <!-- DATE COLLECTED -->
             <b-input-group class='mb-3' size="sm">
-                <label class='input-group-text' slot='prepend'>
+                <label class='input-group-text' style="width:140px;" slot='prepend'>
                     <i class='fa fa-calendar'></i>&nbsp;
                     Date Collected:
                 </label>
@@ -32,7 +31,7 @@
 
             <!-- BLOOD TYPE -->
             <b-input-group class="mb-3" size="sm">
-                <label class="input-group-text" for="inputGroupSelect01" slot="prepend">
+                <label class="input-group-text" style="width:140px;" for="inputGroupSelect01" slot="prepend">
                     <i class="fa fa-tint"></i>&nbsp;
                     Blood Type:
                 </label>
@@ -40,7 +39,7 @@
             </b-input-group>
 
             <b-input-group class='mb-3' size="sm">
-                <label class='input-group-text' slot='prepend'>
+                <label class='input-group-text' style="width:140px;" slot='prepend'>
                     <i class='fa fa-user'></i>&nbsp;
                     Type of Donor:
                 </label>
@@ -48,7 +47,7 @@
             </b-input-group>
 
             <b-input-group class='mb-3' size="sm" v-if="donation.donor">
-                <label class='input-group-text' slot='prepend'>
+                <label class='input-group-text' style="width:140px;" slot='prepend'>
                     <i class='fa fa-user'></i>&nbsp;
                     Donation Frequency:
                 </label>
@@ -56,7 +55,7 @@
             </b-input-group>
 
             <b-input-group class='mb-3' size="sm" v-if="donation.donor">
-                <label class='input-group-text' slot='prepend'>
+                <label class='input-group-text' style="width:140px;" slot='prepend'>
                     <i class='fa fa-tint'></i>&nbsp;
                     Last Donation:
                 </label>
@@ -65,12 +64,15 @@
 
             <!-- REACTIVE FOR -->
             <b-input-group class='mb-3' size="sm">
-                <label class='input-group-text' slot='prepend'>
+                <label class='input-group-text' style="width:140px;" slot='prepend'>
                     <i class='fa fa-tint'></i>&nbsp;
                     Reactive for:
                 </label>
                 <b-input aria-label='BloodType' placeholder='Scan /Enter Donation ID' v-model='reactive_results' disabled></b-input>
-            </b-input-group>            
+            </b-input-group>
+            
+            <!-- BSF TEST DETAILS  -->
+            <bsf-protocol v-if="donation" :referral="referral" @reportCompletion="checkTestCompletion" />
 
             <!-- SPECIMEN -->
             <b-form-group>
@@ -147,7 +149,7 @@
             <!-- SUBMIT -->
             <b-row class="mt-3">
                 <b-col cols="8">
-                    <b-button @click="confirmSubmit" block variant="success" title="Click submit request for confirmatory testing to ritm" :disabled="!formValid || saving"><i class="fa fa-paper-plane"></i>&nbsp;SEND AND SHIP SPECIMEN</b-button>
+                    <b-button @click="confirmSubmit" block variant="success" title="Click submit request for confirmatory testing to ritm" :disabled="!formValid || saving"><i class="fa fa-paper-plane"></i>&nbsp;SEND REQUEST</b-button>
                 </b-col>
                 <b-col cols="4" v-if="saving" class="mt-1">
                     <b-img src="./img/loading-circle.gif" width="25"></b-img> Saving..
@@ -172,7 +174,21 @@
 
 <script>
 import _ from 'lodash'
+import BsfProtocol from '../DataEntry/Results/ResultEntry/BsfProtocol/BsfProtocol'
+let lot = {
+    lot_no: null,   optical_density : null, cutoff_value : null, interpretation : null, date_tested: null
+}
+let bsf_test_kit = {
+    reagent : null, 
+    lots : [
+        _.extend(_.cloneDeep(lot),{id : 0}),
+        _.extend(_.cloneDeep(lot),{id : 1}),
+        _.extend(_.cloneDeep(lot),{id : 2}),
+    ]
+}
+
 export default {
+    components : {BsfProtocol},
     data(){
         return{
             donationIDBusy : false,
@@ -187,12 +203,23 @@ export default {
             },
             shipped_dt : null,
             saving : false,
+            referral : {
+                results : {
+                    bsf : {
+                        machine : null,
+                        bsf_mt : null,
+                        hiv_license : null,
+                        kits : [
+                            _.extend(_.cloneDeep(bsf_test_kit),{id : 0}),
+                            _.extend(_.cloneDeep(bsf_test_kit),{id : 1}),
+                            _.extend(_.cloneDeep(bsf_test_kit),{id : 2}),
+                        ]
+                    },
+                }
+            },
+            test_complete : false,
         }
     }, // end data
-
-    mounted(){
-        
-    },
 
     computed : {
         
@@ -230,6 +257,10 @@ export default {
             }
 
             if(!shipped_dt){
+                return false
+            }
+
+            if(!this.test_complete){
                 return false
             }
 
@@ -271,17 +302,7 @@ export default {
         save(){
             this.saving = true
             let user = this.$store.getters.user
-            let lot = {
-                lot_no: null,   optical_density : null, cutoff_value : null, interpretation : null, date_tested: null
-            }
-            let bsf_test_kit = {
-                reagent : null, 
-                lots : [
-                    _.extend(_.clone(lot),{id : 0}),
-                    _.extend(_.clone(lot),{id : 1}),
-                    _.extend(_.clone(lot),{id : 2}),
-                ]
-            }
+            
             this.$store.dispatch('newReferral',{
                 donation : this.donation,
                 courier : this.courier,
@@ -292,16 +313,7 @@ export default {
                 created_dt : Date.now(),
                 shipped_dt : this.shipped_dt,
                 results : {
-                    bsf : {
-                        machine : null,
-                        bsf_mt : null,
-                        hiv_license : null,
-                        kits : [
-                            _.extend(_.clone(bsf_test_kit),{id : 0}),
-                            _.extend(_.clone(bsf_test_kit),{id : 1}),
-                            _.extend(_.clone(bsf_test_kit),{id : 2}),
-                        ]
-                    },
+                    bsf : this.referral.results.bsf,
                     nrl : {
                         hiv : [],
                         hbv : [],
@@ -323,7 +335,12 @@ export default {
                 this.donation_id_valid = null
                 this.$bvModal.show('success')
             })
+        },
+
+        checkTestCompletion(p){
+            this.test_complete = p >= 51
         }
+        
     },
 
     watch : {
@@ -331,6 +348,14 @@ export default {
             if(this.donation_id){
                 this.fetchDonation()
             }
+        },
+
+        referral : {
+            handler : function(r){
+                let {results : {bsf}} = r
+                this.test_complete = !_.some(bsf,_.isEmpty)
+            },
+            deep : true
         }
     }
 }

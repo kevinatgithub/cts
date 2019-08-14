@@ -37,7 +37,8 @@ export default {
         this.$store.dispatch('fetchAllTestProtocols')
         this.$store.dispatch('options_fetch_categories')
         this.$store.dispatch('fetchReportTemplates')
-    }
+    },
+    
 }
 </script>
 

@@ -35,13 +35,23 @@
                     <b-col cols='4' class='text-right'>Home Address &nbsp;&nbsp;&nbsp;<i class='fa fa-caret-right'></i></b-col>
                     <b-col>{{donor.home_address}}</b-col>
                 </b-row>
+                <b-row>
+                    <b-col class="mt-3">
+                        <b-button variant="light" class="ml-5" size="sm" v-b-modal.bsf-test-details><i class="fa fa-search"></i> BST Test Details</b-button>
+                        <b-modal id="bsf-test-details" size="xl" header-bg-variant="dark" header-text-variant="white" title="BSF Test Details" hide-footer>
+                            <bsf-test-details-card :referral="referral" />
+                        </b-modal>
+                    </b-col>
+                </b-row>
             </b-card-body>
         </b-collapse>
     </b-card>
 </template>
 <script>
+import BsfTestDetailsCard from './CaseIdentificationCard/BsfTestDetailsCard'
 export default {
-    props : ['donor'],
+    components : {BsfTestDetailsCard},
+    props : ['donor','referral'],
     computed : {
         age(){
             return this.getAge(this.donor.dob)
