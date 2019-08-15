@@ -6,6 +6,34 @@ let session = _.clone(data)
 
 // mock.onGet('/users').reply(200,_.filter(users,{facility_cd : 'RITM'}))
 
+//==============================Cryoboxes=====================================
+mock.onGet('/cryoboxes').reply(200,session.cryoboxes);
+
+mock.onGet('/cryobox').reply(r => {
+    return [200,_.find(session.cryoboxes,{cryobox_no:r[0]})]
+});
+
+mock.onPost('/cryoboxes').reply(({data}) => {
+    data = JSON.parse(data)
+    session.cryoboxes.push(data)
+    return [200,data]
+})
+
+mock.onPut('/cryoboxes').reply(({data}) => {
+    data = JSON.parse(data)
+    let cryobox = _.find(session.cryoboxes,{cryobox_no : data.cryobox_no})
+    _.extend(cryobox,data)
+    return [200,cryobox]
+})
+
+mock.onDelete('/cryoboxes').reply(({data}) => {
+    session.cryoboxes = _.filter(session.cryoboxes,c=>{
+        return c.cryobox_no != data
+    })
+
+    return [200,'ok']
+})
+
 //==============================User==========================================
 
 mock.onGet('/users').reply(200,session.users)

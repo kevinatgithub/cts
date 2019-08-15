@@ -28,6 +28,7 @@
         "bootstrap-vue": "^2.0.0-rc.22",
         "tiptap": "^1.23.2",
         "tiptap-extensions": "^1.24.2",
+        "vue-html-to-paper": "^1.1.0",
         "vue-light-timeline": "^1.0.3",
         "vue-router": "^3.0.5",
         "vue-session": "^1.0.0",

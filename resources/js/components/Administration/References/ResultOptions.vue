@@ -13,30 +13,36 @@
             <b-button slot="append" variant="dark" @click="test_result=null;update=null;"><i class="fa fa-remove"></i></b-button>
         </b-input-group>
 
-        <b-table
-            class="mt-3" 
-            :items="result_options" 
-            selectable 
-            @row-selected="select" 
-            selected-variant="success" 
-            select-mode="single" 
-            :busy="isBusy"
-            :fields="['id','name','options']"
-            striped
-            small
-            per-page="10"
-            :current-page="currentPage">
-            <template slot="table-busy">
-                <b-img width="30" src="./img/loading.gif"></b-img> Please wait..
-            </template>
-            <template slot="options" slot-scope="data">
-                <b-button variant="danger" size="sm" @click="update = data.item" v-b-modal.confirm-delete><i class="fa fa-remove"></i></b-button>
-            </template>
-        </b-table>
+        <print-button-wrapper :printMode="printMode" @whenClicked="print" elementID="print-options" @callback="printMode=false"></print-button-wrapper>
+
+        <div id="print-options">
+            <b-table
+                class="mt-3" 
+                :items="result_options" 
+                selectable 
+                @row-selected="select" 
+                selected-variant="success" 
+                select-mode="single" 
+                :busy="isBusy"
+                :fields="['id','name','options']"
+                striped
+                small
+                :per-page="perPage"
+                :current-page="currentPage">
+                <template slot="table-busy">
+                    <b-img width="30" src="./img/loading.gif"></b-img> Please wait..
+                </template>
+                <template slot="options" slot-scope="data">
+                    <b-button v-show="!printMode" variant="danger" size="sm" @click="update = data.item" v-b-modal.confirm-delete><i class="fa fa-remove"></i></b-button>
+                </template>
+            </b-table>
+        </div>
+
 
         <b-pagination
+            v-show="!printMode"
             v-model="currentPage"
-            :per-page="10"
+            :per-page="perPage"
             :total-rows="result_options.length"
             >
         </b-pagination>
@@ -48,9 +54,12 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import PrintButtonWrapper from '../../App/PrintButtonWrapper'
 export default {
+    components : {PrintButtonWrapper},
     data(){
         return {
+            printMode : false,
             test_result : null,
             update : null,
             isBusy : false,
@@ -59,6 +68,9 @@ export default {
     },
     computed : {
         ...mapGetters(['result_options']),
+        perPage(){
+            return this.printMode ? 10000 : 20
+        }
     },
     methods : {
         select(items){
@@ -85,6 +97,9 @@ export default {
             this.update = null
             this.test_result = null
             this.isBusy = false
+        },
+        print(){
+            this.printMode = true
         }
     }
 }

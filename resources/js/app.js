@@ -29,6 +29,23 @@ const base = axios.create({
 import mock from './mock'
 window.$http = base
 
+import VueHtmlToPaper from 'vue-html-to-paper';
+ 
+const options = {
+  name: '_blank',
+  specs: [
+    'fullscreen=yes',
+    'titlebar=yes',
+    'scrollbars=yes'
+  ],
+  styles: [
+    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+    'https://unpkg.com/kidlat-css/css/kidlat.css'
+  ]
+}
+ 
+Vue.use(VueHtmlToPaper, options);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

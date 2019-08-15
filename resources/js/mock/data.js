@@ -16,6 +16,8 @@ let users = [
     },
 ];
 
+let cryoboxes = []
+
 let donations = [
     {
         donation_id: 'N1',
@@ -2267,4 +2269,4 @@ let test_protocols = [
 
 let report_templates = []
 
-export default { users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols, report_templates }
+export default { cryoboxes, users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols, report_templates }
