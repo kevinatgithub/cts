@@ -1,8 +1,8 @@
 <template>
     <div>
         <comp-url>Administration / References</comp-url>
-        <h3 class="text-primary">References</h3>
-        <hr>
+        <!-- <h3 class="text-primary">References</h3>
+        <hr> -->
         <b-breadcrumb :items="[
             {text : 'Administration', active : true},
             {text : 'Manage References', url : '/references'}

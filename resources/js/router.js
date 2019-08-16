@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard'
 import Login from './components/Login'
 
 import Request from './components/Request'
+import BsfRequests from './components/BsfRequests'
 import Checklist from './components/Request/Checklist'
 
 import Receive from './components/Receive'
@@ -29,6 +30,7 @@ export default new VueRouter({
         { path: '/', component: Dashboard },
         { path: '/login', component: Login, name : 'login' },
         { path: '/request', component: Request },
+        { path: '/status', component: BsfRequests },
         { path: '/checklist', component: Checklist },
         { path: '/receiving', component: Receive },
         { path: '/entry', component: DataEntry },

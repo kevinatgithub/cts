@@ -5,7 +5,7 @@
             <i class="fa fa-calendar"></i> Timeline
           </div>
       </template>
-      <b-collapse id="timeline" role="tabpanel" accordion="referral-card">
+      <b-collapse id="timeline" role="tabpanel" accordion="referral-card" :visible="expanded">
           <b-card-body>
             <light-timeline :items="items" />  
           </b-card-body>
@@ -16,7 +16,7 @@
 <script>
 import {mapGetters} from 'vuex'
 export default {
-    props : ['referral'],
+    props : ['referral','expanded'],
     computed : {
         ...mapGetters(['couriers','specimens']),
         items(){

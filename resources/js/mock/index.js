@@ -7,7 +7,22 @@ let session = _.clone(data)
 // mock.onGet('/users').reply(200,_.filter(users,{facility_cd : 'RITM'}))
 
 //==============================Cryoboxes=====================================
-mock.onGet('/cryoboxes').reply(200,session.cryoboxes);
+mock.onGet('/cryoboxes').reply(function(){
+    let cryoboxes = session.cryoboxes.map(c=>{
+        let refs = _.filter(session.referrals,r=>{
+            if(r.cryobox){
+                if(r.cryobox.cryobox_no == c.cryobox_no){
+                    return r.confirmatory_reference_number
+                }
+            }else{
+                return []
+            }
+        })
+        c.contents = refs
+        return c
+    })
+    return [200, cryoboxes]
+});
 
 mock.onGet('/cryobox').reply(r => {
     return [200,_.find(session.cryoboxes,{cryobox_no:r[0]})]
@@ -670,6 +685,16 @@ mock.onPost('report_templates').reply(({data})=>{
         name, report_type, source, html
     })
     return [200,{status : 'ok'}]
+})
+
+// ========================= bsf_referrals ==========================================
+
+mock.onGet('bsf/referrals').reply(data => {
+    // return[200,data]
+    // data = JSON.parse(data)
+    return [200,_.filter(session.referrals,r=>{
+        return r.request_by.facility_cd == data.facility_cd
+    })]
 })
 
 export {mock}
