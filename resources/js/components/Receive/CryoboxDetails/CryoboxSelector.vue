@@ -7,15 +7,18 @@
                         <i class='fa fa-barcode'></i>&nbsp;
                         Cryobox #:
                     </label>
-                    <b-input ref="cryobox_no" placeholder='Cryobox #' v-model='box.box_no'></b-input>
+                    <!-- <b-input v-if="scanNumber" ref="cryobox_no" placeholder='Cryobox #' v-model='box.box_no'></b-input> -->
+                    <b-form-select v-if="!scanNumber" v-model="box.box_no" :options="cryoboxNumbers" @change="refreshMap"></b-form-select>
+                    <!-- <b-button slot="append" @click="scanNumber = !scanNumber"><i class="fa fa-retweet"></i></b-button> -->
                     <b-button slot="append" title="Click here to set Cryobox Settings"  @click="settings='cryobox';$bvModal.show('settings')">
                         <i class="fa fa-question-circle"></i>
                     </b-button>
                 </b-input-group>
-                
-                <small class="text-info"><i class="fa fa-info-circle"></i> Select the location of the specimen in the cryobox</small>
-                <br>
-                <cryobox-map @slotClicked="slotClicked" :box="box"></cryobox-map>
+                <div v-if="box.box_no" style="height:300px;">
+                    <small class="text-info"><i class="fa fa-info-circle"></i> Select the location of the specimen in the cryobox</small>
+                    <br>
+                    <cryobox-map v-if="showthis" @slotClicked="slotClicked" :box="box"></cryobox-map>
+                </div>
             </div>
             <div v-if="step == 2">
 
@@ -89,15 +92,17 @@ export default {
             row : null,
             cryobox_slot : null,
         }
-        _.extend(box,pcryobox)
+        box = _.extend(box,pcryobox)
         return {
+            scanNumber : false,
             box,
             step :1,
             settings : 'cryobox',
             save_busy : false,
+            showthis : true
         }
     },
-    mounted(){
+    async mounted(){
         let that = this
         this.$root.$on('bv::modal::shown', (bvEvent, modalId) => {
             if(modalId == 'cryobox-selector'){
@@ -106,9 +111,10 @@ export default {
                 }
             }
         })
+        await this.$store.dispatch('fetchCryoboxes')
     },
     computed : {
-        ...mapGetters(['cryobox','refrigerators']),
+        ...mapGetters(['cryoboxes','refrigerators']),
         nextDisabled(){
             if(this.step == 1){
                 if(!this.box.box_no || !this.box.slot){
@@ -190,6 +196,12 @@ export default {
                 })
             })
             return list
+        },
+        cryoboxNumbers(){
+            if(!this.cryoboxes){
+                return []
+            }
+            return this.cryoboxes.map(b=>b.cryobox_no)
         }
     },
     methods : {
@@ -204,7 +216,8 @@ export default {
                 console.log('an error occured')
                 return
             }
-            response = await this.$store.dispatch('newCryobox',this.box)
+            // response = await this.$store.dispatch('newCryobox',this.box)
+            // await this.$store.dispatch('fetchCryoboxes')
             this.save_busy = false
             this.$emit('savePressed',this.box)
             this.$bvModal.hide('cryobox-selector')
@@ -224,12 +237,20 @@ export default {
         },
         slotClicked(slot){
             this.box.slot = slot
+        },
+        refreshMap(){
+            let that = this
+            this.showthis = false
+            this.box.slot = null
+            window.setTimeout(function(){
+                that.showthis = true
+            },1)
         }
     },
     watch : {
         pcryobox(){
             this.box = _.extend(this.box,this.pcryobox)
-        }
+        },
     }
 }
 </script>

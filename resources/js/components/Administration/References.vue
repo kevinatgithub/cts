@@ -50,6 +50,7 @@ export default {
                 {text : "Options Registry" , url : "/references/options", active : false},
                 {text : "Test Protocols" , url : "/references/test_protocols", active : false},
                 {text : "Report Templates" , url : "/references/report_templates", active : false},
+                {text : "Reject Reasons" , url : "/references/reject_reasons", active : false},
             ]
         }
     }

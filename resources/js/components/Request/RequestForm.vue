@@ -147,14 +147,23 @@
             </b-row>
 
             <!-- SUBMIT -->
+                    <!-- :disabled="!formValid || saving" -->
             <b-row class="mt-3">
                 <b-col cols="8">
-                    <b-button @click="confirmSubmit" block variant="success" title="Click submit request for confirmatory testing to ritm" :disabled="!formValid || saving"><i class="fa fa-paper-plane"></i>&nbsp;SEND REQUEST</b-button>
+                    <b-button 
+                    @click="confirmSubmit" 
+                    block variant="success" 
+                    title="Click submit request for confirmatory testing to ritm" 
+                    :disabled="saving"
+                    ><i class="fa fa-paper-plane"></i>&nbsp;SEND REQUEST</b-button>
                 </b-col>
                 <b-col cols="4" v-if="saving" class="mt-1">
                     <b-img src="./img/loading-circle.gif" width="25"></b-img> Saving..
                 </b-col>
             </b-row>
+
+            <b-button variant="light" @click="autoAssign">Auto Assign</b-button>
+
 
         </b-form-group>
 
@@ -339,6 +348,108 @@ export default {
 
         checkTestCompletion(p){
             this.test_complete = p >= 51
+        },
+
+        autoAssign(){
+            this.referral.results.bsf = {  
+                "machine":7,
+                "bsf_mt":"Jenny Rodriguez",
+                "hiv_license":"2",
+                "kits":[  
+                    {  
+                    "reagent":6,
+                    "lots":[  
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"1",
+                            "cutoff_value":"1",
+                            "interpretation":"NON-REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":0
+                        },
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"2",
+                            "cutoff_value":"2",
+                            "interpretation":"NON-REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":1
+                        },
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"2",
+                            "cutoff_value":"2",
+                            "interpretation":"NON-REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":2
+                        }
+                    ],
+                    "id":0
+                    },
+                    {  
+                    "reagent":3,
+                    "lots":[  
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"2",
+                            "cutoff_value":"2",
+                            "interpretation":"NON-REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":0
+                        },
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"2",
+                            "cutoff_value":"2",
+                            "interpretation":"NON-REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":1
+                        },
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"22",
+                            "cutoff_value":"2",
+                            "interpretation":"REACTIVE",
+                            "date_tested":"2019-08-15",
+                            "id":2
+                        }
+                    ],
+                    "id":1
+                    },
+                    {  
+                    "reagent":3,
+                    "lots":[  
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"2",
+                            "cutoff_value":"2",
+                            "interpretation":"REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":0
+                        },
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"22",
+                            "cutoff_value":"2",
+                            "interpretation":"REACTIVE",
+                            "date_tested":"2019-08-14",
+                            "id":1
+                        },
+                        {  
+                            "lot_no":"2",
+                            "optical_density":"22",
+                            "cutoff_value":"2",
+                            "interpretation":"REACTIVE",
+                            "date_tested":"2019-08-08",
+                            "id":2
+                        }
+                    ],
+                    "id":2
+                    }
+                ]
+            }
+          
+            
         }
         
     },

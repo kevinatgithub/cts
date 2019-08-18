@@ -1,10 +1,13 @@
 <template>
     <b-container>
         <comp-url>Login / LoginForm</comp-url>
-            <h3 class="text-info">User Login</h3>
-            <hr>
         <b-row>
-            <b-col lg="4" md="6" sm="12">
+            <b-col lg="5" md="12" sm="12">
+                <b-img src="img/ritm_logo.png" class="float-lg-right align-md-center" width="300" fluid alt="CTS Logo"></b-img>
+            </b-col>
+            <b-col lg="4" md="12" sm="12" class="pt-5">
+                <h3 class="text-info">User Login</h3>
+                <hr>
                 <b-form-group>
                     <b-input-group class="mb-3">
                         <span slot="prepend" class="input-group-text" style="width:40px;"><i class="fa fa-user"></i></span>
@@ -25,9 +28,6 @@
                         <span v-if="!busy">LOGIN</span>
                     </b-button>
                 </b-form-group>
-            </b-col>
-            <b-col lg="8" md="6" sm="12">
-                <b-img src="img/front.png" fluid alt="CTS Logo"></b-img>
             </b-col>
         </b-row>
     </b-container>

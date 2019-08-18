@@ -20,6 +20,7 @@ import Footah from './components/App/Footer.vue'
 export default {
     components: {Navs, Footah},
     async mounted(){
+        this.$store.dispatch('fetchRejectReasons')
         this.$store.dispatch('fetchCryoboxes')
         this.$store.dispatch('fetchUsers')
         this.$store.dispatch('fetchSpecimens')
@@ -38,6 +39,7 @@ export default {
         this.$store.dispatch('fetchAllTestProtocols')
         this.$store.dispatch('options_fetch_categories')
         this.$store.dispatch('fetchReportTemplates')
+        this.$store.dispatch('fetchUnstoredReferrals')
     },
     
 }

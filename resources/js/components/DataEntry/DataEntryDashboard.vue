@@ -30,21 +30,6 @@
             <cryobox-card :cryobox="referral.cryobox" v-if="!referral.reject_reason" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
 
             <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
-            
-            <b-row class="mt-3">
-                <b-col class="col-sm-12">
-                    <b-card header="BSF Test Protocol" header-bg-variant="success" header-text-variant="white">
-                        <b-row>
-                            <b-col cols="1">
-                                <h1 class="text-success"><i class="fa fa-hospital-o"></i></h1>
-                            </b-col>
-                            <b-col>
-                                Machine : <span class="text-success">{{referral.results.bsf.machine}}</span>
-                            </b-col>
-                        </b-row>
-                    </b-card>
-                </b-col>
-            </b-row>
 
             <results-menu v-if="!referral.reject_reason" :referral="referral" @resultSent="fetchReferral"></results-menu>
         </div>

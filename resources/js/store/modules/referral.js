@@ -2,6 +2,7 @@ const referral = {
     state: {
         referrals: [],
         on_watch : null,
+        unstored_referrals : [],
     },
     getters: {
         referrals(state) {
@@ -10,6 +11,9 @@ const referral = {
         on_watch(state){
             return state.on_watch
         },
+        unstored_referrals(state){
+            return state.unstored_referrals
+        }
     },
     mutations: {
         newReferral(state, payload) {
@@ -34,6 +38,9 @@ const referral = {
         setReferralOnWatch(state,payload){
             state.on_watch = payload
         },
+        initUnstoredReferrals(state,payload){
+            state.unstored_referrals = payload
+        }
     },
     actions: {
         fetchReferral(context, payload) {
@@ -64,6 +71,13 @@ const referral = {
         },
         setReferralResultBSF(context,payload){
             return window.$http.post("setReferralResultBSF",payload)
+        },
+        async fetchUnstoredReferrals(context,payload){
+            let req = await $http.get('unstored-referrals')
+            context.commit('initUnstoredReferrals',req.data)
+        },
+        setReferralCryobox(context,payload){
+            return $http.post('referral/cryobox',payload)
         }
     },
 }

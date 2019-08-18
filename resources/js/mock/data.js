@@ -21,6 +21,11 @@ let cryoboxes = [
 		cryobox_no : 'ABC123',
 		columns : 9,
 		rows : 9,
+	},
+	{
+		cryobox_no : 'ABC124',
+		columns : 9,
+		rows : 9,
 	}
 ]
 
@@ -117,11 +122,73 @@ let donations = [
             region: '13',
             pathologist: 'Andress Bonifacio',
         },
+        donor: {
+            initials: 'R.A.T.',
+            dob: "1989-03-17",
+            nationality: 'Filipino',
+            civil_status: 'Single',
+            occupation: 'I.T/Software Development',
+            home_address: 'Bulacan',
+            frequency: 'Repeat',
+            prev_donation: '2018-01-30',
+        },
         donation_type: 'Voluntary'
-    }
+	},
+	{
+        donation_id: 'N5',
+        blood_type: 'O POS',
+        donation_dt: '2019-01-23',
+        reactiveResults: [
+            'MALA',
+        ],
+        facility: {
+            facility_name: 'Philippine Blood Center',
+            address: 'PBC Building, Lungcenter Comp, Quezon Ave. Q.C.',
+            facilty_cd: '13006',
+            region: '13',
+            pathologist: 'Andress Bonifacio',
+        },
+        donor: {
+            initials: 'R.A.T.',
+            dob: "1989-03-17",
+            nationality: 'Filipino',
+            civil_status: 'Single',
+            occupation: 'I.T/Software Development',
+            home_address: 'Bulacan',
+            frequency: 'Repeat',
+            prev_donation: '2018-01-30',
+        },
+        donation_type: 'Voluntary'
+	},
+	{
+        donation_id: 'N6',
+        blood_type: 'O POS',
+        donation_dt: '2019-01-23',
+        reactiveResults: [
+            'MALA',
+        ],
+        facility: {
+            facility_name: 'Philippine Blood Center',
+            address: 'PBC Building, Lungcenter Comp, Quezon Ave. Q.C.',
+            facilty_cd: '13006',
+            region: '13',
+            pathologist: 'Andress Bonifacio',
+        },
+        donor: {
+            initials: 'R.A.T.',
+            dob: "1989-03-17",
+            nationality: 'Filipino',
+            civil_status: 'Single',
+            occupation: 'I.T/Software Development',
+            home_address: 'Bulacan',
+            frequency: 'Repeat',
+            prev_donation: '2018-01-30',
+        },
+        donation_type: 'Voluntary'
+	},
 ];
 
-let referrals = [{"donation":{"donation_id":"N1","blood_type":"A POS","donation_dt":"2018-11-05","reactiveResults":["HIV"],"facility":{"facility_name":"Philippine Blood Center","address":"PBC Building, Lungcenter Comp, Quezon Ave. Q.C.","facilty_cd":"13006","region":"13","pathologist":"Andress Bonifacio"},"donor":{"initials":"R.A.T.","dob":"1989-03-17","nationality":"Filipino","civil_status":"Single","occupation":"I.T/Software Development","home_address":"Bulacan","frequency":"Repeat","prev_donation":"2018-01-30"},"donation_type":"Voluntary"},"courier":{"fname":null,"mname":null,"lname":null,"contact_no":null,"provider":1,"reference_no":"12345"},"courierMode":"Courier","donation_id":"N1","specimen":[2],"request_by":{"username":"bsf","facility_cd":"BSF","name":"Rico Blanko","position":"RMT","password":"1"},"created_dt":1565773851580,"shipped_dt":"2019-08-14","results":{"bsf":{"machine":7,"bsf_mt":"Jenny Rodriguez","hiv_license":"2","kits":[{"reagent":6,"lots":[{"lot_no":"2","optical_density":"1","cutoff_value":"1","interpretation":"NON-REACTIVE","date_tested":"2019-08-14","id":0},{"lot_no":"2","optical_density":"2","cutoff_value":"2","interpretation":"NON-REACTIVE","date_tested":"2019-08-14","id":1},{"lot_no":"2","optical_density":"2","cutoff_value":"2","interpretation":"NON-REACTIVE","date_tested":"2019-08-14","id":2}],"id":0},{"reagent":3,"lots":[{"lot_no":"2","optical_density":"2","cutoff_value":"2","interpretation":"NON-REACTIVE","date_tested":"2019-08-14","id":0},{"lot_no":"2","optical_density":"2","cutoff_value":"2","interpretation":"NON-REACTIVE","date_tested":"2019-08-14","id":1},{"lot_no":"2","optical_density":"22","cutoff_value":"2","interpretation":"REACTIVE","date_tested":"2019-08-15","id":2}],"id":1},{"reagent":3,"lots":[{"lot_no":"2","optical_density":"2","cutoff_value":"2","interpretation":"REACTIVE","date_tested":"2019-08-14","id":0},{"lot_no":"2","optical_density":"22","cutoff_value":"2","interpretation":"REACTIVE","date_tested":"2019-08-14","id":1},{"lot_no":"2","optical_density":"22","cutoff_value":"2","interpretation":"REACTIVE","date_tested":"2019-08-08","id":2}],"id":2}]},"nrl":{"hiv":[],"hbv":[],"hcv":[],"mal":[],"syp":[]}}},{"donation":{"donation_id":"N2","blood_type":"O POS","donation_dt":"2019-01-23","reactiveResults":["MALA"],"facility":{"facility_name":"Philippine Blood Center","address":"PBC Building, Lungcenter Comp, Quezon Ave. Q.C.","facilty_cd":"13006","region":"13","pathologist":"Andress Bonifacio"},"donor":{"initials":"R.A.T.","dob":"1989-03-17","nationality":"Filipino","civil_status":"Single","occupation":"I.T/Software Development","home_address":"Bulacan","frequency":"Repeat","prev_donation":"2018-01-30"},"donation_type":"Voluntary"},"courier":{"fname":null,"mname":null,"lname":null,"contact_no":null,"provider":0,"reference_no":"123"},"courierMode":"Courier","donation_id":"N2","specimen":[2],"request_by":{"username":"bsf","facility_cd":"BSF","name":"Rico Blanko","position":"RMT","password":"1"},"created_dt":1565939829117,"shipped_dt":"2019-08-16","results":{"bsf":{"machine":0,"bsf_mt":"Test","hiv_license":"123","kits":[{"reagent":0,"lots":[{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":0},{"lot_no":"11","optical_density":"1","cutoff_value":"1","interpretation":"NON-REACTIVE","date_tested":"2019-08-16","id":1},{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":2}],"id":0},{"reagent":0,"lots":[{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":0},{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":1},{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":2}],"id":1},{"reagent":0,"lots":[{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":0},{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":1},{"lot_no":"1","optical_density":"1","cutoff_value":"1","interpretation":"REACTIVE","date_tested":"2019-08-16","id":2}],"id":2}]},"nrl":{"hiv":[],"hbv":[],"hcv":[],"mal":[],"syp":[]}}}]
+let referrals = []
 
 let specimens = [
     {id : 0, name :'Aliqouted Sample'},
@@ -2275,4 +2342,10 @@ let test_protocols = [
 
 let report_templates = []
 
-export default { cryoboxes, users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols, report_templates }
+let reject_reasons = [
+	{id:0,name:"Sample Reject 1"},
+	{id:1,name:"Sample Reject 2"},
+	{id:2,name:"Sample Reject 3"},
+]
+
+export default { cryoboxes, users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols, report_templates, reject_reasons }

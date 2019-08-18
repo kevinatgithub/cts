@@ -22,6 +22,8 @@ import Privacy from './components/Privacy'
 import ManageUsers from './components/Administration/ManageUsers'
 import References from './components/Administration/References'
 
+import UnstoredReferrals from './components/UnstoredReferrals'
+
 Vue.use(VueRouter);
 Axios.defaults.baseURL = 'cts/public/api';
 
@@ -46,6 +48,7 @@ export default new VueRouter({
         { path: '/references/cryobox', redirect: '/references' },
         { path: '/references/interpretation', redirect: '/references' },
         { path: '/references/courier', redirect: '/references' },
+        { path: '/unstored-referrals', component : UnstoredReferrals},
     ],
     // mode : 'history',
 })

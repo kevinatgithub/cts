@@ -72,7 +72,7 @@ export default {
             this.$store.dispatch('checkCryoboxNo',{
                 cryobox_no, 
                 exists : box => {
-                    alert('Cryobox exists!')
+                    alert('Cryobox number akready registered!')
                     this.isBusy = false
                 },
                 ok(){

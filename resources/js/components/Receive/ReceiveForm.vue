@@ -16,61 +16,68 @@
 
 
         <b-form-group class="mt-3" v-if="referral">
-            <b-input-group class="mb-3" size="sm">
-                <label for="" class="input-group-text" slot="prepend">
-                    <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
-                </label>
-                <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number" :disabled="form_disabled"></b-input>
-            </b-input-group>
+            <b-card v-if="referral.reject_reason" bg-variant="danger" text-variant="white">
+                <i class="fa fa-warning"></i> This referral has been rejected because of {{referral.reject_reason}}
+            </b-card>
+            <div v-if="!referral.reject_reason">
+                <b-input-group class="mb-3" size="sm">
+                    <label for="" class="input-group-text" slot="prepend">
+                        <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
+                    </label>
+                    <b-input placeholder="Scan /Enter Confirmatory Request #" v-model="confirmatory_reference_number" :disabled="form_disabled"></b-input>
+                </b-input-group>
 
-            <b-input-group class="mb-3" size="sm">
-                <b-col sm="2">
-                    &nbsp;
-                </b-col>
-                <b-form-checkbox v-model="accept" :value="true" :unchecked-value="false" :disabled="form_disabled">
-                    In good condition
-                </b-form-checkbox>
-            </b-input-group>
-            <b-input-group class="mb-3" size="sm">
-                <b-col sm="2">
-                    &nbsp;
-                </b-col>
-                <b-form-checkbox v-model="contested" :value="true" :unchecked-value="false" :disabled="form_disabled">
-                    Contested
-                </b-form-checkbox>
-            </b-input-group>
+                <b-input-group class="mb-3" size="sm">
+                    <b-col sm="2">
+                        &nbsp;
+                    </b-col>
+                    <b-form-checkbox v-model="accept" :value="true" :unchecked-value="false" :disabled="form_disabled">
+                        In good condition
+                    </b-form-checkbox>
+                </b-input-group>
+                <b-input-group class="mb-3" size="sm">
+                    <b-col sm="2">
+                        &nbsp;
+                    </b-col>
+                    <b-form-checkbox v-model="contested" :value="true" :unchecked-value="false" :disabled="form_disabled">
+                        Contested
+                    </b-form-checkbox>
+                </b-input-group>
 
-            <cryobox-card class="mt-3" :cryobox="referral.cryobox" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card>
+                <!-- <cryobox-card class="mt-3" :cryobox="referral.cryobox" @editPressed="$bvModal.show('cryobox-selector')"></cryobox-card> -->
+                <b-button variant="dark" class="offset-2" v-b-modal.cryobox-selector>Set Cryobox Location</b-button>
 
-            <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
+                <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
 
-            <b-input-group class="mt-3" size="sm">
-                <label for="" class="col-sm-2"><strong>Remarks:</strong></label>
-                <b-form-textarea placeholder="Type-in some remarks" rows="6" v-model="remarks" required :disabled="form_disabled"></b-form-textarea>
-            </b-input-group>
+                <b-input-group class="mt-3" size="sm">
+                    <label for="" class="col-sm-2"><strong>Remarks:</strong></label>
+                    <b-form-textarea no-resize placeholder="Type-in some remarks" rows="6" v-model="remarks" required :disabled="form_disabled"></b-form-textarea>
+                </b-input-group>
 
-            <b-row class="mt-5">
-                <b-col>
-                    <b-button variant="danger" block :disabled=" form_disabled || (reject_busy || receive_busy)" v-b-modal.rejectModal>
-                        <span v-if="reject_busy">
-                            <i class="fa fa-spinner"></i>&nbsp;REJECTING..
-                        </span>
-                        <span v-if="!reject_busy">
-                            <i class="fa fa-trash"></i>&nbsp;REJECT
-                        </span>
-                    </b-button>
-                </b-col>
-                <b-col>
-                    <b-button variant="success" block title="Accept the Blood sample" :disabled="form_disabled || !confirmatory_reference_number_valid || !referral.cryobox || (reject_busy || receive_busy)" v-b-modal.confirmReceive>
-                        <span v-if="receive_busy">
-                            <i class="fa fa-spinner"></i>&nbsp;ACCEPTING..
-                        </span>
-                        <span v-if="!receive_busy">
-                            <i class="fa fa-check"></i>&nbsp;ACCEPT
-                        </span>
-                    </b-button>
-                </b-col>
-            </b-row>
+                <b-row class="mt-5">
+                    <b-col>
+                        <b-button variant="danger" block :disabled=" form_disabled || (reject_busy || receive_busy)" v-b-modal.rejectModal>
+                            <span v-if="reject_busy">
+                                <i class="fa fa-spinner"></i>&nbsp;REJECTING..
+                            </span>
+                            <span v-if="!reject_busy">
+                                <i class="fa fa-trash"></i>&nbsp;REJECT
+                            </span>
+                        </b-button>
+                    </b-col>
+                    <b-col>
+                        <b-button variant="success" block title="Accept the Blood sample" :disabled="form_disabled || !confirmatory_reference_number_valid || (reject_busy || receive_busy)" v-b-modal.confirmReceive>
+                            <span v-if="receive_busy">
+                                <i class="fa fa-spinner"></i>&nbsp;ACCEPTING..
+                            </span>
+                            <span v-if="!receive_busy">
+                                <i class="fa fa-check"></i>&nbsp;ACCEPT
+                            </span>
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </div>
+
         </b-form-group>
 
         <div class="form-group text-center" v-if="!referral">
@@ -87,16 +94,23 @@
             <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-pencil"></i>&nbsp;
+                    Reject Reason
                 </label>
-                <b-form-textarea v-model="reject_reason" placeholder="Type-in the reason for the rejection of the specimen" rows="8"></b-form-textarea>
+                <!-- <b-form-textarea v-model="reject_reason" placeholder="Type-in the reason for the rejection of the specimen" rows="8"></b-form-textarea> -->
+                <b-form-select v-model="reject_reason" :options="reject_options"></b-form-select>
+                <b-button slot="append" v-b-modal.reject-reasons-settings><i class="fa fa-cog"></i></b-button>
             </b-input-group>
+
+            <b-modal id="reject-reasons-settings" header-bg-variant="dark" header-text-variant="white" hide-footer title="Reject Reasons">
+                <reject-reasons />
+            </b-modal>
 
             <template slot="modal-footer">
                 <b-button variant="primary" v-b-modal.confirmReject :disabled="!reject_reason">SUBMIT</b-button>
             </template>
         </b-modal>
         
-        <b-modal id="confirmReceive" header-bg-variant="info" header-text-variant="light" title="Receive Referral" @ok="showVerifier">
+        <b-modal id="confirmReceive" header-bg-variant="info" header-text-variant="light" title="Receive Referral" @ok="receive">
             Confirm that this referral has been received?
         </b-modal>
 
@@ -112,7 +126,6 @@
                 The confirmatory referral has been rejected!
             </div>
         </b-modal>
-
         <verifier @ok="receive" />
     </div>
 </template>
@@ -121,9 +134,11 @@
 import Verifier from '../App/Verifier'
 import CryoboxCard from './CryoboxDetails/CryoboxCard'
 import CryoboxSelector from './CryoboxDetails/CryoboxSelector'
+import RejectReasons from '../Administration/References/RejectReasons'
+import { mapGetters } from 'vuex';
 
 export default {
-    components : {Verifier, CryoboxCard, CryoboxSelector},
+    components : {Verifier, CryoboxCard, CryoboxSelector, RejectReasons},
     data() {
         return{
             donation_id : null,
@@ -181,6 +196,7 @@ export default {
                 this.$bvModal.show('processDone')
                 this.receive_busy = false
                 this.clearForm()
+                this.$store.dispatch('fetchUnstoredReferrals')
             })
         },
         reject(){
@@ -204,7 +220,16 @@ export default {
         }
     },
     computed : {
-        
+        ...mapGetters(['reject_reasons']),
+        reject_options(){
+            if(!this.reject_reasons){
+                return []
+            }else{
+                return this.reject_reasons.map(r=>{
+                    return r.name
+                })
+            }
+        },        
         confirmatory_reference_number_valid(){
             return this.confirmatory_reference_number
         },
@@ -214,7 +239,7 @@ export default {
             }
             let {referral,confirmatory_reference_number,contested,remarks,reject_reason} = this
             _.extend(referral,{
-                confirmatory_reference_number : confirmatory_reference_number.toUpperCase(),
+                confirmatory_reference_number : confirmatory_reference_number ? confirmatory_reference_number.toUpperCase() : null,
                 contested,
                 remarks,
                 reject_reason,

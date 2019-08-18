@@ -1,21 +1,12 @@
 <template>
-    <div>
+    <div v-if="cryobox">
         <b-row v-for="(row,i) in specimenSlots" :key="i" :class="small ? 'cryobox-row' : null">
-            <b-col v-if="box.slot" >
+            <b-col>
                 <b-button v-for="(s,i2) in row" :key="i2" 
-                    :variant="box.slot.x == i && box.slot.y == i2 ? highlight_variant : 'outline-primary'"
-                    :class="!small ? 'cryobox' : 'mini'"
-                    @click="slotClicked({x:i,y:i2})">
-                    <span v-if="!small">
-                        {{s.text}}
-                    </span>
-                </b-button>
-            </b-col>
-            <b-col v-if="!box.slot">
-                <b-button v-for="(s,i2) in row" :key="i2" 
-                    variant="outline-primary"
-                    :class="!small ? 'cryobox' : 'mini'"
-                    @click="slotClicked({x:i,y:i2})">
+                    :variant="variant(i,i2)"
+                    :class="!small ? (!isTaken({x:i,y:i2}) ? 'cryobox' : 'cryobox bg-dark text-light') : 'mini'"
+                    @click="slotClicked({x:i,y:i2})"
+                    :disabled="isTaken({x:i,y:i2})">
                     <span v-if="!small">
                         {{s.text}}
                     </span>
@@ -31,13 +22,26 @@ export default {
     props : ['box','small'],
     data(){
         return {
-            highlight_variant : 'primary'//!this.small ? 'primary' : 'danger'
+            cryobox : null
         }
     },
+    mounted(){
+        if(!this.cryoboxes || !this.box){
+            return
+        }
+        let that = this
+        let cryobox = _.find(this.cryoboxes,function(c){
+            return c.cryobox_no.toUpperCase() == that.box.box_no.toUpperCase()
+        })
+        this.cryobox = cryobox
+    },
     computed : {
-        ...mapGetters(['cryobox']),
+        ...mapGetters(['cryoboxes']),
         specimenSlots(){
             let slots = []
+            if(!this.cryobox){
+                return slots
+            }
             let {cryobox : {rows,columns}} = this
             for(let i = 0; i < rows; i++){
                 let row = []
@@ -51,11 +55,30 @@ export default {
                 slots.push(row)
             }
             return slots
-        }
+        },
     },
     methods : {
+        variant(i,i2){
+            let {box} = this
+            if(box.slot){
+                return box.slot.x == i && box.slot.y == i2 ? 'primary' : 'outline-primary'
+            }else{
+                return 'outline-primary'
+            }
+        },
         slotClicked(slot){
             this.$emit('slotClicked',slot)
+        },
+        isTaken({x,y}){
+            let {cryobox} = this
+            if(cryobox){
+                let {content} = cryobox
+                if(!content){
+                    return false
+                }
+                return _.find(content,{x, y}) != undefined
+            }
+            return false
         }
     }
 }

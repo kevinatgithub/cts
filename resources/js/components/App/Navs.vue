@@ -5,11 +5,11 @@
             <b-navbar-brand>
                 <router-link class="navbar-brand" to="/">
                     <span class="d-none d-md-block d-lg-block d-xl-block">
-                        <img src="img/favicon.png" alt="">
+                        <img src="img/ritm_logo2.png" width="30" alt="">
                         TTI - Confirmatory Testing
                     </span>
                     <span class="d-sm-block d-md-none d-lg-none d-xl-none">
-                        <img src="img/favicon.png" alt=""> TTI - CTS
+                        <img src="img/ritm_logo2.png" width="30" alt=""> TTI - CTS
                     </span>
                 </router-link>
             </b-navbar-brand>

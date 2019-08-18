@@ -20,6 +20,8 @@ import {options} from './modules/administration/options'
 import {test_protocol} from './modules/administration/test_protocol'
 import {report_template} from './modules/administration/report_template'
 import {bsfreferral} from './modules/bsfreferral'
+import {dashboard} from './modules/dashboard'
+import {reject_reason} from './modules/administration/reject_reason'
 
 export default new Vuex.Store({
     modules : {
@@ -41,5 +43,7 @@ export default new Vuex.Store({
         test_protocol,
         report_template,
         bsfreferral,
+        dashboard,
+        reject_reason,
     }
 })

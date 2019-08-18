@@ -11,21 +11,21 @@ mock.onGet('/cryoboxes').reply(function(){
     let cryoboxes = session.cryoboxes.map(c=>{
         let refs = _.filter(session.referrals,r=>{
             if(r.cryobox){
-                if(r.cryobox.cryobox_no == c.cryobox_no){
-                    return r.confirmatory_reference_number
-                }
-            }else{
-                return []
+                return r.cryobox.box_no == c.cryobox_no
             }
         })
-        c.contents = refs
+        c.content = refs.map(r=>{
+            return { confirmatory_reference_number : r.confirmatory_reference_number, x : r.cryobox.slot.x, y : r.cryobox.slot.y}
+        })
         return c
     })
     return [200, cryoboxes]
 });
 
 mock.onGet('/cryobox').reply(r => {
-    return [200,_.find(session.cryoboxes,{cryobox_no:r[0]})]
+    return [200,_.find(session.cryoboxes,c=>{
+        return c.cryobox_no.toUpperCase() == r[0].toUpperCase()
+    })]
 });
 
 mock.onPost('/cryoboxes').reply(({data}) => {
@@ -156,6 +156,15 @@ mock.onPost('/setReferralResultBSF').reply(({data})=>{
     data = JSON.parse(data)
     let referral = _.find(session.referrals, {confirmatory_reference_number : data.confirmatory_reference_number})
     referral.results.bsf = data.bsf
+    return [200,referral]
+})
+
+mock.onPost('/referral/cryobox').reply(({data})=>{
+    data = JSON.parse(data)
+    let referral = _.find(session.referrals, r => {
+        return r.donation_id.toUpperCase() == data.donation_id.toUpperCase()
+    })
+    _.extend(referral, data)
     return [200,referral]
 })
 
@@ -695,6 +704,75 @@ mock.onGet('bsf/referrals').reply(data => {
     return [200,_.filter(session.referrals,r=>{
         return r.request_by.facility_cd == data.facility_cd
     })]
+})
+
+// ========================= dashboard ==========================================
+
+mock.onGet('dashboard').reply(data=>{
+    if(data.facility_cd == 'RITM'){
+        let a = 0, b = 0, c = 0, d = 0
+
+        session.referrals.forEach(r=>{
+            if(r.cryobox){
+                c++
+            }else if(r.reject_reason){
+                d++
+            }else if(r.received_by){
+                b++
+            }else{
+                a++
+            }
+        })
+
+        return [200,{
+            pieData : [a,b,c,d]
+        }]
+    }else{
+        return [200,null]
+    }
+})
+
+
+// ========================= reject_reasons ==========================================
+
+mock.onGet('/reject_reasons').reply(200,session.reject_reasons)
+
+mock.onPost('/reject_reasons').reply(({data})=>{
+    data = JSON.parse(data)
+    session.geenius_hiv_interpretation.push({
+        id : session.reject_reasons.length,
+        name : data.name
+    })
+    return [200,data]
+})
+
+mock.onPut('/reject_reasons').reply(({data})=>{
+    data = JSON.parse(data)
+    let option = _.find(session.reject_reasons,{id : data.id})
+    _.extend(option,data)
+    return [200,data]
+})
+
+mock.onDelete('/reject_reasons').reply(({data})=>{
+    data = JSON.parse(data)
+    session.reject_reasons = _.filter(session.reject_reasons,k=>{
+        return k.id != data.id
+    })
+    return [200,data]
+})
+
+mock.onGet('unstored-referrals').reply(data=>{
+    let refs = _.filter(session.referrals,r=>{
+        if(r.cryobox == undefined && ((r.received_dt != null || r.received_dt != undefined) && r.reject_reason == undefined)){
+            return r
+        }
+    })
+
+    if(!refs){
+        return [200,[]]
+    }
+
+    return [200,refs]
 })
 
 export {mock}
