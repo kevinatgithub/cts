@@ -2343,9 +2343,12 @@ let test_protocols = [
 let report_templates = []
 
 let reject_reasons = [
-	{id:0,name:"Sample Reject 1"},
-	{id:1,name:"Sample Reject 2"},
-	{id:2,name:"Sample Reject 3"},
+	{id:0,name:"No Sample"},
+	{id:1,name:"Grossly Hemolyzed"},
+	{id:2,name:"Leakage"},
+	{id:3,name:"QNS"},
+	{id:4,name:"Spilled"},
+	{id:4,name:"Unsuitable for Testing"},
 ]
 
 export default { cryoboxes, users, donations, referrals, specimens, couriers, machines, reagents, kit_methods, result_options, particle_agglutination, serodia_hiv_interpretation, eia_results, westernblot_hiv, pcr_results, geenius_hiv_interpretation, options_registry, test_protocols, report_templates, reject_reasons }
