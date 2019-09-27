@@ -3,15 +3,15 @@ import VueRouter from 'vue-router'
 import Axios from 'axios'
 
 //Added Components
-import Dashboard from './components/Dashboard'
-import Login from './components/Login'
+import Dashboard from './components/Dashboard/Dashboard'
+import Login from './components/Login/Login'
 
-import Request from './components/Request'
+import Request from './components/Request/Request'
 import BsfRequests from './components/BsfRequests'
-import Checklist from './components/Request/Checklist'
+// import Checklist from './components/Request/Checklist'
 
-import Receive from './components/Receive'
-import DataEntry from './components/DataEntry'
+import Receive from './components/Receive/Receive'
+import DataEntry from './components/DataEntry/DataEntry'
 import RegisterLoc from './components/Receive/RegisterLoc'
 
 import Testing from './components/Testing'
@@ -33,7 +33,7 @@ export default new VueRouter({
         { path: '/login', component: Login, name : 'login' },
         { path: '/request', component: Request },
         { path: '/status', component: BsfRequests },
-        { path: '/checklist', component: Checklist },
+        // { path: '/checklist', component: Checklist },
         { path: '/receiving', component: Receive },
         { path: '/entry', component: DataEntry },
         { path: '/registerloc', component: RegisterLoc },

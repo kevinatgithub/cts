@@ -2,7 +2,7 @@
     <div>
         <b-row>
             <b-col>
-                <b-progress :max="51" :value="test_completion" animated striped variant="success" height="2px"></b-progress>
+                <b-progress :max="form_field_count" :value="test_completion" animated striped variant="success" height="2px"></b-progress>
             </b-col>
         </b-row>
         <b-row>
@@ -66,7 +66,7 @@ import {mapGetters} from 'vuex'
 import BsfTestReferences from '../../../../Administration/References/TestProtocolReferences/BsfTestReferences'
 import BsfProtocolKit from './BsfProtocolKit'
 export default {
-    props : ['referral'],
+    props : ['referral','form_field_count'],
     components : {BsfTestReferences,BsfProtocolKit},
     data(){
         return {

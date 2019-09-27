@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import RequestForm from './Request/RequestForm'
-import DonationCard from './ReferralCard/DonationCard'
+import RequestForm from './RequestForm'
+import DonationCard from '../ReferralCard/DonationCard'
 export default {
     components : {DonationCard,RequestForm},
     data(){

@@ -72,7 +72,7 @@
             </b-input-group>
             
             <!-- BSF TEST DETAILS  -->
-            <bsf-protocol v-if="donation" :referral="referral" @reportCompletion="checkTestCompletion" />
+            <bsf-protocol v-if="donation" :referral="referral" @reportCompletion="checkTestCompletion" :form_field_count="FORM_FIELD_COUNT" />
 
             <!-- SPECIMEN -->
             <b-form-group>
@@ -160,10 +160,8 @@
                 <b-col cols="4" v-if="saving" class="mt-1">
                     <b-img src="./img/loading-circle.gif" width="25"></b-img> Saving..
                 </b-col>
+                <b-button class="pull-right" variant="light" @click="autoAssign">Auto Assign</b-button>
             </b-row>
-
-            <b-button variant="light" @click="autoAssign">Auto Assign</b-button>
-
 
         </b-form-group>
 
@@ -182,53 +180,33 @@
 </template>
 
 <script>
+import Referral from '../../models/Referral'
+import Courier from "../../models/Courier"
+import MockRequestForm from '../../mock/fn/RequestForm'
+
 import _ from 'lodash'
 import BsfProtocol from '../DataEntry/Results/ResultEntry/BsfProtocol/BsfProtocol'
-let lot = {
-    lot_no: null,   optical_density : null, cutoff_value : null, interpretation : null, date_tested: null
-}
-let bsf_test_kit = {
-    reagent : null, 
-    lots : [
-        _.extend(_.cloneDeep(lot),{id : 0}),
-        _.extend(_.cloneDeep(lot),{id : 1}),
-        _.extend(_.cloneDeep(lot),{id : 2}),
-    ]
-}
+
+const FORM_FIELD_COUNT = 51
 
 export default {
     components : {BsfProtocol},
     data(){
         return{
+            FORM_FIELD_COUNT,
             donationIDBusy : false,
             donation_id : null,
             donation_id_valid : null,
             donation : null,
             specimen : null,
             courierMode : null,
-            courier : {
-                fname : null, mname : null, lname : null, contact_no : null,
-                provider : null, reference_no : null,
-            },
             shipped_dt : null,
             saving : false,
-            referral : {
-                results : {
-                    bsf : {
-                        machine : null,
-                        bsf_mt : null,
-                        hiv_license : null,
-                        kits : [
-                            _.extend(_.cloneDeep(bsf_test_kit),{id : 0}),
-                            _.extend(_.cloneDeep(bsf_test_kit),{id : 1}),
-                            _.extend(_.cloneDeep(bsf_test_kit),{id : 2}),
-                        ]
-                    },
-                }
-            },
             test_complete : false,
+            courier : new Courier({}),
+            referral : new Referral({}),
         }
-    }, // end data
+    }, 
 
     computed : {
         
@@ -311,34 +289,17 @@ export default {
         save(){
             this.saving = true
             let user = this.$store.getters.user
-            
-            this.$store.dispatch('newReferral',{
-                donation : this.donation,
-                courier : this.courier,
-                courierMode : this.courierMode,
-                donation_id : this.donation.donation_id,
-                specimen : this.specimen,
-                request_by : user,
-                created_dt : Date.now(),
-                shipped_dt : this.shipped_dt,
-                results : {
-                    bsf : this.referral.results.bsf,
-                    nrl : {
-                        hiv : [],
-                        hbv : [],
-                        hcv : [],
-                        mal : [],
-                        syp : [],
-                    },
-                }
-            }).then(r=>{
+            let {donation,courier,courierMode,specimen,shipped_dt} = this
+            let {donation_id} = donation
+            let referral = new Referral({
+                donation, courier, courierMode, donation_id, specimen, request_by: user, shipped_dt : Date.now(), results : this.referral.results
+            })
+            this.$store.dispatch('newReferral',referral).then(r=>{
                 this.saving = false
                 this.donation_id = null
                 this.donation = null
                 this.$emit('donationSet',null)
-                this.courier = {
-                    fname : null, mname : null, lname : null, provider : null, reference_no : null,
-                }
+                this.courier = new Courier({})
                 this.specimen = null
                 this.courierMode = null
                 this.donation_id_valid = null
@@ -347,109 +308,11 @@ export default {
         },
 
         checkTestCompletion(p){
-            this.test_complete = p >= 51
+            this.test_complete = p >= FORM_FIELD_COUNT
         },
 
         autoAssign(){
-            this.referral.results.bsf = {  
-                "machine":7,
-                "bsf_mt":"Jenny Rodriguez",
-                "hiv_license":"2",
-                "kits":[  
-                    {  
-                    "reagent":6,
-                    "lots":[  
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"1",
-                            "cutoff_value":"1",
-                            "interpretation":"NON-REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":0
-                        },
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"2",
-                            "cutoff_value":"2",
-                            "interpretation":"NON-REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":1
-                        },
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"2",
-                            "cutoff_value":"2",
-                            "interpretation":"NON-REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":2
-                        }
-                    ],
-                    "id":0
-                    },
-                    {  
-                    "reagent":3,
-                    "lots":[  
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"2",
-                            "cutoff_value":"2",
-                            "interpretation":"NON-REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":0
-                        },
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"2",
-                            "cutoff_value":"2",
-                            "interpretation":"NON-REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":1
-                        },
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"22",
-                            "cutoff_value":"2",
-                            "interpretation":"REACTIVE",
-                            "date_tested":"2019-08-15",
-                            "id":2
-                        }
-                    ],
-                    "id":1
-                    },
-                    {  
-                    "reagent":3,
-                    "lots":[  
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"2",
-                            "cutoff_value":"2",
-                            "interpretation":"REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":0
-                        },
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"22",
-                            "cutoff_value":"2",
-                            "interpretation":"REACTIVE",
-                            "date_tested":"2019-08-14",
-                            "id":1
-                        },
-                        {  
-                            "lot_no":"2",
-                            "optical_density":"22",
-                            "cutoff_value":"2",
-                            "interpretation":"REACTIVE",
-                            "date_tested":"2019-08-08",
-                            "id":2
-                        }
-                    ],
-                    "id":2
-                    }
-                ]
-            }
-          
-            
+            this.referral.results.bsf = MockRequestForm.autoAssign()
         }
         
     },

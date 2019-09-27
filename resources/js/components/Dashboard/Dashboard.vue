@@ -8,7 +8,7 @@
     </div>
 </template>
 <script>
-import RitmDashboard from './Dashboard/RitmDashboard'
+import RitmDashboard from './RitmDashboard'
 export default {
     components : {RitmDashboard},
     computed : {

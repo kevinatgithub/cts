@@ -16,10 +16,15 @@
 
 
         <b-form-group class="mt-3" v-if="referral">
-            <b-card v-if="referral.reject_reason" bg-variant="danger" text-variant="white">
+            <b-card v-if="referral.reject_reason.length" bg-variant="dark" text-variant="white">
                 <i class="fa fa-warning"></i> This referral has been rejected because of {{referral.reject_reason}}
+                <br>
+                <b-button class="mt-3" variant="light" size="sm"><i class="fa fa-send"></i> Send Rejection Report</b-button>
+                <router-link to="rejections">
+                    <b-button class="mt-3" variant="success" size="sm"><i class="fa fa-list"></i> View Rejections</b-button>
+                </router-link>
             </b-card>
-            <div v-if="!referral.reject_reason">
+            <div v-if="!referral.reject_reason.length">
                 <b-input-group class="mb-3" size="sm">
                     <label for="" class="input-group-text" slot="prepend">
                         <i class="fa fa-pencil"></i>&nbsp;Confirmatory Request #:
@@ -92,14 +97,20 @@
             </template>
 
             <b-input-group class="mb-3">
+                <b>Reject Reasons</b><br>
+            </b-input-group>
+            <b-input-group class="mb-3">
+                <b-form-checkbox class="col-sm-6 mt-3" v-model="reject_reason" v-for="i in reject_options" :key="i" :value="i">{{i}}</b-form-checkbox>
+            </b-input-group>
+
+            <!-- <b-input-group class="mb-3">
                 <label for="" class="input-group-text" slot="prepend">
                     <i class="fa fa-pencil"></i>&nbsp;
-                    Reject Reason
+                    Reject Reasons
                 </label>
-                <!-- <b-form-textarea v-model="reject_reason" placeholder="Type-in the reason for the rejection of the specimen" rows="8"></b-form-textarea> -->
                 <b-form-select v-model="reject_reason" :options="reject_options"></b-form-select>
                 <b-button slot="append" v-b-modal.reject-reasons-settings><i class="fa fa-cog"></i></b-button>
-            </b-input-group>
+            </b-input-group> -->
 
             <b-modal id="reject-reasons-settings" header-bg-variant="dark" header-text-variant="white" hide-footer title="Reject Reasons">
                 <reject-reasons />
@@ -151,7 +162,7 @@ export default {
             accept : null,
             remarks : null,
             process_mode : null,
-            reject_reason : null,
+            reject_reason : [],
             receive_busy : false,
             reject_busy : false,
         }

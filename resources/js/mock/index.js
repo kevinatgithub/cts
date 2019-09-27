@@ -715,7 +715,7 @@ mock.onGet('dashboard').reply(data=>{
         session.referrals.forEach(r=>{
             if(r.cryobox){
                 c++
-            }else if(r.reject_reason){
+            }else if(r.reject_reason.length){
                 d++
             }else if(r.received_by){
                 b++

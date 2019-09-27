@@ -1,20 +1,15 @@
 <template>
     <div>
-        <comp-url>Receive</comp-url>
-        <!-- <h3 class="text-primary">Receive Blood Sample</h3>
-        <hr> -->
+        <comp-url>DataEntry</comp-url>
         <b-breadcrumb :items="[
-            {text: 'Receive Blood Sample', active: true},
+            {text: 'Data Entry', active: true},
         ]"></b-breadcrumb>
-
         
         <b-row class="mt-3">
             <b-col sm="12" md="6" lg="6" xl="6">
-                <unstored-referral class="mb-3"></unstored-referral>
-                <receive-form @referralSet="setReferral"></receive-form>
+                <data-entry @referralSet="setReferral"></data-entry>
             </b-col>
             <b-col sm="12" md="6" lg="6" xl="6">
-               
                 <referral-card v-if="referral" :referral="referral"></referral-card>
                 <timeline v-if="referral" :referral="referral" class="mb-3"></timeline>
             </b-col>
@@ -25,13 +20,12 @@
 </template>
 
 <script>
-import ReferralCard from './ReferralCard/ReferralCard'
-import Timeline from './Timeline'
-import ReceiveForm from './Receive/ReceiveForm'
-import UnstoredReferral from './notification/UnstoredReferral'
+import ReferralCard from '../ReferralCard/ReferralCard'
+import Timeline from '../Timeline'
+import DataEntry from './DataEntryDashboard'
 
 export default {
-    components: {ReferralCard,Timeline,ReceiveForm,UnstoredReferral},
+    components: {ReferralCard,Timeline,DataEntry},
     data(){
         return {
             referral : null

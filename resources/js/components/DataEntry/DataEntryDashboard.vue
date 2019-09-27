@@ -21,7 +21,7 @@
 
         <div v-if="referral">
             
-            <b-card bg-variant="outline-danger" header-bg-variant="danger" header="Referral was Rejected" header-text-variant="white" class="mb-3" v-if="referral.reject_reason">
+            <b-card bg-variant="outline-danger" header-bg-variant="danger" header="Referral was Rejected" header-text-variant="white" class="mb-3" v-if="referral.reject_reason.length">
                 <b-card-text>
                     <i class="fa fa-info-circle"></i>   This Referral was rejected
                 </b-card-text>
@@ -31,7 +31,7 @@
 
             <cryobox-selector :pcryobox="referral.cryobox" :referral="referral" @savePressed="setCryobox" />
 
-            <results-menu v-if="!referral.reject_reason" :referral="referral" @resultSent="fetchReferral"></results-menu>
+            <results-menu v-if="!referral.reject_reason.length" :referral="referral" @resultSent="fetchReferral"></results-menu>
         </div>
 
     </div>

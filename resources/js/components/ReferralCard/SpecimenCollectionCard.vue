@@ -67,7 +67,11 @@ export default {
             }else{
                 let {provider, reference_no} = this.referral.courier
                 let courier = _.find(this.couriers,{id : provider})
-                return courier.name + " / " + reference_no
+                if(courier.name){
+                    return courier.name + " / " + reference_no
+                }else{
+                    return reference_no
+                }
             }
         },
         couriers(){

@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Dashboard from './Dashboard'
-import LoginForm from './Login/LoginForm'
+import Dashboard from '../Dashboard/Dashboard'
+import LoginForm from './LoginForm'
 export default {
     components: {LoginForm,Dashboard},
     computed : {
