@@ -269,7 +269,7 @@ export default {
             this.$emit('donationSet', null)
             this.donationIDBusy = true
             this.donation_id_valid = null
-            this.$store.dispatch('fetchDonation',{donation_id : this.donation_id}).then(({data})=>{
+            this.$store.dispatch('fetchDonation',this.donation_id).then(({data})=>{
                 this.donationIDBusy = false
                 if(!data){
                     this.donation_id_valid = false

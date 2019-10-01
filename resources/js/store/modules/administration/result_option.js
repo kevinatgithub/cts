@@ -17,17 +17,17 @@ const result_option = {
             context.commit('initResultOptions',payload)
         },
         async fetchResultOptions(context,payload){
-            let request = await window.$http.get('/resultoptions')
+            let request = await window.$http.get('/result_options')
             context.commit('initResultOptions',request.data)
         },
         newResultOption(context,payload){
-            return window.$http.post('/resultoptions/new',payload)
+            return window.$http.post('/result_options/new',payload)
         },
         updateResultOption(context,payload){
-            return window.$http.post('/resultoptions/update',payload)
+            return window.$http.post('/result_options/update',payload)
         },
         deleteResultOption(context,payload){
-            return window.$http.delete('/resultoptions',payload)
+            return window.$http.delete('/result_options',payload)
         },
     }
 

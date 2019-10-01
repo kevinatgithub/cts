@@ -17,17 +17,17 @@ const kit_method = {
             context.commit('initKitMethods',payload)
         },
         async fetchKitMethods(context,payload){
-            let request = await window.$http.get('/kitmethods')
+            let request = await window.$http.get('/kit_methods')
             context.commit('initKitMethods',request.data)
         },
         newKitMethod(context,payload){
-            return window.$http.post('/kitmethods/new',payload)
+            return window.$http.post('/kit_methods/new',payload)
         },
         updateKitMethod(context,payload){
-            return window.$http.post('/kitmethods/update',payload)
+            return window.$http.post('/kit_methods/update',payload)
         },
         deleteKitMethod(context,payload){
-            return window.$http.delete('/kitmethods',payload)
+            return window.$http.delete('/kit_methods',payload)
         },
     }
 

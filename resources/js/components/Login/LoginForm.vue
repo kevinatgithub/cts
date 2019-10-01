@@ -52,18 +52,18 @@ export default {
             if(this.validate()){
                 this.busy = true
                 this.$store.dispatch('attemptLogin',{
-                    username : this.username,
+                    user_id : this.username,
                     password : this.password,
                 }).then(({data})=>{
                     this.busy = false
                     this.username = null
                     this.password = null
-                    if(!data){
+                    if(!data.user){
                         this.username_error_type = 1
                         this.username_error = false
                     }else{
-                        this.$session.set('user',data)
-                        this.$store.dispatch('initUser',data)
+                        this.$session.set('user',data.user)
+                        this.$store.dispatch('initUser',data.user)
                         this.$router.push('/')
                     }
                 })

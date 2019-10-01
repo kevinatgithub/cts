@@ -22,31 +22,31 @@ const fujirebio = {
     actions : {
         // ============================ particle_agglutination=====================================
         async fetchParticleAgglutination(context,payload){
-            let request = await window.$http.get('/particle_agglutination')
+            let request = await window.$http.get('/particle_agglutinations')
             context.commit('initParticleAgglutination',request.data)
         },
         newParticleAgglutination(context,payload){
-            return window.$http.post('/particle_agglutination/new',payload)
+            return window.$http.post('/particle_agglutinations/new',payload)
         },
         updateParticleAgglutination(context,payload){
-            return window.$http.post('/particle_agglutination/update',payload)
+            return window.$http.post('/particle_agglutinations/update',payload)
         },
         deleteParticleAgglutination(context,payload){
-            return window.$http.delete('/particle_agglutination',payload)
+            return window.$http.delete('/particle_agglutinations',payload)
         },
         // ============================= serodia_hiv_final_status_options==============================
         async fetchSerodiaFinalInterpretation(context,payload){
-            let request = await window.$http.get('/serodia_hiv_interpretation')
+            let request = await window.$http.get('/serodia_hiv_interpretations')
             context.commit('initSerodiaFinalInterpretation',request.data)
         },
         newSerodiaFinalInterpretation(context,payload){
-            return window.$http.post('/serodia_hiv_interpretation/new',payload)
+            return window.$http.post('/serodia_hiv_interpretations/new',payload)
         },
         updateSerodiaFinalInterpretation(context,payload){
-            return window.$http.post('/serodia_hiv_interpretation/update',payload)
+            return window.$http.post('/serodia_hiv_interpretations/update',payload)
         },
         deleteSerodiaFinalInterpretation(context,payload){
-            return window.$http.delete('/serodia_hiv_interpretation',payload)
+            return window.$http.delete('/serodia_hiv_interpretations',payload)
         },
     }
 }

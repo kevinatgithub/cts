@@ -761,7 +761,7 @@ mock.onDelete('/reject_reasons').reply(({data})=>{
     return [200,data]
 })
 
-mock.onGet('unstored-referrals').reply(data=>{
+mock.onGet('/referrals/unstored').reply(data=>{
     let refs = _.filter(session.referrals,r=>{
         if(r.cryobox == undefined && ((r.received_dt != null || r.received_dt != undefined) && r.reject_reason == undefined)){
             return r

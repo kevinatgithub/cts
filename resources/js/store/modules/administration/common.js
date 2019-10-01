@@ -67,17 +67,17 @@ const common = {
             return window.$http.delete('eia_results',payload)
         },
         async fetchWesternblotHiv(context,payload){
-            let request = await window.$http.get('westernblot_hiv')
+            let request = await window.$http.get('western_bloot_hiv')
             context.commit('initWesternblotHiv',request.data)
         },
         addWesternblotHiv(context,payload){
-            return window.$http.post('westernblot_hiv/new',payload)
+            return window.$http.post('western_bloot_hiv/new',payload)
         },
         updateWesternblotHiv(context,payload){
-            return window.$http.post('westernblot_hiv/update',payload)
+            return window.$http.post('western_bloot_hiv/update',payload)
         },
         deleteWesternblotHiv(context,payload){
-            return window.$http.delete('westernblot_hiv',payload)
+            return window.$http.delete('western_bloot_hiv',payload)
         },
         async fetchPCR(context,payload){
             let request = await window.$http.get('pcr_results')
@@ -93,17 +93,17 @@ const common = {
             return window.$http.delete('pcr_results',payload)
         },
         async fetchGeeniusHivInterpretation(context,payload){
-            let request = await window.$http.get('geenius_hiv_interpretation')
+            let request = await window.$http.get('geenius_hiv_interpretations')
             context.commit('initGeeniusHivInterpretation',request.data)
         },
         addGeeniusHivInterpretation(context,payload){
-            return window.$http.post('geenius_hiv_interpretation/new',payload)
+            return window.$http.post('geenius_hiv_interpretations/new',payload)
         },
         updateGeeniusHivInterpretation(context,payload){
-            return window.$http.post('geenius_hiv_interpretation/update',payload)
+            return window.$http.post('geenius_hiv_interpretations/update',payload)
         },
         deleteGeeniusHivInterpretation(context,payload){
-            return window.$http.delete('geenius_hiv_interpretation',payload)
+            return window.$http.delete('geenius_hiv_interpretations',payload)
         },
     }
 }

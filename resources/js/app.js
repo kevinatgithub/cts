@@ -24,9 +24,9 @@ Vue.use(LightTimeline);
 
 import axios from 'axios'
 const base = axios.create({
-    baseURL: 'http://cts'
+    baseURL: 'http://localhost:3000'
 })
-import mock from './mock'
+// import mock from './mock'
 window.$http = base
 
 import VueHtmlToPaper from 'vue-html-to-paper';

@@ -6,7 +6,7 @@ const donation = {
     },
     actions : {
         fetchDonation(context,payload){
-            return window.$http.post("donation",payload)
+            return window.$http.get("donations/"+payload)
             // console.log(REMOTE_HOST+"/donation")
             // return axios.post(REMOTE_HOST+"/donation",payload)
         }

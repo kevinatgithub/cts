@@ -73,7 +73,7 @@ const referral = {
             return window.$http.post("setReferralResultBSF",payload)
         },
         async fetchUnstoredReferrals(context,payload){
-            let req = await $http.get('unstored-referrals')
+            let req = await $http.get('/referrals/unstored')
             context.commit('initUnstoredReferrals',req.data)
         },
         setReferralCryobox(context,payload){

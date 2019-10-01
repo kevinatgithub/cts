@@ -30,7 +30,7 @@ const user = {
             context.commit('initUser',payload)
         },
         attemptLogin(context,payload){
-            return window.$http.post('login',payload)
+            return window.$http.post('users/login',payload)
         },
         verifierLogin(context,payload){
             let user = context.getters.user
