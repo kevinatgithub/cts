@@ -13,7 +13,7 @@
     <!-- Bootstrap core CSS -->
     <!-- <link href="{{asset('css/app.css')}}" rel="stylesheet"> -->
     <link href="{{asset('css/custom.css')}}" rel="stylesheet">
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <!-- <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script> -->
 </head>
 <body>
     <div id="app"></div>

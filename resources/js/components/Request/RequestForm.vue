@@ -79,7 +79,7 @@
                 <label for="">Specimen Type</label>
                 <b-form-checkbox-group title="Specimen Type" v-model="specimen">
                     <b-row >
-                        <b-col v-for="s in specimens" :key="s.id" cols="6"><b-form-checkbox :value="s.id">{{s.name}}</b-form-checkbox></b-col>
+                        <b-col v-for="s in specimens" :key="s.id" cols="6"><b-form-checkbox v-model="specimen" :value="s.id">{{s.name}}</b-form-checkbox></b-col>
                     </b-row>
                 </b-form-checkbox-group>
             </b-form-group>
@@ -198,7 +198,7 @@ export default {
             donation_id : null,
             donation_id_valid : null,
             donation : null,
-            specimen : null,
+            specimen : [],
             courierMode : null,
             shipped_dt : null,
             saving : false,
